@@ -7,36 +7,35 @@
     tools:context=".MainActivity">
 
     <EditText
-        android:id="@+id/text_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:hint="@string/password"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:autofillHints="Insira sua senha."/>
-
-    <EditText
         android:id="@+id/text_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/text_password"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="27dp"
-        android:hint="@string/email"
+        android:layout_marginTop="40dp"
+        android:autofillHints="Insira seu endereço de e-mail cadastrado."
         android:ems="10"
-        android:inputType="textEmailAddress"
-        android:autofillHints="Insira seu endereço de e-mail cadastrado." />
+        android:hint="@string/email"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/text_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="false"
+        android:layout_centerVertical="false"
+        android:layout_marginTop="100dp"
+        android:autofillHints="Insira sua senha."
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/button_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="148dp"
+        android:layout_marginTop="170dp"
         android:background="@color/colorPrimaryDark"
         android:text="@string/login"
         android:textColor="#ffffffff" />
