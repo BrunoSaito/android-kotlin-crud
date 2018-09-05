@@ -1,6 +1,11 @@
 <resources>
-    <string name="app_name">TakiTileTest</string>
+    <string name="app_name">Taki Tile Login App</string>
     <string name="email">E-mail</string>
     <string name="password">Senha</string>
     <string name="login">Entrar</string>
+    <string name="login_success">Login efetuado com sucesso!</string>
+    <string name="login_name">nome de login:</string>
+    <string name="login_token">token de login:</string>
+    <string name="email_invalid">Insira um e-mail válido.</string>
+    <string name="pwd_invalid">Insira uma senha válida.</string>
 </resources>
