@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Taki Tile Login App</string>
+    <string name="app_name">Taki Tile Onboard App</string>
     <string name="email">E-mail</string>
     <string name="password">Senha</string>
     <string name="login">Entrar</string>

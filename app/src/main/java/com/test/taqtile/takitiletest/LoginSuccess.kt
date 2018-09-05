@@ -15,7 +15,7 @@ class LoginSuccess : AppCompatActivity() {
 
     private val LOGIN_NAME = "LOGIN_NAME"
     private val LOGIN_TOKEN = "LOGIN_TOKEN"
-    private val PREFS_FILENAME = "com.teamtreehouse.colorsarefun.prefs"
+    private val PREFS_FILENAME = "com.test.taqtile.takitiletest.prefs"
 
     private var name: String? = null
     private var token: String? = null
@@ -28,14 +28,18 @@ class LoginSuccess : AppCompatActivity() {
         textLoginName = findViewById<TextView>(R.id.text_login_name)
         textLoginToken = findViewById<TextView>(R.id.text_login_token)
 
-//        getBundle()
-
-        sharedPrefs = this.getSharedPreferences(PREFS_FILENAME, 0)
-        name = sharedPrefs!!.getString(LOGIN_NAME, "")
-        token = sharedPrefs!!.getString(LOGIN_TOKEN, "")
+        getPreferences()
 
         textLoginName!!.text = name
         textLoginToken!!.text = token
+
+        Log.d("D", "token: " + token)
+    }
+
+    private fun getPreferences() {
+        sharedPrefs = this.getSharedPreferences(PREFS_FILENAME, 0)
+        name = sharedPrefs!!.getString(LOGIN_NAME, "")
+        token = sharedPrefs!!.getString(LOGIN_TOKEN, "")
     }
 
     private fun getBundle() {

@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -27,13 +28,11 @@ class MainActivity : AppCompatActivity() {
     private var textPwd: EditText? = null
     private var buttonLogin: Button? = null
     private var progressBar: ProgressBar? = null
-    private var textLastLoginName: TextView? = null
-    private var textLastLoginToken: TextView? = null
     private var textErrorEmail: TextView? = null
     private var textErrorPwd: TextView? = null
 
-    private val minPwdLength: Int = 4
-    private val url: String = "https://tq-template-server-sample.herokuapp.com/authenticate"
+    private val minPwdLength = 4
+    private val url = "https://tq-template-server-sample.herokuapp.com/authenticate"
     private val LOGIN_NAME = "LOGIN_NAME"
     private val LOGIN_TOKEN = "LOGIN_TOKEN"
     private val PREFS_FILENAME = "com.test.taqtile.takitiletest.prefs"
@@ -50,8 +49,6 @@ class MainActivity : AppCompatActivity() {
         textPwd = findViewById<EditText>(R.id.text_password)
         buttonLogin = findViewById<Button>(R.id.button_login)
         progressBar = findViewById<ProgressBar>(R.id.progress_login)
-        textLastLoginName = findViewById<TextView>(R.id.text_last_name)
-        textLastLoginToken = findViewById<TextView>(R.id.text_last_token)
         textErrorEmail = findViewById(R.id.text_error_email)
         textErrorPwd = findViewById(R.id.text_error_pwd)
 
@@ -65,9 +62,6 @@ class MainActivity : AppCompatActivity() {
         sharedPrefs = this.getSharedPreferences(PREFS_FILENAME, 0)
         name = sharedPrefs!!.getString(LOGIN_NAME, "")
         token = sharedPrefs!!.getString(LOGIN_TOKEN, "")
-
-        textLastLoginName!!.text = name
-        textLastLoginToken!!.text = token
     }
 
     private fun login() {
@@ -94,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
                         unlockLoginButton()
 
-                        val nextActivity = Intent(this, LoginSuccess::class.java)
+                        val nextActivity = Intent(this, UserList::class.java)
                         startActivity(nextActivity)
                     },
                     Response.ErrorListener { error ->
@@ -130,11 +124,11 @@ class MainActivity : AppCompatActivity() {
         var validEmail = false
         var validPwd = false
 
-        if (validate_email(email)) {
+        if (validateEmail(email)) {
             textErrorEmail!!.visibility = TextView.GONE
             validEmail = true
         }
-        if (validate_pwd(pwd)) {
+        if (validatePwd(pwd)) {
             textErrorPwd!!.visibility = TextView.GONE
             validPwd = true
         }
@@ -142,7 +136,7 @@ class MainActivity : AppCompatActivity() {
         return (validEmail && validPwd)
     }
 
-    private fun validate_email(email: String) : Boolean {
+    private fun validateEmail(email: String) : Boolean {
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             textEmail!!.background.mutate().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
             textErrorEmail!!.text = getString(R.string.email_invalid)
@@ -153,7 +147,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun validate_pwd(pwd: String) : Boolean {
+    private fun validatePwd(pwd: String) : Boolean {
         if (pwd.length < minPwdLength) {
             textPwd!!.background.mutate().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
             textErrorPwd!!.text = getString(R.string.pwd_invalid)
