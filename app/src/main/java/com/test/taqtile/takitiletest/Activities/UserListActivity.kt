@@ -1,4 +1,4 @@
-package com.test.taqtile.takitiletest
+package com.test.taqtile.takitiletest.Activities
 
 import android.app.AlertDialog
 import android.content.Context
@@ -16,12 +16,16 @@ import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.test.taqtile.takitiletest.R
+import com.test.taqtile.takitiletest.User
+import kotlinx.android.synthetic.main.activity_user_list.*
+import kotlinx.android.synthetic.main.list_row.view.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.nio.charset.Charset
 
-class UserList : AppCompatActivity() {
-  private var listViewUsers: ListView? = null
+
+class UserListActivity : AppCompatActivity() {
 
   private var name: String? = null
   private var token: String? = null
@@ -35,17 +39,14 @@ class UserList : AppCompatActivity() {
 
   private val listCompleteData = ArrayList<User>()
   private val listUsers = ArrayList<User>()
-  private val progressBar: ProgressBar by lazy {
-      val progressBarView = LayoutInflater.from(this).inflate(R.layout
-              .bottom_listview_progressbar, null)
-      progressBarView.findViewById<ProgressBar>(R.id.progressBar)
+  private val progressBarListView: ProgressBar by lazy {
+    val progressBarView = LayoutInflater.from(this).inflate(R.layout.bottom_listview_progressbar, null)
+    progressBarView.findViewById<ProgressBar>(R.id.progressBarListView)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_user_list)
-
-    listViewUsers = findViewById(R.id.list_view_users)
 
     getPreferences()
 
@@ -59,13 +60,13 @@ class UserList : AppCompatActivity() {
             for (i in 0..responseArray.length()-1) {
               val json = JSONObject(responseArray[i].toString())
               listCompleteData.add(User(json.getString("name"),
-                                        json.getString("role")))
+                      json.getString("role")))
             }
 
             for (i in 0..9)
               listUsers.add(listCompleteData[i])
 
-            listViewUsers!!.addFooterView(progressBar)
+            listViewUsers!!.addFooterView(progressBarListView)
 
             val adapter = UsersAdapter(this, listUsers)
             listViewUsers!!.adapter = adapter
@@ -81,7 +82,7 @@ class UserList : AppCompatActivity() {
             val jsonError = JSONObject(jsonErrorString)
             val jsonErrorMessage = JSONObject(jsonError.getJSONArray("errors").getString(0))
 
-            val builder = AlertDialog.Builder(this@UserList)
+            val builder = AlertDialog.Builder(this@UserListActivity)
 
             builder.setTitle("Erro no login.")
             builder.setMessage(jsonErrorMessage.getString("message"))
@@ -109,6 +110,7 @@ class UserList : AppCompatActivity() {
 
     queue.add(jsonObjectRequest)
   }
+
   private fun getPreferences() {
     sharedPrefs = this.getSharedPreferences(PREFS_FILENAME, 0)
     name = sharedPrefs!!.getString(LOGIN_NAME, "")
@@ -117,16 +119,16 @@ class UserList : AppCompatActivity() {
 
   private fun setListViewOnScrollListener(){
       listViewUsers!!.setOnScrollListener(object: AbsListView.OnScrollListener{
-          override fun onScroll(view: AbsListView?, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {}
+        override fun onScroll(view: AbsListView?, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {}
 
-          override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
-              if(scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && listViewUsers!!
-                              .lastVisiblePosition == listUsers.size && listViewUsers!!
-                              .lastVisiblePosition < listCompleteData.size) {
-                  progressBar.visibility = ProgressBar.VISIBLE
-                  addMoreItems()
-              }
+        override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
+          if(scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE &&
+                            listViewUsers!!.lastVisiblePosition == listUsers.size &&
+                            listViewUsers!!.lastVisiblePosition < listCompleteData.size) {
+            progressBarListView.visibility = ProgressBar.VISIBLE
+            addMoreItems()
           }
+        }
       })
   }
 
@@ -142,59 +144,58 @@ class UserList : AppCompatActivity() {
 //            }
 //        }
 
-      progressBar.visibility = ProgressBar.GONE
+      progressBarListView.visibility = ProgressBar.GONE
   }
 
   inner class UsersAdapter : BaseAdapter {
-      private var usersList = ArrayList<User>()
-      private var context: Context? = null
+    private var usersList = ArrayList<User>()
+    private var context: Context? = null
 
-      constructor(context: Context, usersList: ArrayList<User>) : super() {
-          this.usersList = usersList
-          this.context = context
+    constructor(context: Context, usersList: ArrayList<User>) : super() {
+      this.usersList = usersList
+      this.context = context
+    }
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
+      val view: View?
+      val vh: ViewHolder
+
+      if (convertView == null) {
+        view = layoutInflater.inflate(R.layout.list_row, parent, false)
+        vh = ViewHolder(view)
+        view!!.tag = vh
+        Log.i("JSA", "set Tag for ViewHolder, position: " + position)
+      } else {
+        view = convertView
+        vh = view.tag as ViewHolder
       }
 
-      override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
+      vh.listViewUserName.text = usersList[position].name
+      vh.listViewUserRole.text = usersList[position].role
 
-          val view: View?
-          val vh: ViewHolder
+      return view
+    }
 
-          if (convertView == null) {
-              view = layoutInflater.inflate(R.layout.list_row, parent, false)
-              vh = ViewHolder(view)
-              view!!.tag = vh
-              Log.i("JSA", "set Tag for ViewHolder, position: " + position)
-          } else {
-              view = convertView
-              vh = view.tag as ViewHolder
-          }
+    override fun getItem(position: Int): Any {
+      return usersList[position]
+    }
 
-          vh.userName.text = usersList[position].name
-          vh.userRole.text = usersList[position].role
+    override fun getItemId(position: Int): Long {
+      return position.toLong()
+    }
 
-          return view
-      }
-
-      override fun getItem(position: Int): Any {
-          return usersList[position]
-      }
-
-      override fun getItemId(position: Int): Long {
-          return position.toLong()
-      }
-
-      override fun getCount(): Int {
-          return usersList.size
-      }
+    override fun getCount(): Int {
+      return usersList.size
+    }
   }
 
   private class ViewHolder(view: View?) {
-      val userName: TextView
-      val userRole: TextView
+    val listViewUserName: TextView
+    val listViewUserRole: TextView
 
-      init {
-          this.userName = view?.findViewById(R.id.tvTitle) as TextView
-          this.userRole = view.findViewById(R.id.tvContent) as TextView
-      }
+    init {
+      this.listViewUserName = view!!.listViewUserName
+      this.listViewUserRole = view.listViewUserRole
+    }
   }
 }
