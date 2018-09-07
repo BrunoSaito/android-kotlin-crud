@@ -1,5 +1,6 @@
 package com.test.taqtile.takitiletest.Activities
 
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -26,6 +27,11 @@ class LoginSuccessActivity : AppCompatActivity() {
     textLoginToken!!.text = token
 
     Log.d("D", "token: " + token)
+
+    buttonListUsers.setOnClickListener {
+      val nextActivity = Intent(this, UserListActivity::class.java)
+      startActivity(nextActivity)
+    }
   }
 
   private fun getPreferences() {

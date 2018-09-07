@@ -40,4 +40,11 @@
         android:layout_marginTop="140dp"
         android:id="@+id/textLoginToken"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="220dp"
+        android:text="@string/button_list_users"
+        android:id="@+id/buttonListUsers" />
+
 </RelativeLayout>

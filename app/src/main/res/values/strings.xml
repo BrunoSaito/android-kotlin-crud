@@ -8,4 +8,5 @@
     <string name="login_token">token de login:</string>
     <string name="email_invalid">Insira um e-mail válido.</string>
     <string name="pwd_invalid">Insira uma senha válida.</string>
+    <string name="button_list_users">Listar usuários</string>
 </resources>

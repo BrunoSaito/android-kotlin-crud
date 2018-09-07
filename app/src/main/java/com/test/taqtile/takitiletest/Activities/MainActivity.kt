@@ -10,21 +10,20 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.android.volley.NetworkResponse
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.HttpHeaderParser
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
-import com.test.taqtile.takitiletest.R
+import com.google.gson.Gson
+import com.test.taqtile.takitiletest.*
+import com.test.taqtile.takitiletest.DataModels.UserLoginCredentials
+import com.test.taqtile.takitiletest.DataModels.UserLoginError
+import com.test.taqtile.takitiletest.DataModels.UserLoginResponse
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONObject
-import java.nio.charset.Charset
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 
 class MainActivity : AppCompatActivity() {
 
   private val minPwdLength = 4
-  private val url = "https://tq-template-server-sample.herokuapp.com/authenticate"
   private val LOGIN_NAME = "LOGIN_NAME"
   private val LOGIN_TOKEN = "LOGIN_TOKEN"
   private val PREFS_FILENAME = "com.test.taqtile.takitiletest.prefs"
@@ -51,56 +50,50 @@ class MainActivity : AppCompatActivity() {
 
   private fun login() {
     val email = textEmail!!.text.toString()
-    val pwd = textPassword!!.text.toString()
+    val password = textPassword!!.text.toString()
 
     if (validate()) {
       lockLoginButton()
 
-      // Send request to server
-      val queue = Volley.newRequestQueue(this)
-
-      val jsonPost: JSONObject? = JSONObject()
-      jsonPost!!.put("password", pwd)
-      jsonPost.put("email", email)
-      jsonPost.put("rememberMe", false)
-
-      val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, jsonPost,
-            Response.Listener { response ->
-              val editor = sharedPrefs!!.edit()
-              editor.putString(LOGIN_NAME, response.getJSONObject("data").getJSONObject("user").getString("name"))
-              editor.putString(LOGIN_TOKEN, response.getJSONObject("data").getString("token"))
-              editor.apply()
-
-              unlockLoginButton()
-
-              val nextActivity = Intent(this, UserListActivity::class.java)
-              startActivity(nextActivity)
-            },
-            Response.ErrorListener { error ->
-              val networkError: NetworkResponse? = error.networkResponse
-
-              val jsonErrorString = String(
-                      networkError!!.data ?: ByteArray(0),
-                      Charset.forName(HttpHeaderParser.parseCharset(networkError.headers)))
-
-              val jsonError = JSONObject(jsonErrorString)
-              val jsonErrorMessage = JSONObject(jsonError.getJSONArray("errors").getString(0))
-
-              val builder = AlertDialog.Builder(this@MainActivity)
-
-              builder.setTitle("Erro no login.")
-              builder.setMessage(jsonErrorMessage.getString("message"))
-              builder.setNeutralButton("Ok") { _ ,_ -> }
-
-              val dialog: AlertDialog = builder.create()
-              dialog.show()
-
-              unlockLoginButton()
-            }
-      )
-
-      queue.add(jsonObjectRequest)
+      makeRequest(email, password)
     }
+  }
+
+  private fun makeRequest(email: String, password: String) {
+    val userLogin = RetrofitInitializer().userLoginService().loginUser(UserLoginCredentials(email, password, false))
+
+    userLogin.enqueue(object: Callback<UserLoginResponse?> {
+      override fun onResponse(call: Call<UserLoginResponse?>?, response: Response<UserLoginResponse?>?) {
+        try {
+          val editor = sharedPrefs!!.edit()
+          editor.putString(LOGIN_NAME, response!!.body()!!.data.user.name)
+          editor.putString(LOGIN_TOKEN, response.body()!!.data.token)
+          editor.apply()
+
+          val nextActivity = Intent(this@MainActivity, LoginSuccessActivity::class.java)
+          startActivity(nextActivity)
+        }
+        catch (e: Exception) {
+          val jsonError = response!!.errorBody()!!.string()
+          val userLoginError = Gson().fromJson(jsonError, UserLoginError::class.java)
+
+          val builder = AlertDialog.Builder(this@MainActivity)
+
+          builder.setTitle("Erro no login.")
+          builder.setMessage(userLoginError.errors.get(0).message)
+          builder.setNeutralButton("OK") { _, _ -> }
+
+          val dialog = builder.create()
+          dialog.show()
+        }
+
+        unlockLoginButton()
+      }
+      override fun onFailure(call: Call<UserLoginResponse?>?, t: Throwable?) {
+        unlockLoginButton()
+      }
+    }
+    )
   }
 
   private fun validate(): Boolean {
