@@ -2,7 +2,6 @@ package com.test.taqtile.takitiletest.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.test.taqtile.takitiletest.DataModels.UserDetails
 import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer

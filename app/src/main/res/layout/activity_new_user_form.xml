@@ -11,8 +11,47 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/newUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/new_user_name"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1" />
 
+        <EditText
+            android:id="@+id/newUserEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/new_user_email"
+            android:inputType="textEmailAddress"
+            android:lines="1"
+            android:maxLines="1" />
 
+        <EditText
+            android:id="@+id/newUserPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/new_user_password"
+            android:inputType="textPassword"
+            android:lines="1"
+            android:maxLines="1" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerNewUserRole" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/new_user_submit"
+            android:id="@+id/buttonNewUserSubmit" />
 
     </LinearLayout>
 
