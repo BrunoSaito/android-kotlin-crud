@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Text for Content" />
+
     </LinearLayout>
 
     <LinearLayout

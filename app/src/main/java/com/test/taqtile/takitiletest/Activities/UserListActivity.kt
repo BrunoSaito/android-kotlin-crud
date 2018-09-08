@@ -1,6 +1,7 @@
 package com.test.taqtile.takitiletest.Activities
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -47,6 +48,13 @@ class UserListActivity : AppCompatActivity() {
     jsonParams.put("window", "100")
 
     getUsersList(jsonParams)
+
+    listViewUsers.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+      val intent = Intent(this@UserListActivity, UserDetailsActivity::class.java)
+
+      intent.putExtra("id", listCompleteData.get(position).id.toString())
+      startActivity(intent)
+    }
   }
 
   private fun getUsersList(jsonParams: JSONObject) {

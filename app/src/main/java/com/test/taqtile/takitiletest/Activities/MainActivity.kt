@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -60,7 +59,6 @@ class MainActivity : AppCompatActivity() {
           val userName = response!!.body()!!.data.user.name
           val token = response.body()!!.data.token
 
-          Log.d("D", "depuracao")
           Utils(this@MainActivity).savePreferences(userName, token)
 
           val nextActivity = Intent(this@MainActivity, LoginSuccessActivity::class.java)
