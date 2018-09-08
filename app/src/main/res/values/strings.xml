@@ -9,4 +9,7 @@
     <string name="email_invalid">Insira um e-mail válido.</string>
     <string name="pwd_invalid">Insira uma senha válida.</string>
     <string name="button_list_users">Listar usuários</string>
+    <string name="user_details_name">Nome: </string>
+    <string name="user_datails_email">E-mail: </string>
+    <string name="user_details_role">Cargo: </string>
 </resources>

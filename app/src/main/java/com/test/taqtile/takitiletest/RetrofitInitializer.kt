@@ -1,26 +1,37 @@
 package com.test.taqtile.takitiletest
 
-import android.support.constraint.BuildConfig
+import android.util.Log
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-private val BASE_URL = "https://tq-template-server-sample.herokuapp.com/"
 
 class RetrofitInitializer {
-  val client = OkHttpClient().newBuilder()
-//          .addInterceptor(TokenRefreshInterceptor(apiKey, cacheDuration))
-//          .addInterceptor(HttpLoggingInterceptor().apply {
-//            level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
-//          })
-          .build()
+  private val BASE_URL = "https://tq-template-server-sample.herokuapp.com/"
 
-  val retrofit = Retrofit.Builder()
-          .baseUrl(BASE_URL)
-          .client(client)
-          .addConverterFactory(GsonConverterFactory.create())
-          .build()
+  private val client: OkHttpClient
+  private val retrofit: Retrofit
+
+  constructor(token: String?) {
+    this.client = OkHttpClient().newBuilder()
+                                .addInterceptor(accessTokenProvidingInterceptor(token))
+                                .build()
+
+    this.retrofit = Retrofit.Builder()
+                            .baseUrl(BASE_URL)
+                            .client(client)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build()
+
+    Log.d("D", "token boladao: " + token)
+  }
+
+  fun accessTokenProvidingInterceptor(token: String?) = Interceptor { chain ->
+    chain.proceed(chain.request().newBuilder()
+            .addHeader("Authorization", token!!)
+            .build())
+  }
 
   fun listUsersService() = retrofit.create(ListUsersService::class.java)
 
