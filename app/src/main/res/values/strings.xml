@@ -3,17 +3,24 @@
     <string name="email">E-mail</string>
     <string name="password">Senha</string>
     <string name="login">Entrar</string>
+
+    <string name="login_failure">Erro ao efetura login.</string>
     <string name="login_success">Login efetuado com sucesso!</string>
+
     <string name="login_name">nome de login:</string>
     <string name="login_token">token de login:</string>
-    <string name="email_invalid">Insira um e-mail válido.</string>
-    <string name="pwd_invalid">Insira uma senha válida.</string>
+    <string name="invalid_name">Insira um nome de usuário válido.</string>
+    <string name="invalid_email">Insira um e-mail válido.</string>
+    <string name="invalid_password">Insira uma senha válida.</string>
     <string name="button_list_users">Listar usuários</string>
     <string name="user_details_name">Nome: </string>
     <string name="user_datails_email">E-mail: </string>
     <string name="user_details_role">Cargo: </string>
+
     <string name="new_user_name">Nome de usuário</string>
     <string name="new_user_email">E-mail</string>
     <string name="new_user_password">Senha</string>
     <string name="new_user_submit">Cadastrar</string>
+    <string name="new_user_failure">Erro ao criar usuário.</string>
+    <string name="new_user_success">Usuário cadastrado com sucesso!</string>
 </resources>

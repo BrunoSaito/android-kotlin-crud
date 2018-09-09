@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/newUserName"
+            android:id="@+id/textNewUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -21,8 +21,17 @@
             android:lines="1"
             android:maxLines="1" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/invalid_name"
+            android:layout_marginStart="5dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:id="@+id/textErrorNewUserName" />
+
         <EditText
-            android:id="@+id/newUserEmail"
+            android:id="@+id/textNewUserEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -31,8 +40,17 @@
             android:lines="1"
             android:maxLines="1" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/invalid_email"
+            android:layout_marginStart="5dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:id="@+id/textErrorNewUserEmail" />
+
         <EditText
-            android:id="@+id/newUserPassword"
+            android:id="@+id/textNewUserPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -41,17 +59,44 @@
             android:lines="1"
             android:maxLines="1" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/invalid_password"
+            android:layout_marginStart="5dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:id="@+id/textErrorNewUserPassword" />
+
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:id="@+id/spinnerNewUserRole" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/new_user_submit"
-            android:id="@+id/buttonNewUserSubmit" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/new_user_submit"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#ffffffff"
+                android:id="@+id/buttonNewUserSubmit" />
+
+            <ProgressBar
+                android:id="@+id/progressBarNewUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:progressTint="@android:color/background_light"
+                android:translationZ="2dp" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 

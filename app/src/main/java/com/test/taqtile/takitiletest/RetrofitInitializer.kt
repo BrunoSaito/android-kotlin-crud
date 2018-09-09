@@ -30,9 +30,5 @@ class RetrofitInitializer {
             .build())
   }
 
-  fun listUsersService() = retrofit.create(ListUsersService::class.java)
-
-  fun userLoginService() = retrofit.create(UserLoginService::class.java)
-
-  fun userDetailsService() = retrofit.create(UserDetailsService::class.java)
+  fun userServices() = retrofit.create(UserServices::class.java)
 }

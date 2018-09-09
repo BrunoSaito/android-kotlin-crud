@@ -3,7 +3,7 @@ package com.test.taqtile.takitiletest.DataModels
 import com.google.gson.annotations.SerializedName
 
 
-data class UserLoginResponse(
+data class UserLoginSuccess(
   @SerializedName("data") val data: Data
 ) {
 

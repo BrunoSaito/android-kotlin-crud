@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
 import com.test.taqtile.takitiletest.DataModels.User
@@ -55,10 +56,20 @@ class UserListActivity : AppCompatActivity() {
       intent.putExtra("id", listCompleteData.get(position).id.toString())
       startActivity(intent)
     }
+
+    if (!intent.getStringExtra("message").isNullOrEmpty()) {
+      val builder = AlertDialog.Builder(this@UserListActivity)
+      builder.setTitle("Mensagem")
+      builder.setMessage(intent.getStringExtra("message"))
+      builder.setNeutralButton("OK") { _, _ -> }
+
+      val dialog = builder.create()
+      dialog.show()
+    }
   }
 
   private fun getUsersList(jsonParams: JSONObject) {
-    val users = RetrofitInitializer(token).listUsersService().listUsers(jsonParams, token)
+    val users = RetrofitInitializer(token).userServices().listUsers(jsonParams)
 
     users.enqueue(object : Callback<User?> {
       override fun onResponse(call: Call<User?>?, response: Response<User?>?) {

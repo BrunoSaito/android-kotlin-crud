@@ -30,7 +30,7 @@ class UserDetailsActivity : AppCompatActivity() {
   }
 
   fun getDetailsRequest(token: String?, userId: String?) {
-    val userDetails = RetrofitInitializer(token).userDetailsService().getUserDetails(userId)
+    val userDetails = RetrofitInitializer(token).userServices().getUserDetails(userId)
 
     userDetails.enqueue(object : Callback<UserDetails?> {
       override fun onResponse(call: Call<UserDetails?>, response: Response<UserDetails?>) {
