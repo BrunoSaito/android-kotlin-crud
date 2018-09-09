@@ -66,6 +66,11 @@ class UserListActivity : AppCompatActivity() {
       val dialog = builder.create()
       dialog.show()
     }
+
+    fabCreateNewUser.setOnClickListener {
+      val intent = Intent(this@UserListActivity, CreateNewUserActivity::class.java)
+      startActivity(intent)
+    }
   }
 
   private fun getUsersList(jsonParams: JSONObject) {

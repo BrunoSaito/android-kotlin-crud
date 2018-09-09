@@ -21,7 +21,7 @@
         <activity android:name=".Activities.LoginSuccessActivity" />
         <activity android:name=".Activities.UserListActivity" />
         <activity android:name=".Activities.UserDetailsActivity" />
-        <activity android:name=".Activities.NewUserFormActivity"></activity>
+        <activity android:name=".Activities.CreateNewUserActivity"></activity>
     </application>
 
 </manifest>

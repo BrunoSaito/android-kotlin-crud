@@ -24,7 +24,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class NewUserFormActivity : AppCompatActivity() {
+class CreateNewUserActivity : AppCompatActivity() {
 
   private val minPasswordLength = 4
 
@@ -42,7 +42,7 @@ class NewUserFormActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_new_user_form)
 
-    preferences = Utils(this@NewUserFormActivity).getPreferences()
+    preferences = Utils(this@CreateNewUserActivity).getPreferences()
     token = preferences!!.get("token")
 
     val spinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerItems)
@@ -91,7 +91,7 @@ class NewUserFormActivity : AppCompatActivity() {
         try {
           response!!.body()!!.data.user.name
 
-          val intent = Intent(this@NewUserFormActivity, UserListActivity::class.java)
+          val intent = Intent(this@CreateNewUserActivity, UserListActivity::class.java)
           intent.putExtra("message", getString(R.string.new_user_success))
           startActivity(intent)
         }
@@ -99,7 +99,7 @@ class NewUserFormActivity : AppCompatActivity() {
           val jsonError = response!!.errorBody()!!.string()
           val createNewUserError = Gson().fromJson(jsonError, CreateNewUserError::class.java)
 
-          val builder = AlertDialog.Builder(this@NewUserFormActivity)
+          val builder = AlertDialog.Builder(this@CreateNewUserActivity)
 
           builder.setTitle(getString(R.string.new_user_failure))
           builder.setMessage(createNewUserError.errors.get(0).original)
@@ -112,7 +112,7 @@ class NewUserFormActivity : AppCompatActivity() {
         unlockSubmitButton()
       }
       override fun onFailure(call: Call<CreateNewUserSuccess?>?, t: Throwable) {
-        val builder = android.app.AlertDialog.Builder(this@NewUserFormActivity)
+        val builder = android.app.AlertDialog.Builder(this@CreateNewUserActivity)
 
         builder.setTitle(getString(R.string.new_user_failure))
         builder.setMessage(t.message.toString())
