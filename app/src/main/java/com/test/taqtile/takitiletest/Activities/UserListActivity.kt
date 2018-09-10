@@ -72,6 +72,8 @@ class UserListActivity : AppCompatActivity() {
       val intent = Intent(this@UserListActivity, CreateNewUserActivity::class.java)
       startActivity(intent)
     }
+
+    progressBarListUsers.visibility = ProgressBar.VISIBLE
   }
 
   private fun getUsersList(jsonParams: JSONObject) {
@@ -93,9 +95,11 @@ class UserListActivity : AppCompatActivity() {
         val adapter = UsersAdapter(this@UserListActivity, listUsers)
         listViewUsers!!.adapter = adapter
         setListViewOnScrollListener()
+
+        progressBarListUsers.visibility = ProgressBar.GONE
       }
       override fun onFailure(call: Call<User?>?, t: Throwable?) {
-
+        progressBarListUsers.visibility = ProgressBar.GONE
       }
     })
   }

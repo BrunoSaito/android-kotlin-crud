@@ -1,7 +1,9 @@
 package com.test.taqtile.takitiletest.Activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ProgressBar
 import com.test.taqtile.takitiletest.DataModels.UserDetails
 import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
@@ -10,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_user_details.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class UserDetailsActivity : AppCompatActivity() {
 
@@ -27,6 +30,17 @@ class UserDetailsActivity : AppCompatActivity() {
 
     userId = intent.getStringExtra("id")
     getDetailsRequest(token, userId)
+
+    buttonUserDetailsEdit.setOnClickListener {
+      val intent = Intent(this@UserDetailsActivity, EditUserActivity::class.java)
+
+      intent.putExtra("userName", userDetailName.text)
+      intent.putExtra("userEmail", userDetailEmail.text)
+      intent.putExtra("userRole", userDetailRole.text)
+      startActivity(intent)
+    }
+
+    progressBarDetailsUser.visibility = ProgressBar.VISIBLE
   }
 
   fun getDetailsRequest(token: String?, userId: String?) {
@@ -37,10 +51,12 @@ class UserDetailsActivity : AppCompatActivity() {
         userDetailName.text = response.body()!!.data.name
         userDetailEmail.text = response.body()!!.data.email
         userDetailRole.text = response.body()!!.data.role
+
+        progressBarDetailsUser.visibility = ProgressBar.GONE
       }
 
       override fun onFailure(call: Call<UserDetails?>, t: Throwable) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        progressBarDetailsUser.visibility = ProgressBar.GONE
       }
     })
   }
