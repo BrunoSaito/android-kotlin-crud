@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -46,8 +47,8 @@ class EditUserActivity : AppCompatActivity() {
     preferences = Preferences(this@EditUserActivity).getPreferences()
     token = preferences?.get("token")
 
-    spinnerItems.put("Usuário", "user")
-    spinnerItems.put("Administrador", "admin")
+    spinnerItems["Usuário"] = "user"
+    spinnerItems["Administrador"] = "admin"
 
     userName = intent.getStringExtra("userName")
     userEmail = intent.getStringExtra("userEmail")
@@ -62,7 +63,7 @@ class EditUserActivity : AppCompatActivity() {
     spinnerEditUserRole.adapter = spinnerAdapter
 
     var i = 0
-    for ((key, value) in spinnerItems) {
+    for ((_, value) in spinnerItems) {
       if (value == userRole)
         spinnerEditUserRole.setSelection(i)
       i++
@@ -71,7 +72,7 @@ class EditUserActivity : AppCompatActivity() {
     spinnerEditUserRole.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         var i = 0
-        for ((key, value) in spinnerItems) {
+        for ((_, value) in spinnerItems) {
           if (i == position)
             userRole = value
           i++
@@ -79,7 +80,7 @@ class EditUserActivity : AppCompatActivity() {
       }
 
       override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
       }
     }
 
@@ -126,7 +127,7 @@ class EditUserActivity : AppCompatActivity() {
           val builder = android.app.AlertDialog.Builder(this@EditUserActivity)
 
           builder.setTitle(getString(R.string.login_failure))
-          builder.setMessage(userLoginError.errors!!.get(0).message)
+          builder.setMessage(userLoginError.errors!![0].message)
           builder.setNeutralButton("OK") { _, _ -> }
 
           val dialog = builder.create()
@@ -152,7 +153,10 @@ class EditUserActivity : AppCompatActivity() {
   }
 
   private fun validate(name: String?, email: String?): Boolean {
-    return (validateName(name) && validateEmail(email))
+    val validName = validateName(name)
+    val validEmail = validateEmail(email)
+
+    return (validName && validEmail)
   }
 
   private fun validateName(name: String?): Boolean {
@@ -160,6 +164,8 @@ class EditUserActivity : AppCompatActivity() {
       textEditUserName?.background?.mutate()?.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
       textErrorEditUserName?.text = getString(R.string.invalid_name)
       textErrorEditUserName?.visibility = TextView.VISIBLE
+
+      return false
     }
     textEditUserName?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
     textErrorEditUserName?.visibility = TextView.GONE
@@ -189,7 +195,7 @@ class EditUserActivity : AppCompatActivity() {
 
   private fun unlockSubmitButton() {
     progressBarEditUser?.visibility = ProgressBar.GONE
-    buttonEditUserSubmit?.text = getString(R.string.new_user_submit)
+    buttonEditUserSubmit?.text = getString(R.string.edit_user_submit)
     buttonEditUserSubmit.isEnabled = true
   }
 }

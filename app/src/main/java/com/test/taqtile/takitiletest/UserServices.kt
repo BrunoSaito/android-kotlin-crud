@@ -21,4 +21,7 @@ interface UserServices {
 
   @PUT("/users/{id}")
   fun updateUserData(@Path("id") id: String?, @Body editUserData: EditUserData?) : Call<EditUserSuccess>
+
+  @DELETE("/users/{id}")
+  fun deleteUser(@Path("id") id: String?) : Call<DeleteUserSuccess>
 }

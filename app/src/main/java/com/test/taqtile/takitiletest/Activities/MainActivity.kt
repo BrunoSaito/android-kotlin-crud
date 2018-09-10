@@ -68,7 +68,9 @@ class MainActivity : AppCompatActivity() {
           Preferences(this@MainActivity).savePreferences(userName, token)
 
           val nextActivity = Intent(this@MainActivity, LoginSuccessActivity::class.java)
+
           startActivity(nextActivity)
+          finish()
         }
         catch (e: Exception) {
           val jsonError = response!!.errorBody()!!.string()
@@ -103,7 +105,10 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun validate(email: String?, password: String?): Boolean {
-    return (validateEmail(email) && validatePassword(password))
+    val validEmail = validateEmail(email)
+    val validPassword = validatePassword(password)
+
+    return (validEmail && validPassword)
   }
 
   private fun validateEmail(email: String?) : Boolean {

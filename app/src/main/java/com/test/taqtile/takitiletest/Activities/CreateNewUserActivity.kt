@@ -48,8 +48,8 @@ class CreateNewUserActivity : AppCompatActivity() {
     val actionBar = supportActionBar
     actionBar?.title = getString(R.string.new_user_title)
 
-    spinnerItems.put("Usuário", "user")
-    spinnerItems.put("Administrador", "admin")
+    spinnerItems["Usuário"] = "user"
+    spinnerItems["Administrador"] = "admin"
 
     preferences = Preferences(this@CreateNewUserActivity).getPreferences()
     token = preferences?.get("token")
@@ -61,7 +61,7 @@ class CreateNewUserActivity : AppCompatActivity() {
     spinnerNewUserRole.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         var i = 0
-        for ((key, value) in spinnerItems) {
+        for ((_, value) in spinnerItems) {
           if (i == position)
             role = value
           i++
@@ -145,7 +145,11 @@ class CreateNewUserActivity : AppCompatActivity() {
   }
 
   private fun validate(name: String?, email: String?, password: String?, passwordConfirm: String?): Boolean {
-    return (validateName(name) && validateEmail(email) && validatePassword(password, passwordConfirm))
+    val validName = validateName(name)
+    val validEmail = validateEmail(email)
+    val validPassword = validatePassword(password, passwordConfirm)
+
+    return (validName && validEmail && validPassword)
   }
 
   private fun validateName(name: String?): Boolean {
