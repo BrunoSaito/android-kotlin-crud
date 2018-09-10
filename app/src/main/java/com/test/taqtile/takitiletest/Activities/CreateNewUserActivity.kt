@@ -17,6 +17,8 @@ import com.test.taqtile.takitiletest.DataModels.CreateNewUserError
 import com.test.taqtile.takitiletest.DataModels.CreateNewUserSuccess
 import com.test.taqtile.takitiletest.Preferences
 import com.test.taqtile.takitiletest.R
+import com.test.taqtile.takitiletest.R.id.textErrorNewUserName
+import com.test.taqtile.takitiletest.R.id.textNewUserName
 import com.test.taqtile.takitiletest.RetrofitInitializer
 import kotlinx.android.synthetic.main.activity_new_user_form.*
 import retrofit2.Call
@@ -33,6 +35,7 @@ class CreateNewUserActivity : AppCompatActivity() {
   private var name: String? = null
   private var email: String? = null
   private var password: String? = null
+  private var passwordConfirm: String? = null
   private var role: String? = null
   private var token: String? = null
 
@@ -41,6 +44,9 @@ class CreateNewUserActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_new_user_form)
+
+    val actionBar = supportActionBar
+    actionBar?.title = getString(R.string.new_user_title)
 
     spinnerItems.put("Usuário", "user")
     spinnerItems.put("Administrador", "admin")
@@ -71,8 +77,9 @@ class CreateNewUserActivity : AppCompatActivity() {
       name = textNewUserName.text.toString()
       email = textNewUserEmail.text.toString()
       password = textNewUserPassword.text.toString()
+      passwordConfirm = textNewUserPasswordConfirm.text.toString()
 
-      if (validate(name, email, password)) {
+      if (validate(name, email, password, passwordConfirm)) {
         lockSubmitButton()
 
         submitNewUserRequest(name, password, email, role)
@@ -86,6 +93,12 @@ class CreateNewUserActivity : AppCompatActivity() {
     textNewUserPassword?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
   }
 
+  override fun onBackPressed() {
+    val intent = Intent(this@CreateNewUserActivity, UserListActivity::class.java)
+
+    startActivity(intent)
+  }
+
   private fun submitNewUserRequest(name: String?, password: String?, email: String?, role: String?) {
     val newUserRequest = RetrofitInitializer(token).userServices().createNewUser(CreateNewUserData(name, password, email, role))
 
@@ -96,7 +109,9 @@ class CreateNewUserActivity : AppCompatActivity() {
 
           val intent = Intent(this@CreateNewUserActivity, UserListActivity::class.java)
           intent.putExtra("message", getString(R.string.new_user_success))
+
           startActivity(intent)
+          finish()
         }
         catch (e: Exception) {
           val jsonError = response!!.errorBody()!!.string()
@@ -115,7 +130,7 @@ class CreateNewUserActivity : AppCompatActivity() {
         unlockSubmitButton()
       }
       override fun onFailure(call: Call<CreateNewUserSuccess?>?, failureResponse: Throwable) {
-        val builder = android.app.AlertDialog.Builder(this@CreateNewUserActivity)
+        val builder = AlertDialog.Builder(this@CreateNewUserActivity)
 
         builder.setTitle(getString(R.string.new_user_failure))
         builder.setMessage(failureResponse.message.toString())
@@ -129,25 +144,8 @@ class CreateNewUserActivity : AppCompatActivity() {
     })
   }
 
-  private fun validate(name: String?, email: String?, password: String?): Boolean {
-    var validName = false
-    var validEmail = false
-    var validPassword = false
-
-    if (validateName(name)) {
-      textErrorNewUserName?.visibility = TextView.GONE
-      validName = true
-    }
-    if (validateEmail(email)) {
-      textErrorNewUserEmail?.visibility = TextView.GONE
-      validEmail = true
-    }
-    if (validatePassword(password)) {
-      textErrorNewUserPassword?.visibility = TextView.GONE
-      validPassword = true
-    }
-
-    return (validName && validEmail && validPassword)
+  private fun validate(name: String?, email: String?, password: String?, passwordConfirm: String?): Boolean {
+    return (validateName(name) && validateEmail(email) && validatePassword(password, passwordConfirm))
   }
 
   private fun validateName(name: String?): Boolean {
@@ -157,6 +155,8 @@ class CreateNewUserActivity : AppCompatActivity() {
       textErrorNewUserName?.visibility = TextView.VISIBLE
     }
     textNewUserName?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
+    textErrorNewUserName?.visibility = TextView.GONE
+
     return true
   }
 
@@ -169,10 +169,12 @@ class CreateNewUserActivity : AppCompatActivity() {
       return false
     }
     textNewUserEmail?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
+    textErrorNewUserEmail?.visibility = TextView.GONE
+
     return true
   }
 
-  private fun validatePassword(password: String?): Boolean {
+  private fun validatePassword(password: String?, passwordConfirm: String?): Boolean {
     if (password?.length!! < minPasswordLength) {
       textNewUserPassword?.background?.mutate()?.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
       textErrorNewUserPassword?.text = getString(R.string.invalid_password)
@@ -180,7 +182,19 @@ class CreateNewUserActivity : AppCompatActivity() {
 
       return false
     }
+    if (!password.equals(passwordConfirm)) {
+      textNewUserPassword?.background?.mutate()?.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
+      textNewUserPasswordConfirm?.background?.mutate()?.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
+      textErrorNewUserPasswordConfirm?.text = getString(R.string.invalid_password_confirm)
+      textErrorNewUserPasswordConfirm?.visibility = TextView.VISIBLE
+
+      return false
+    }
     textNewUserPassword?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
+    textNewUserPasswordConfirm?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
+    textErrorNewUserPassword?.visibility = TextView.GONE
+    textErrorNewUserPasswordConfirm?.visibility = TextView.GONE
+
     return true
   }
 

@@ -117,6 +117,7 @@ class EditUserActivity : AppCompatActivity() {
           intent.putExtra("message", "Usuário atualizado com sucesso!")
 
           startActivity(intent)
+          finish()
         }
         catch (e: Exception) {
           val jsonError = response!!.errorBody()!!.string()
@@ -151,19 +152,7 @@ class EditUserActivity : AppCompatActivity() {
   }
 
   private fun validate(name: String?, email: String?): Boolean {
-    var validName = false
-    var validEmail = false
-
-    if (validateName(name)) {
-      textErrorEditUserName?.visibility = TextView.GONE
-      validName = true
-    }
-    if (validateEmail(email)) {
-      textErrorEditUserEmail?.visibility = TextView.GONE
-      validEmail = true
-    }
-
-    return (validName && validEmail)
+    return (validateName(name) && validateEmail(email))
   }
 
   private fun validateName(name: String?): Boolean {
@@ -173,6 +162,8 @@ class EditUserActivity : AppCompatActivity() {
       textErrorEditUserName?.visibility = TextView.VISIBLE
     }
     textEditUserName?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
+    textErrorEditUserName?.visibility = TextView.GONE
+
     return true
   }
 
@@ -185,6 +176,8 @@ class EditUserActivity : AppCompatActivity() {
       return false
     }
     textEditUserEmail?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
+    textErrorEditUserEmail?.visibility = TextView.GONE
+
     return true
   }
 

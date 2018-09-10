@@ -42,7 +42,8 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:backgroundTint="#ffffffff"
-            android:tint="@color/colorPrimary"
+            android:tint="@color/colorPrimaryLight"
+            android:hapticFeedbackEnabled="true"
             app:srcCompat="@android:drawable/ic_menu_delete" />
 
         <ImageButton
@@ -50,7 +51,8 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:backgroundTint="#ffffffff"
-            android:tint="@color/colorPrimary"
+            android:hapticFeedbackEnabled="false"
+            android:tint="@color/colorPrimaryLight"
             app:srcCompat="@android:drawable/ic_menu_edit" />
     </LinearLayout>
 

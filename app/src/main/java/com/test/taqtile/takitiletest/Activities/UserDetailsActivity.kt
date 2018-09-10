@@ -42,7 +42,9 @@ class UserDetailsActivity : AppCompatActivity() {
       intent.putExtra("userEmail", userDetailEmail.text)
       intent.putExtra("userRole", userDetailRole.text)
       intent.putExtra("userId", userId)
+
       startActivity(intent)
+      finish()
     }
 
     if (!intent.getStringExtra("message").isNullOrEmpty()) {
@@ -56,6 +58,13 @@ class UserDetailsActivity : AppCompatActivity() {
     }
 
     progressBarDetailsUser.visibility = ProgressBar.VISIBLE
+  }
+
+  override fun onBackPressed() {
+    val intent = Intent(this@UserDetailsActivity, UserListActivity::class.java)
+
+    startActivity(intent)
+    finish()
   }
 
   fun getDetailsRequest(token: String?, userId: String?) {

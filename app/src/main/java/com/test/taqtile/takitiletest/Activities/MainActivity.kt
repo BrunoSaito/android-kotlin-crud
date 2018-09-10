@@ -52,11 +52,11 @@ class MainActivity : AppCompatActivity() {
     if (validate(email, password)) {
       lockLoginButton()
 
-      makeRequest(email, password)
+      loginRequest(email, password)
     }
   }
 
-  private fun makeRequest(email: String?, password: String?) {
+  private fun loginRequest(email: String?, password: String?) {
     val userLoginRequest = RetrofitInitializer("").userServices().loginUser(UserLoginCredentials(email, password, false))
 
     userLoginRequest.enqueue(object: Callback<UserLoginSuccess?> {
@@ -103,19 +103,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun validate(email: String?, password: String?): Boolean {
-    var validEmail = false
-    var validPassword = false
-
-    if (validateEmail(email)) {
-      textErrorEmail?.visibility = TextView.GONE
-      validEmail = true
-    }
-    if (validatePassword(password)) {
-      textErrorPassword?.visibility = TextView.GONE
-      validPassword = true
-    }
-
-    return (validEmail && validPassword)
+    return (validateEmail(email) && validatePassword(password))
   }
 
   private fun validateEmail(email: String?) : Boolean {
@@ -127,6 +115,8 @@ class MainActivity : AppCompatActivity() {
       return false
     }
     textEmail?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
+    textErrorEmail?.visibility = TextView.GONE
+
     return true
   }
 
@@ -139,6 +129,8 @@ class MainActivity : AppCompatActivity() {
       return false
     }
     textPassword?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
+    textErrorPassword?.visibility = TextView.GONE
+
     return true
   }
 

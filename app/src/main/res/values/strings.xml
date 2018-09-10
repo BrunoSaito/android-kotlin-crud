@@ -31,6 +31,8 @@
     <string name="new_user_submit">Cadastrar</string>
     <string name="new_user_failure">Erro ao criar usuário.</string>
     <string name="new_user_success">Usuário cadastrado com sucesso!</string>
+    <string name="new_user_confirm_password">Confirmação da senha</string>
+    <string name="invalid_password_confirm">As senhas não conferem.</string>
 
     <string name="edit_user_title">Editar usuário</string>
     <string name="edit_user_submit">Finalizar</string>

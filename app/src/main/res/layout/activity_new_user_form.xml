@@ -68,6 +68,25 @@
             android:textColor="@android:color/holo_red_dark"
             android:id="@+id/textErrorNewUserPassword" />
 
+        <EditText
+            android:id="@+id/textNewUserPasswordConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/new_user_confirm_password"
+            android:inputType="textPassword"
+            android:lines="1"
+            android:maxLines="1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/invalid_password_confirm"
+            android:layout_marginStart="5dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:id="@+id/textErrorNewUserPasswordConfirm" />
+
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
