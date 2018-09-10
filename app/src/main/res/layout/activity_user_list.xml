@@ -13,7 +13,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:translationZ="2dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCreateNewUser"
@@ -23,7 +24,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:tint="#ffffffff"
         android:src="@android:drawable/ic_input_add"
-        android:translationZ="2dp"/>
+        android:translationZ="1dp" />
 
 </RelativeLayout>

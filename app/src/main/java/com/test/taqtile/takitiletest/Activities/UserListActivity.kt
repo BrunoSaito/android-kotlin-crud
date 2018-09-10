@@ -2,6 +2,7 @@ package com.test.taqtile.takitiletest.Activities
 
 import android.content.Context
 import android.content.Intent
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -152,8 +153,27 @@ class UserListActivity : AppCompatActivity() {
         vh = view.tag as ViewHolder
       }
 
-      vh.listViewUserName.text = usersList[position].name
-      vh.listViewUserRole.text = usersList[position].role
+      val userName = usersList[position].name
+      val userEmail = usersList[position].email
+      val userRole = usersList[position].role
+
+      vh.listViewUserName.text = userName
+      vh.listViewUserRole.text = userRole
+
+      vh.buttonEditUser.setOnClickListener {
+        val intent = Intent(this@UserListActivity, EditUserActivity::class.java)
+        intent.putExtra("userName", userName)
+        intent.putExtra("userEmail", userEmail)
+        intent.putExtra("userRole", userRole)
+        startActivity(intent)
+      }
+
+      vh.buttonDeleteUser.isFocusable = false
+      vh.buttonDeleteUser.isFocusableInTouchMode = false
+      vh.buttonDeleteUser.isClickable = true
+      vh.buttonEditUser.isFocusable = false
+      vh.buttonEditUser.isFocusableInTouchMode = false
+      vh.buttonEditUser.isClickable = true
 
       return view
     }
@@ -174,10 +194,14 @@ class UserListActivity : AppCompatActivity() {
   private class ViewHolder(view: View?) {
     val listViewUserName: TextView
     val listViewUserRole: TextView
+    val buttonEditUser: ImageButton
+    val buttonDeleteUser: ImageButton
 
     init {
       this.listViewUserName = view!!.listViewUserName
       this.listViewUserRole = view.listViewUserRole
+      this.buttonEditUser = view.buttonEditUser
+      this.buttonDeleteUser = view.buttonDeleteUser
     }
   }
 }

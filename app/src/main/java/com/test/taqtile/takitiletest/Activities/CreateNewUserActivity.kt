@@ -28,7 +28,7 @@ class CreateNewUserActivity : AppCompatActivity() {
 
   private val minPasswordLength = 4
 
-  private val spinnerItems = arrayOf("Usuário", "Administrador")
+  private val spinnerItems = HashMap<String, String>()
 
   private var name: String? = null
   private var email: String? = null
@@ -42,21 +42,24 @@ class CreateNewUserActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_new_user_form)
 
+    spinnerItems.put("Usuário", "user")
+    spinnerItems.put("Administrador", "admin")
+
     preferences = Utils(this@CreateNewUserActivity).getPreferences()
     token = preferences!!.get("token")
 
-    val spinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerItems)
+    val spinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerItems.keys.toTypedArray())
     spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
     spinnerNewUserRole.adapter = spinnerAdapter
 
     spinnerNewUserRole.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        role = spinnerItems.get(position)
-
-        if (role.equals("Usuário"))
-          role = "user"
-        if (role.equals("Administrador"))
-          role = "admin"
+        var i = 0
+        for ((key, value) in spinnerItems) {
+          if (i == position)
+            role = spinnerItems.get(key)
+          i++
+        }
       }
 
       override fun onNothingSelected(parent: AdapterView<*>?) {
