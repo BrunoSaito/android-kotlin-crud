@@ -8,14 +8,17 @@ import retrofit2.http.*
 
 interface UserServices {
   @POST("/users")
-  fun createNewUser(@Body createNewUserData: CreateNewUserData) : Call<CreateNewUserSuccess>
+  fun createNewUser(@Body createNewUserData: CreateNewUserData?) : Call<CreateNewUserSuccess>
 
   @GET("/users")
-  fun listUsers(@Query("pagination") pagination: JSONObject) : Call<User>
+  fun listUsers(@Query("pagination") pagination: JSONObject?) : Call<User>
 
   @GET("/users/{id}")
   fun getUserDetails(@Path("id") id: String?) : Call<UserDetails>
 
   @POST("/authenticate")
-  fun loginUser(@Body useLoginCredentials: UserLoginCredentials) : Call<UserLoginSuccess>
+  fun loginUser(@Body userLoginCredentials: UserLoginCredentials?) : Call<UserLoginSuccess>
+
+  @PUT("/users/{id}")
+  fun updateUserData(@Path("id") id: String?, @Body editUserData: EditUserData?) : Call<EditUserSuccess>
 }

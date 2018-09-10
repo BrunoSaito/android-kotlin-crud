@@ -2,7 +2,6 @@ package com.test.taqtile.takitiletest.Activities
 
 import android.content.Context
 import android.content.Intent
-import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
 import com.test.taqtile.takitiletest.DataModels.User
-import com.test.taqtile.takitiletest.Utils
+import com.test.taqtile.takitiletest.Preferences
 import kotlinx.android.synthetic.main.activity_user_list.*
 import kotlinx.android.synthetic.main.list_row.view.*
 import org.json.JSONObject
@@ -28,7 +27,7 @@ class UserListActivity : AppCompatActivity() {
   private var name: String? = null
   private var token: String? = null
 
-  private var preferences: HashMap<String, String>? = null
+  private var preferences: HashMap<String?, String?>? = null
 
   private var listCompleteData =  ArrayList<User.Data>()
   private var listUsers = ArrayList<User.Data>()
@@ -41,9 +40,9 @@ class UserListActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_user_list)
 
-    preferences = Utils(this@UserListActivity).getPreferences()
-    name = preferences!!.get("name")
-    token = preferences!!.get("token")
+    preferences = Preferences(this@UserListActivity).getPreferences()
+    name = preferences?.get("name")
+    token = preferences?.get("token")
 
     val jsonParams = JSONObject()
     jsonParams.put("page", "0")
@@ -51,10 +50,13 @@ class UserListActivity : AppCompatActivity() {
 
     getUsersList(jsonParams)
 
+    val actionBar = supportActionBar
+    actionBar?.title = getString(R.string.user_list_title)
+
     listViewUsers.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
       val intent = Intent(this@UserListActivity, UserDetailsActivity::class.java)
 
-      intent.putExtra("id", listCompleteData.get(position).id.toString())
+      intent.putExtra("userId", listCompleteData.get(position).id.toString())
       startActivity(intent)
     }
 
@@ -81,24 +83,22 @@ class UserListActivity : AppCompatActivity() {
 
     users.enqueue(object : Callback<User?> {
       override fun onResponse(call: Call<User?>?, response: Response<User?>?) {
-        listCompleteData = response!!.body()!!.data
+        listCompleteData = response!!.body()!!.data!!
 
-        for (i in 0..9) {
-          listUsers.add(listCompleteData.get(i))
-        }
+        listUsers.addAll(listCompleteData)
 
         val newToken = response.headers().get("Authorization")
-        Utils(this@UserListActivity).saveNewToken(newToken)
+        Preferences(this@UserListActivity).saveNewToken(newToken)
 
-        listViewUsers!!.addFooterView(progressBarListView)
+        listViewUsers?.addFooterView(progressBarListView)
 
         val adapter = UsersAdapter(this@UserListActivity, listUsers)
-        listViewUsers!!.adapter = adapter
+        listViewUsers?.adapter = adapter
         setListViewOnScrollListener()
 
         progressBarListUsers.visibility = ProgressBar.GONE
       }
-      override fun onFailure(call: Call<User?>?, t: Throwable?) {
+      override fun onFailure(call: Call<User?>?, failureResponse: Throwable) {
         progressBarListUsers.visibility = ProgressBar.GONE
       }
     })
@@ -110,8 +110,8 @@ class UserListActivity : AppCompatActivity() {
 
         override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
           if(scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE &&
-                            listViewUsers!!.lastVisiblePosition == listUsers.size &&
-                            listViewUsers!!.lastVisiblePosition < listCompleteData.size) {
+                            listViewUsers?.lastVisiblePosition!! == listUsers.size &&
+                            listViewUsers?.lastVisiblePosition!! < listCompleteData.size) {
             progressBarListView.visibility = ProgressBar.VISIBLE
             addMoreItems()
           }
@@ -169,6 +169,7 @@ class UserListActivity : AppCompatActivity() {
         intent.putExtra("userName", userName)
         intent.putExtra("userEmail", userEmail)
         intent.putExtra("userRole", userRole)
+        intent.putExtra("userId", listCompleteData.get(position).id.toString())
         startActivity(intent)
       }
 
