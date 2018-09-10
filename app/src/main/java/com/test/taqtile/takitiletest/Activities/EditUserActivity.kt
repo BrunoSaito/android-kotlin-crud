@@ -1,11 +1,8 @@
 package com.test.taqtile.takitiletest.Activities
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -19,6 +16,7 @@ import com.test.taqtile.takitiletest.DataModels.UserLoginError
 import com.test.taqtile.takitiletest.Preferences
 import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
+import com.test.taqtile.takitiletest.Validation
 import kotlinx.android.synthetic.main.activity_edit_user.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -91,7 +89,9 @@ class EditUserActivity : AppCompatActivity() {
       userEmail = textEditUserEmail.text.toString()
 
 
-      if (validate(userName, userEmail)) {
+      if (Validation().validateNameAndEmail(textEditUserName, textEditUserEmail,
+                                            textErrorEditUserName, textErrorEditUserEmail,
+                                            userName, userEmail)) {
         lockSubmitButton()
 
         updateUserDataRequest(userId, userName, userEmail, userRole)
@@ -150,41 +150,6 @@ class EditUserActivity : AppCompatActivity() {
         unlockSubmitButton()
       }
     })
-  }
-
-  private fun validate(name: String?, email: String?): Boolean {
-    val validName = validateName(name)
-    val validEmail = validateEmail(email)
-
-    return (validName && validEmail)
-  }
-
-  private fun validateName(name: String?): Boolean {
-    if (name?.isEmpty()!! || !name.matches("\\D+".toRegex())) {
-      textEditUserName?.background?.mutate()?.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
-      textErrorEditUserName?.text = getString(R.string.invalid_name)
-      textErrorEditUserName?.visibility = TextView.VISIBLE
-
-      return false
-    }
-    textEditUserName?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
-    textErrorEditUserName?.visibility = TextView.GONE
-
-    return true
-  }
-
-  private fun validateEmail(email: String?): Boolean {
-    if (email?.isEmpty()!! || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-      textEditUserEmail?.background?.mutate()?.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
-      textErrorEditUserEmail?.text = getString(R.string.invalid_email)
-      textErrorEditUserEmail?.visibility = TextView.VISIBLE
-
-      return false
-    }
-    textEditUserEmail?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
-    textErrorEditUserEmail?.visibility = TextView.GONE
-
-    return true
   }
 
   private fun lockSubmitButton() {

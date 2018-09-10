@@ -57,7 +57,7 @@ class UserListActivity : AppCompatActivity() {
 
     listViewUsers.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
       val intent = Intent(this@UserListActivity, UserDetailsActivity::class.java)
-      intent.putExtra("userId", listUsers.get(position).id.toString())
+      intent.putExtra("userId", listUsers[position].id.toString())
 
       startActivity(intent)
       finish()
@@ -111,7 +111,7 @@ class UserListActivity : AppCompatActivity() {
         }
         else {
           var i = 0
-          while (listUsers.size < 10 && i < listCompleteData.size - 1) {
+          while (listUsers.size < 10 && i < listCompleteData.size) {
             if (listCompleteData[i].name?.contains(query.toString())!!)
               listUsers.add(listCompleteData[i])
             i++
@@ -208,10 +208,10 @@ class UserListActivity : AppCompatActivity() {
       vh.buttonDeleteUser.setOnClickListener {
         val builder = AlertDialog.Builder(this@UserListActivity)
         builder.setMessage("Deseja realmente deletar o usuário " + userName + "?")
-        builder.setPositiveButton("Sim") { dialog, which ->
+        builder.setPositiveButton("Sim") { _, _ ->
           this@UserListActivity.deleteUser(listUsers[position].id.toString())
         }
-        builder.setNegativeButton("Não") { dialog, which ->
+        builder.setNegativeButton("Não") { dialog, _ ->
           dialog.dismiss()
         }
 

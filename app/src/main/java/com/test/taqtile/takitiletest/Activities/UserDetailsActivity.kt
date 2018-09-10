@@ -3,7 +3,6 @@ package com.test.taqtile.takitiletest.Activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import com.test.taqtile.takitiletest.DataModels.DeleteUserSuccess
@@ -52,10 +51,10 @@ class UserDetailsActivity : AppCompatActivity() {
     buttonUserDetailsDelete.setOnClickListener {
       val builder = AlertDialog.Builder(this@UserDetailsActivity)
       builder.setMessage("Deseja realmente deletar o usuário " + userDetailName.text + "?")
-      builder.setPositiveButton("Sim") { dialog, which ->
+      builder.setPositiveButton("Sim") { _, _ ->
         deleteUser(userId)
       }
-      builder.setNegativeButton("Não") { dialog, which ->
+      builder.setNegativeButton("Não") { dialog, _ ->
         dialog.dismiss()
       }
 
