@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.service.autofill.UserData
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -30,8 +31,11 @@ class UserListActivity : AppCompatActivity() {
   private var token: String? = null
 
   private var preferences: HashMap<String?, String?>? = null
-  private var listCompleteData =  ArrayList<User.Data>()
+  private var listRequest =  ArrayList<User.Data>()
   private var listUsers = ArrayList<User.Data>()
+  private var page: Int? = null
+  private var window: Int? = null
+  private var total: Int? = null
 
   private val jsonParams: JSONObject? = JSONObject()
   private val progressBarListView: ProgressBar by lazy {
@@ -43,14 +47,18 @@ class UserListActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_user_list)
 
+    listViewUsers?.addFooterView(progressBarListView)
+
     preferences = Preferences(this@UserListActivity).getPreferences()
     name = preferences?.get("name")
     token = preferences?.get("token")
 
-    jsonParams?.put("page", "0")
-    jsonParams?.put("window", "100")
+    page = 0
+    window = 10
+    jsonParams?.put("page", page.toString())
+    jsonParams?.put("window", window.toString())
 
-    getUsersList(jsonParams, "")
+    getUsersListRequest(jsonParams, "")
 
     val actionBar = supportActionBar
     actionBar?.title = getString(R.string.user_list_title)
@@ -82,54 +90,59 @@ class UserListActivity : AppCompatActivity() {
 
     searchListView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
       override fun onQueryTextSubmit(query: String?): Boolean {
-        getUsersList(jsonParams, query)
+        jsonParams?.put("page", "0")
+        jsonParams?.put("window", total.toString())
+
+        getUsersListRequest(jsonParams, query)
 
         return true
       }
 
       override fun onQueryTextChange(newText: String?): Boolean {
-        getUsersList(jsonParams, newText)
+        jsonParams?.put("page", "0")
+        jsonParams?.put("window", total.toString())
+
+        getUsersListRequest(jsonParams, newText)
 
         return true
       }
     })
-
-    progressBarListUsers.visibility = ProgressBar.VISIBLE
   }
 
-  private fun getUsersList(jsonParams: JSONObject?, query: String?) {
+  private fun getUsersListRequest(jsonParams: JSONObject?, query: String?) {
+    progressBarListView.visibility = ProgressBar.VISIBLE
     val users = RetrofitInitializer(token).userServices().listUsers(jsonParams)
 
     users.enqueue(object : Callback<User?> {
       override fun onResponse(call: Call<User?>?, response: Response<User?>?) {
-        listCompleteData = response!!.body()!!.data!!
-        listUsers.clear()
+        listRequest = response!!.body()!!.data!!
+        total = response.body()!!.pagination!!.total
 
         if (query.isNullOrEmpty()) {
-          for (i in 0..9)
-            listUsers.add(listCompleteData[i])
+          listUsers.addAll(listRequest)
         }
         else {
-          var i = 0
-          while (listUsers.size < 10 && i < listCompleteData.size) {
-            if (listCompleteData[i].name?.contains(query.toString())!!)
-              listUsers.add(listCompleteData[i])
-            i++
-          }
+          page = 0
+
+          listUsers.clear()
+          listUsers = ArrayList(listRequest
+                                .filter { it.name?.contains(query.toString()) ?: false })
         }
 
         val newToken = response.headers().get("Authorization")
         Preferences(this@UserListActivity).saveNewToken(newToken)
 
-        listViewUsers?.addFooterView(progressBarListView)
-
         val adapter = UsersAdapter(this@UserListActivity, listUsers)
         listViewUsers?.adapter = adapter
         setListViewOnScrollListener()
 
+        listViewUsers.setSelection(listUsers.size - 16)
+
+        progressBarListView.visibility = ProgressBar.GONE
         progressBarListUsers.visibility = ProgressBar.GONE
       }
       override fun onFailure(call: Call<User?>?, failureResponse: Throwable) {
+        progressBarListView.visibility = ProgressBar.GONE
         progressBarListUsers.visibility = ProgressBar.GONE
       }
     })
@@ -140,11 +153,15 @@ class UserListActivity : AppCompatActivity() {
         override fun onScroll(view: AbsListView?, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {}
 
         override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
+          Log.d("D", "listUsers.size2: " + listUsers.size)
+          Log.d("D", "page2: " + page)
+          Log.d("D", "visible: " + listViewUsers?.lastVisiblePosition)
           if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE &&
-                            listViewUsers?.lastVisiblePosition!! == listUsers.size &&
-                            listViewUsers?.lastVisiblePosition!! < listCompleteData.size) {
-            progressBarListView.visibility = ProgressBar.VISIBLE
-            addMoreItems()
+                            listViewUsers?.lastVisiblePosition!! >= listUsers.size &&
+                            listUsers.size < total!!) {
+            page = page?.plus(1)
+            jsonParams?.put("page", page.toString())
+            getUsersListRequest(jsonParams, "")
           }
         }
       })
@@ -153,8 +170,8 @@ class UserListActivity : AppCompatActivity() {
   private fun addMoreItems() {
     val size = listUsers.size
 
-    (0..10).filter { (size + it) < listCompleteData.size }
-            .mapTo(listUsers) { listCompleteData[it + size] }
+    (0..10).filter { (size + it) < listRequest.size }
+            .mapTo(listUsers) { listRequest[it + size] }
 
 //        for (i in 0..10) {
 //            if (size + i < listCompleteData.size) {
@@ -199,7 +216,7 @@ class UserListActivity : AppCompatActivity() {
         intent.putExtra("userName", userName)
         intent.putExtra("userEmail", userEmail)
         intent.putExtra("userRole", userRole)
-        intent.putExtra("userId", listCompleteData[position].id.toString())
+        intent.putExtra("userId", listRequest[position].id.toString())
 
         startActivity(intent)
         finish()
@@ -209,7 +226,7 @@ class UserListActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this@UserListActivity)
         builder.setMessage("Deseja realmente deletar o usuário " + userName + "?")
         builder.setPositiveButton("Sim") { _, _ ->
-          this@UserListActivity.deleteUser(listUsers[position].id.toString())
+          this@UserListActivity.deleteUserRequest(listUsers[position].id.toString())
         }
         builder.setNegativeButton("Não") { dialog, _ ->
           dialog.dismiss()
@@ -249,7 +266,7 @@ class UserListActivity : AppCompatActivity() {
     val buttonDeleteUser: ImageButton = view?.buttonDeleteUser!!
   }
 
-  private fun deleteUser(userId: String?) {
+  private fun deleteUserRequest(userId: String?) {
     val userDelete = RetrofitInitializer(token).userServices().deleteUser(userId)
 
     userDelete.enqueue(object: Callback<DeleteUserSuccess?> {

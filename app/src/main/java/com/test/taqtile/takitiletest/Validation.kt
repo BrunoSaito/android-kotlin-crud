@@ -51,9 +51,7 @@ class Validation {
   }
 
   private fun validateEmail (editText: EditText?, textError: TextView?, email: String?) : Boolean {
-    Log.d("D", "validation: ")
     if (email?.isEmpty()!! || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-      Log.d("D", "validation: ")
       editText?.background?.mutate()?.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
       textError?.visibility = TextView.VISIBLE
 
