@@ -4,19 +4,17 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
+import com.test.taqtile.takitiletest.*
 import com.test.taqtile.takitiletest.DataModels.CreateNewUserData
 import com.test.taqtile.takitiletest.DataModels.CreateNewUserError
 import com.test.taqtile.takitiletest.DataModels.CreateNewUserSuccess
-import com.test.taqtile.takitiletest.Preferences
-import com.test.taqtile.takitiletest.R
-import com.test.taqtile.takitiletest.RetrofitInitializer
-import com.test.taqtile.takitiletest.Validation
 import kotlinx.android.synthetic.main.activity_new_user_form.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -68,15 +66,19 @@ class CreateNewUserActivity : AppCompatActivity() {
       }
     }
 
-    buttonNewUserSubmit.setOnClickListener {
-      name = textNewUserName.text.toString()
-      email = textNewUserEmail.text.toString()
-      password = textNewUserPassword.text.toString()
-      passwordConfirm = textNewUserPasswordConfirm.text.toString()
 
-      if (Validation().validateNameEmailAndPassword(textNewUserName, textNewUserEmail, textNewUserPassword, textNewUserPasswordConfirm,
-                                                    textErrorNewUserName, textErrorNewUserEmail, textErrorNewUserPassword, textErrorNewUserPasswordConfirm,
-                                                    name, email, password, passwordConfirm)) {
+
+    buttonNewUserSubmit.setOnClickListener {
+      name = editTextNewUserName.getInputText()
+      email = editTextNewUserEmail.getInputText()
+      password = editTextNewUserPassword.getInputText()
+//      passwordConfirm = textNewUserPasswordConfirm.text.toString()
+
+      val validName = editTextNewUserName.validate()
+      val validEmail = editTextNewUserEmail.validate()
+      val validPassword = editTextNewUserPassword.validate()
+
+      if (validName && validEmail && validPassword) {
         lockSubmitButton()
 
         submitNewUserRequest(name, password, email, role)
@@ -84,10 +86,6 @@ class CreateNewUserActivity : AppCompatActivity() {
     }
 
     progressBarNewUser?.visibility = ProgressBar.GONE
-
-    textNewUserName?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
-    textNewUserEmail?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
-    textNewUserPassword?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
   }
 
   override fun onBackPressed() {
@@ -102,7 +100,7 @@ class CreateNewUserActivity : AppCompatActivity() {
     newUserRequest.enqueue(object : Callback<CreateNewUserSuccess?> {
       override fun onResponse(call: Call<CreateNewUserSuccess?>?, response: Response<CreateNewUserSuccess?>?) {
         try {
-          response!!.body()!!.data!!.user!!.name
+          response!!.body()!!.data!!.name!!
 
           val intent = Intent(this@CreateNewUserActivity, UserListActivity::class.java)
           intent.putExtra("message", getString(R.string.new_user_success))
@@ -111,13 +109,13 @@ class CreateNewUserActivity : AppCompatActivity() {
           finish()
         }
         catch (e: Exception) {
-          val jsonError = response!!.errorBody()!!.string()
+          val jsonError = response?.errorBody()?.string()
           val createNewUserError = Gson().fromJson(jsonError, CreateNewUserError::class.java)
 
           val builder = AlertDialog.Builder(this@CreateNewUserActivity)
 
           builder.setTitle(getString(R.string.new_user_failure))
-          builder.setMessage(createNewUserError.errors!![0].original)
+          builder.setMessage(createNewUserError.errors?.get(0)?.original)
           builder.setNeutralButton("OK") { _, _ -> }
 
           val dialog = builder.create()

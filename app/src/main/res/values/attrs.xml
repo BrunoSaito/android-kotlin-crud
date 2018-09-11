@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="InputWithValidation">
+        <attr name="hint" format="string" />
+        <attr name="error_message" format="string" />
+        <attr name="input_type" format="string" />
+        <attr name="input_text" format="string" />
+    </declare-styleable>
+</resources>

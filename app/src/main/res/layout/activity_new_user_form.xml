@@ -11,81 +11,36 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/textNewUserName"
+        <com.test.taqtile.takitiletest.InputWithValidation
+            android:id="@+id/editTextNewUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:hint="@string/new_user_name"
-            android:inputType="text"
-            android:lines="1"
-            android:maxLines="1" />
+            app:hint="@string/username_input_field"
+            app:error_message="@string/invalid_name"
+            app:input_type="@string/text_type" />
 
-        <TextView
+        <com.test.taqtile.takitiletest.InputWithValidation
+            android:id="@+id/editTextNewUserEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="@string/invalid_name"
-            android:layout_marginStart="5dp"
-            android:textColor="@android:color/holo_red_dark"
-            android:id="@+id/textErrorNewUserName" />
+            app:hint="@string/email_input_field"
+            app:error_message="@string/invalid_email"
+            app:input_type="@string/email_type" />
 
-        <EditText
-            android:id="@+id/textNewUserEmail"
+        <com.test.taqtile.takitiletest.InputWithValidation
+            android:id="@+id/editTextNewUserPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:hint="@string/new_user_email"
-            android:inputType="textEmailAddress"
-            android:lines="1"
-            android:maxLines="1" />
+            app:hint="@string/password_input_field"
+            app:error_message="@string/invalid_password"
+            app:input_type="@string/password_type" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="@string/invalid_email"
-            android:layout_marginStart="5dp"
-            android:textColor="@android:color/holo_red_dark"
-            android:id="@+id/textErrorNewUserEmail" />
-
-        <EditText
-            android:id="@+id/textNewUserPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:hint="@string/new_user_password"
-            android:inputType="textPassword"
-            android:lines="1"
-            android:maxLines="1" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="@string/invalid_password"
-            android:layout_marginStart="5dp"
-            android:textColor="@android:color/holo_red_dark"
-            android:id="@+id/textErrorNewUserPassword" />
-
-        <EditText
-            android:id="@+id/textNewUserPasswordConfirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:hint="@string/new_user_confirm_password"
-            android:inputType="textPassword"
-            android:lines="1"
-            android:maxLines="1" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="@string/invalid_password_confirm"
-            android:layout_marginStart="5dp"
-            android:textColor="@android:color/holo_red_dark"
-            android:id="@+id/textErrorNewUserPasswordConfirm" />
+        <!--<com.test.taqtile.takitiletest.InputWithValidation-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:hint="@string/new_user_password_confirm"-->
+            <!--app:error_message="@string/invalid_password_confirm"-->
+            <!--app:input_type="@string/password_type" />-->
 
         <Spinner
             android:layout_width="match_parent"

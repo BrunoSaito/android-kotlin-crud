@@ -1,17 +1,21 @@
 <resources>
     <string name="app_name">Taki Tile Onboard App</string>
-    <string name="email">E-mail</string>
-    <string name="password">Senha</string>
+
+    <string name="email_type">email</string>
+    <string name="password_type">password</string>
+    <string name="text_type">text</string>
+
     <string name="login">Entrar</string>
-    <string name="login_failure">Erro ao efetur login.</string>
+    <string name="login_failure">Erro ao efetuar login.</string>
     <string name="login_success">Login efetuado com sucesso!</string>
 
     <string name="login_success_title">Login</string>
     <string name="login_name">nome de login:</string>
     <string name="login_token">token de login:</string>
-    <string name="invalid_name">Nome de usuário válido.</string>
-    <string name="invalid_email">E-mail válido.</string>
-    <string name="invalid_password">Senha válida.</string>
+
+    <string name="invalid_name">Nome de usuário inválido.</string>
+    <string name="invalid_email">E-mail inválido.</string>
+    <string name="invalid_password">Senha inválida.</string>
 
     <string name="button_list_users">Listar usuários</string>
 
@@ -24,16 +28,20 @@
     <string name="user_details_edit">Editar dados</string>
     <string name="user_details_delete">Deletar usuário</string>
 
+    <string name="username_input_field">Nome de usuário</string>
+    <string name="email_input_field">E-mail</string>
+    <string name="password_input_field">Senha</string>
+
     <string name="new_user_title">Criar novo usuário</string>
-    <string name="new_user_name">Nome de usuário</string>
-    <string name="new_user_email">E-mail</string>
-    <string name="new_user_password">Senha</string>
     <string name="new_user_submit">Cadastrar</string>
     <string name="new_user_failure">Erro ao criar usuário.</string>
     <string name="new_user_success">Usuário cadastrado com sucesso!</string>
-    <string name="new_user_confirm_password">Confirmação da senha</string>
+    <string name="new_user_password_confirm">Confirmação da senha</string>
     <string name="invalid_password_confirm">Senhas não conferem.</string>
 
     <string name="edit_user_title">Editar usuário</string>
     <string name="edit_user_submit">Finalizar</string>
+
+    <string name="default_empty"></string>
+    <string name="default_invalid_field">Campo inválido.</string>
 </resources>

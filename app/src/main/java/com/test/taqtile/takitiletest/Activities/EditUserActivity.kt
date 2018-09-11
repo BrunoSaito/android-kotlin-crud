@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
 import com.test.taqtile.takitiletest.DataModels.EditUserData
@@ -16,7 +15,6 @@ import com.test.taqtile.takitiletest.DataModels.UserLoginError
 import com.test.taqtile.takitiletest.Preferences
 import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
-import com.test.taqtile.takitiletest.Validation
 import kotlinx.android.synthetic.main.activity_edit_user.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -53,8 +51,8 @@ class EditUserActivity : AppCompatActivity() {
     userRole = intent.getStringExtra("userRole")
     userId = intent.getStringExtra("userId")
 
-    textEditUserName.setText(userName, TextView.BufferType.EDITABLE)
-    textEditUserEmail.setText(userEmail, TextView.BufferType.EDITABLE)
+    editTextEditUserName.setInputText(userName)
+    editTextEditUserEmail.setInputText(userEmail)
 
     val spinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerItems.keys.toTypedArray())
     spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -85,13 +83,13 @@ class EditUserActivity : AppCompatActivity() {
     progressBarEditUser.visibility = ProgressBar.GONE
 
     buttonEditUserSubmit.setOnClickListener {
-      userName = textEditUserName.text.toString()
-      userEmail = textEditUserEmail.text.toString()
+      userName = editTextEditUserName.getInputText()
+      userEmail = editTextEditUserEmail.getInputText()
 
+      val validName = editTextEditUserName.validate()
+      val validEmail = editTextEditUserEmail.validate()
 
-      if (Validation().validateNameAndEmail(textEditUserName, textEditUserEmail,
-                                            textErrorEditUserName, textErrorEditUserEmail,
-                                            userName, userEmail)) {
+      if (validName && validEmail) {
         lockSubmitButton()
 
         updateUserDataRequest(userId, userName, userEmail, userRole)
