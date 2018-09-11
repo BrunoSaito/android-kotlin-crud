@@ -13,6 +13,7 @@ import com.test.taqtile.takitiletest.DataModels.EditUserData
 import com.test.taqtile.takitiletest.DataModels.EditUserSuccess
 import com.test.taqtile.takitiletest.DataModels.UserLoginError
 import com.test.taqtile.takitiletest.Preferences
+import com.test.taqtile.takitiletest.Preferences.Factory.token
 import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
 import kotlinx.android.synthetic.main.activity_edit_user.*
@@ -28,9 +29,6 @@ class EditUserActivity : AppCompatActivity() {
   private var userRole: String? = null
   private var userId: String? = null
 
-  private var token: String? = null
-  private var preferences: HashMap<String?, String?>? = null
-
   private val spinnerItems = HashMap<String?, String?>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,9 +37,6 @@ class EditUserActivity : AppCompatActivity() {
 
     val actionBar = supportActionBar
     actionBar?.title = getString(R.string.edit_user_title)
-
-    preferences = Preferences(this@EditUserActivity).getPreferences()
-    token = preferences?.get("token")
 
     spinnerItems["Usuário"] = "user"
     spinnerItems["Administrador"] = "admin"
@@ -98,7 +93,7 @@ class EditUserActivity : AppCompatActivity() {
   }
 
   private fun updateUserDataRequest(id: String?, name: String?, email: String?, role: String?) {
-    val updateUser = RetrofitInitializer(token).userServices().updateUserData(id, EditUserData(name, email, role))
+    val updateUser = RetrofitInitializer(Preferences.token).userServices().updateUserData(id, EditUserData(name, email, role))
 
     updateUser.enqueue(object: Callback<EditUserSuccess?> {
       override fun onResponse(call: Call<EditUserSuccess?>?, response: Response<EditUserSuccess?>?) {

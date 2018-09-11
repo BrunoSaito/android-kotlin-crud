@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import com.test.taqtile.takitiletest.DataModels.DeleteUserSuccess
 import com.test.taqtile.takitiletest.DataModels.UserDetails
 import com.test.taqtile.takitiletest.Preferences
+import com.test.taqtile.takitiletest.Preferences.Factory.token
 import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
 import kotlinx.android.synthetic.main.activity_user_details.*
@@ -18,10 +19,7 @@ import retrofit2.Response
 
 class UserDetailsActivity : AppCompatActivity() {
 
-  private var token: String? = null
   private var userId: String? = null
-
-  private var preferences: HashMap<String?, String?>? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -30,11 +28,8 @@ class UserDetailsActivity : AppCompatActivity() {
     val actionBar = supportActionBar
     actionBar?.title = getString(R.string.user_details_title)
 
-    preferences = Preferences(this@UserDetailsActivity).getPreferences()
-    token = preferences?.get("token")
-
     userId = intent.getStringExtra("userId")
-    getDetailsRequest(token, userId)
+    getDetailsRequest(Preferences.token, userId)
 
     buttonUserDetailsEdit.setOnClickListener {
       val intent = Intent(this@UserDetailsActivity, EditUserActivity::class.java)
@@ -83,7 +78,7 @@ class UserDetailsActivity : AppCompatActivity() {
   }
 
   private fun getDetailsRequest(token: String?, userId: String?) {
-    val userDetails = RetrofitInitializer(token).userServices().getUserDetails(userId)
+    val userDetails = RetrofitInitializer(Preferences.token).userServices().getUserDetails(userId)
 
     userDetails.enqueue(object : Callback<UserDetails?> {
       override fun onResponse(call: Call<UserDetails?>, response: Response<UserDetails?>) {
@@ -101,7 +96,7 @@ class UserDetailsActivity : AppCompatActivity() {
   }
 
   private fun deleteUser(userId: String?) {
-    val userDelete = RetrofitInitializer(token).userServices().deleteUser(userId)
+    val userDelete = RetrofitInitializer(Preferences.token).userServices().deleteUser(userId)
 
     userDelete.enqueue(object: Callback<DeleteUserSuccess?> {
       override fun onResponse(call: Call<DeleteUserSuccess?>?, response: Response<DeleteUserSuccess?>?) {

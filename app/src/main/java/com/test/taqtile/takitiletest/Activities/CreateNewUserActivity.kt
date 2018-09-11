@@ -32,8 +32,6 @@ class CreateNewUserActivity : AppCompatActivity() {
   private var role: String? = null
   private var token: String? = null
 
-  private var preferences: HashMap<String?, String?>? = null
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_new_user_form)
@@ -43,9 +41,6 @@ class CreateNewUserActivity : AppCompatActivity() {
 
     spinnerItems["Usuário"] = "user"
     spinnerItems["Administrador"] = "admin"
-
-    preferences = Preferences(this@CreateNewUserActivity).getPreferences()
-    token = preferences?.get("token")
 
     val spinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerItems.keys.toTypedArray())
     spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -65,8 +60,6 @@ class CreateNewUserActivity : AppCompatActivity() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
       }
     }
-
-
 
     buttonNewUserSubmit.setOnClickListener {
       name = editTextNewUserName.getInputText()
@@ -95,7 +88,7 @@ class CreateNewUserActivity : AppCompatActivity() {
   }
 
   private fun submitNewUserRequest(name: String?, password: String?, email: String?, role: String?) {
-    val newUserRequest = RetrofitInitializer(token).userServices().createNewUser(CreateNewUserData(name, password, email, role))
+    val newUserRequest = RetrofitInitializer(Preferences.token).userServices().createNewUser(CreateNewUserData(name, password, email, role))
 
     newUserRequest.enqueue(object : Callback<CreateNewUserSuccess?> {
       override fun onResponse(call: Call<CreateNewUserSuccess?>?, response: Response<CreateNewUserSuccess?>?) {
