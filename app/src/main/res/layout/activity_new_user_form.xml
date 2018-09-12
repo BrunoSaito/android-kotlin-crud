@@ -35,12 +35,13 @@
             app:error_message="@string/invalid_password"
             app:input_type="@string/password_type" />
 
-        <!--<com.test.taqtile.takitiletest.InputWithValidation-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:hint="@string/new_user_password_confirm"-->
-            <!--app:error_message="@string/invalid_password_confirm"-->
-            <!--app:input_type="@string/password_type" />-->
+        <com.test.taqtile.takitiletest.InputWithValidation
+            android:id="@+id/editTextNewUserPasswordConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="@string/new_user_password_confirm"
+            app:error_message="@string/invalid_password_confirm"
+            app:input_type="@string/password_confirmation_type" />
 
         <Spinner
             android:layout_width="match_parent"
@@ -48,29 +49,36 @@
             android:gravity="center"
             android:id="@+id/spinnerNewUserRole" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:text="@string/new_user_submit"
-                android:background="@color/colorPrimaryDark"
-                android:textColor="#ffffffff"
-                android:id="@+id/buttonNewUserSubmit" />
+        <com.test.taqtile.takitiletest.SubmitButton
+            android:id="@+id/buttonSubmitNewUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:button_text="@string/new_user_submit" />
 
-            <ProgressBar
-                android:id="@+id/progressBarNewUser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:progressTint="@android:color/background_light"
-                android:translationZ="2dp" />
+        <!--<RelativeLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<Button-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="30dp"-->
+                <!--android:layout_marginStart="20dp"-->
+                <!--android:layout_marginEnd="20dp"-->
+                <!--android:text="@string/new_user_submit"-->
+                <!--android:background="@color/colorPrimaryDark"-->
+                <!--android:textColor="#ffffffff"-->
+                <!--android:id="@+id/buttonNewUserSubmit" />-->
 
-        </RelativeLayout>
+            <!--<ProgressBar-->
+                <!--android:id="@+id/progressBarNewUser"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="30dp"-->
+                <!--android:progressTint="@android:color/background_light"-->
+                <!--android:translationZ="2dp" />-->
+
+        <!--</RelativeLayout>-->
 
     </LinearLayout>
 

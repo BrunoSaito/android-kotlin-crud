@@ -1,14 +1,11 @@
 package com.test.taqtile.takitiletest.Activities
 
 import android.content.Intent
-import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
 import com.test.taqtile.takitiletest.*
@@ -30,7 +27,6 @@ class CreateNewUserActivity : AppCompatActivity() {
   private var password: String? = null
   private var passwordConfirm: String? = null
   private var role: String? = null
-  private var token: String? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -48,12 +44,8 @@ class CreateNewUserActivity : AppCompatActivity() {
 
     spinnerNewUserRole.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        var i = 0
-        for ((_, value) in spinnerItems) {
-          if (i == position)
-            role = value
-          i++
-        }
+        val keyArray = spinnerItems.keys.toTypedArray()
+        role = spinnerItems[keyArray[position]]
       }
 
       override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -61,24 +53,29 @@ class CreateNewUserActivity : AppCompatActivity() {
       }
     }
 
-    buttonNewUserSubmit.setOnClickListener {
+    buttonSubmitNewUser.setOnClickListener {
       name = editTextNewUserName.getInputText()
       email = editTextNewUserEmail.getInputText()
       password = editTextNewUserPassword.getInputText()
-//      passwordConfirm = textNewUserPasswordConfirm.text.toString()
+      passwordConfirm = editTextNewUserPasswordConfirm.getInputText()
 
       val validName = editTextNewUserName.validate()
       val validEmail = editTextNewUserEmail.validate()
       val validPassword = editTextNewUserPassword.validate()
 
       if (validName && validEmail && validPassword) {
-        lockSubmitButton()
+        if (password.equals(passwordConfirm)) {
+          editTextNewUserPasswordConfirm.hideErrorText()
 
-        submitNewUserRequest(name, password, email, role)
+          buttonSubmitNewUser.lockButton()
+
+          submitNewUserRequest(name, password, email, role)
+        }
+        else {
+          editTextNewUserPasswordConfirm.showErrorText()
+        }
       }
     }
-
-    progressBarNewUser?.visibility = ProgressBar.GONE
   }
 
   override fun onBackPressed() {
@@ -115,7 +112,7 @@ class CreateNewUserActivity : AppCompatActivity() {
           dialog.show()
         }
 
-        unlockSubmitButton()
+        buttonSubmitNewUser.unlockButton()
       }
       override fun onFailure(call: Call<CreateNewUserSuccess?>?, failureResponse: Throwable) {
         val builder = AlertDialog.Builder(this@CreateNewUserActivity)
@@ -127,20 +124,8 @@ class CreateNewUserActivity : AppCompatActivity() {
         val dialog = builder.create()
         dialog.show()
 
-        unlockSubmitButton()
+        buttonSubmitNewUser.unlockButton()
       }
     })
-  }
-
-  private fun lockSubmitButton() {
-    progressBarNewUser?.visibility = ProgressBar.VISIBLE
-    buttonNewUserSubmit?.text = ""
-    buttonNewUserSubmit.isEnabled = false
-  }
-
-  private fun unlockSubmitButton() {
-    progressBarNewUser?.visibility = ProgressBar.GONE
-    buttonNewUserSubmit?.text = getString(R.string.edit_user_submit)
-    buttonNewUserSubmit.isEnabled = true
   }
 }

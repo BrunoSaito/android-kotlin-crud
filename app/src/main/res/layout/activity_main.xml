@@ -24,24 +24,31 @@
         app:error_message="@string/invalid_password"
         app:input_type="@string/password_type" />
 
-    <Button
+    <com.test.taqtile.takitiletest.SubmitButton
         android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="170dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="@string/login"
-        android:textColor="@color/colorWhite" />
+        app:button_text="@string/login"
+        android:layout_marginTop="170dp" />
 
-    <ProgressBar
-        android:id="@+id/progressBarLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="170dp"
-        android:translationZ="100dp" />
+    <!--<Button-->
+        <!--android:id="@+id/buttonLogin"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginStart="20dp"-->
+        <!--android:layout_marginTop="170dp"-->
+        <!--android:background="@color/colorPrimaryDark"-->
+        <!--android:text="@string/login"-->
+        <!--android:textColor="@color/colorWhite" />-->
+
+    <!--<ProgressBar-->
+        <!--android:id="@+id/progressBarLogin"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginStart="20dp"-->
+        <!--android:layout_marginTop="170dp"-->
+        <!--android:translationZ="100dp" />-->
 
 </RelativeLayout>

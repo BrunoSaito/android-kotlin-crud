@@ -15,7 +15,6 @@ import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
 import com.test.taqtile.takitiletest.DataModels.User
 import com.test.taqtile.takitiletest.Preferences
-import com.test.taqtile.takitiletest.Preferences.Factory.token
 import kotlinx.android.synthetic.main.activity_user_list.*
 import kotlinx.android.synthetic.main.list_row.view.*
 import org.json.JSONObject
@@ -131,6 +130,19 @@ class UserListActivity : AppCompatActivity() {
         progressBarListUsers.visibility = ProgressBar.GONE
       }
       override fun onFailure(call: Call<User?>?, failureResponse: Throwable) {
+        val builder = AlertDialog.Builder(this@UserListActivity)
+
+        builder.setTitle("Erro ao receber lista de usuários.")
+        builder.setMessage(failureResponse.message.toString())
+        builder.setNeutralButton("Tentar novamente") { _, _ ->
+          val intent = Intent(this@UserListActivity, LoginSuccessActivity::class.java)
+
+          startActivity(intent)
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+
         progressBarListView.visibility = ProgressBar.GONE
         progressBarListUsers.visibility = ProgressBar.GONE
       }

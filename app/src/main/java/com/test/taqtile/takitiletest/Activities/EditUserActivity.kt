@@ -6,14 +6,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
 import com.test.taqtile.takitiletest.DataModels.EditUserData
 import com.test.taqtile.takitiletest.DataModels.EditUserSuccess
 import com.test.taqtile.takitiletest.DataModels.UserLoginError
 import com.test.taqtile.takitiletest.Preferences
-import com.test.taqtile.takitiletest.Preferences.Factory.token
 import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
 import kotlinx.android.synthetic.main.activity_edit_user.*
@@ -53,21 +51,13 @@ class EditUserActivity : AppCompatActivity() {
     spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
     spinnerEditUserRole.adapter = spinnerAdapter
 
-    var i = 0
-    for ((_, value) in spinnerItems) {
-      if (value == userRole)
-        spinnerEditUserRole.setSelection(i)
-      i++
-    }
+    val valueArray = spinnerItems.values.toTypedArray()
+    spinnerEditUserRole.setSelection(valueArray.indexOf(userRole))
 
     spinnerEditUserRole.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        var i = 0
-        for ((_, value) in spinnerItems) {
-          if (i == position)
-            userRole = value
-          i++
-        }
+        val keyArray = spinnerItems.keys.toTypedArray()
+        userRole = spinnerItems[keyArray[position]]
       }
 
       override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -75,9 +65,7 @@ class EditUserActivity : AppCompatActivity() {
       }
     }
 
-    progressBarEditUser.visibility = ProgressBar.GONE
-
-    buttonEditUserSubmit.setOnClickListener {
+    buttonSubmitEditUser.setOnClickListener {
       userName = editTextEditUserName.getInputText()
       userEmail = editTextEditUserEmail.getInputText()
 
@@ -85,7 +73,7 @@ class EditUserActivity : AppCompatActivity() {
       val validEmail = editTextEditUserEmail.validate()
 
       if (validName && validEmail) {
-        lockSubmitButton()
+        buttonSubmitEditUser.lockButton()
 
         updateUserDataRequest(userId, userName, userEmail, userRole)
       }
@@ -127,33 +115,21 @@ class EditUserActivity : AppCompatActivity() {
           dialog.show()
         }
 
-        unlockSubmitButton()
+        buttonSubmitEditUser.unlockButton()
       }
 
       override fun onFailure(call: Call<EditUserSuccess?>?, failureResponse: Throwable) {
         val builder = AlertDialog.Builder(this@EditUserActivity)
 
-        builder.setTitle("Erro ao atualizar usuário")
+        builder.setTitle("Erro ao atualizar usuário.")
         builder.setMessage(failureResponse.message.toString())
         builder.setNeutralButton("OK") { _, _ -> }
 
         val dialog = builder.create()
         dialog.show()
 
-        unlockSubmitButton()
+        buttonSubmitEditUser.unlockButton()
       }
     })
-  }
-
-  private fun lockSubmitButton() {
-    progressBarEditUser?.visibility = ProgressBar.VISIBLE
-    buttonEditUserSubmit?.text = ""
-    buttonEditUserSubmit.isEnabled = false
-  }
-
-  private fun unlockSubmitButton() {
-    progressBarEditUser?.visibility = ProgressBar.GONE
-    buttonEditUserSubmit?.text = getString(R.string.edit_user_submit)
-    buttonEditUserSubmit.isEnabled = true
   }
 }
