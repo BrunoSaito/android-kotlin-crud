@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.service.autofill.UserData
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,9 +31,10 @@ class UserListActivity : AppCompatActivity() {
   private var preferences: HashMap<String?, String?>? = null
   private var listRequest =  ArrayList<User.Data>()
   private var listUsers = ArrayList<User.Data>()
-  private var page: Int? = null
-  private var window: Int? = null
+  private var page = 0
+  private var window = 10
   private var total: Int? = null
+  private var lastPosition = 5
 
   private val jsonParams: JSONObject? = JSONObject()
   private val progressBarListView: ProgressBar by lazy {
@@ -53,8 +52,6 @@ class UserListActivity : AppCompatActivity() {
     name = preferences?.get("name")
     token = preferences?.get("token")
 
-    page = 0
-    window = 10
     jsonParams?.put("page", page.toString())
     jsonParams?.put("window", window.toString())
 
@@ -136,7 +133,7 @@ class UserListActivity : AppCompatActivity() {
         listViewUsers?.adapter = adapter
         setListViewOnScrollListener()
 
-        listViewUsers.setSelection(listUsers.size - 16)
+        listViewUsers.setSelection(lastPosition.minus(6))
 
         progressBarListView.visibility = ProgressBar.GONE
         progressBarListUsers.visibility = ProgressBar.GONE
@@ -153,33 +150,16 @@ class UserListActivity : AppCompatActivity() {
         override fun onScroll(view: AbsListView?, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {}
 
         override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
-          Log.d("D", "listUsers.size2: " + listUsers.size)
-          Log.d("D", "page2: " + page)
-          Log.d("D", "visible: " + listViewUsers?.lastVisiblePosition)
           if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE &&
                             listViewUsers?.lastVisiblePosition!! >= listUsers.size &&
                             listUsers.size < total!!) {
-            page = page?.plus(1)
+            page = page.plus(1)
             jsonParams?.put("page", page.toString())
+            lastPosition = listViewUsers.lastVisiblePosition
             getUsersListRequest(jsonParams, "")
           }
         }
       })
-  }
-
-  private fun addMoreItems() {
-    val size = listUsers.size
-
-    (0..10).filter { (size + it) < listRequest.size }
-            .mapTo(listUsers) { listRequest[it + size] }
-
-//        for (i in 0..10) {
-//            if (size + i < listCompleteData.size) {
-//                listUsers.add(listCompleteData[size+i])
-//            }
-//        }
-
-    progressBarListView.visibility = ProgressBar.GONE
   }
 
   inner class UsersAdapter : BaseAdapter {

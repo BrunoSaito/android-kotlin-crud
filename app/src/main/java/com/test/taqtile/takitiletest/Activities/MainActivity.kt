@@ -2,7 +2,6 @@ package com.test.taqtile.takitiletest.Activities
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -18,12 +17,8 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-  private var name: String? = null
-  private var token: String? = null
   private var email: String? = null
   private var password: String? = null
-
-  private var preferences: HashMap<String?, String?>? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -32,22 +27,16 @@ class MainActivity : AppCompatActivity() {
     buttonLogin?.setOnClickListener { login() }
 
     progressBarLogin?.visibility = View.GONE
-
-    preferences = Preferences(this@MainActivity).getPreferences()
-    name = preferences?.get("name")
-    token = preferences?.get("token")
-
-    textPassword?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
-    textEmail?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
   }
 
   private fun login() {
-    email = textEmail?.text.toString()
-    password = textPassword?.text.toString()
+    email = editTextLoginEmail.getInputText()
+    password = editTextLoginPassword.getInputText()
 
-    if (Validation().validateEmailAndPassword(textEmail, textPassword,
-                                              textErrorEmail, textErrorPassword,
-                                              email, password)) {
+    val validEmail = editTextLoginEmail.validate()
+    val validPassword = editTextLoginPassword.validate()
+
+    if (validEmail && validPassword) {
       lockLoginButton()
 
       makeLoginRequest(email, password)
@@ -77,7 +66,7 @@ class MainActivity : AppCompatActivity() {
           val builder = AlertDialog.Builder(this@MainActivity)
 
           builder.setTitle(getString(R.string.login_failure))
-          builder.setMessage(userLoginError.errors!!.get(0).message)
+          builder.setMessage(userLoginError.errors!![0].message)
           builder.setNeutralButton("OK") { _, _ -> }
 
           val dialog = builder.create()
@@ -98,8 +87,7 @@ class MainActivity : AppCompatActivity() {
 
         unlockLoginButton()
       }
-    }
-    )
+    })
   }
 
   private fun lockLoginButton() {

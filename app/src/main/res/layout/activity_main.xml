@@ -6,46 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".Activities.MainActivity">
 
-    <EditText
-        android:id="@+id/textEmail"
+    <com.test.taqtile.takitiletest.InputWithValidation
+        android:id="@+id/editTextLoginEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_marginTop="40dp"
-        android:autofillHints="Insira seu endereço de e-mail cadastrado."
-        android:ems="10"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress" />
+        app:hint="@string/email_input_field"
+        app:error_message="@string/invalid_email"
+        app:input_type="@string/email_type" />
 
-    <TextView
-        android:id="@+id/textErrorEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginStart="5dp"
-        android:text="@string/invalid_email"
-        android:visibility="gone"
-        android:textColor="@android:color/holo_red_dark" />
-
-    <EditText
-        android:id="@+id/textPassword"
+    <com.test.taqtile.takitiletest.InputWithValidation
+        android:id="@+id/editTextLoginPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:autofillHints="Insira sua senha."
-        android:ems="10"
-        android:hint="@string/password"
-        android:inputType="textPassword" />
-
-    <TextView
-        android:id="@+id/textErrorPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="140dp"
-        android:layout_marginStart="5dp"
-        android:text="@string/invalid_password"
-        android:visibility="gone"
-        android:textColor="@android:color/holo_red_dark"/>
+        app:hint="@string/password_input_field"
+        app:error_message="@string/invalid_password"
+        app:input_type="@string/password_type" />
 
     <Button
         android:id="@+id/buttonLogin"
@@ -56,7 +33,7 @@
         android:layout_marginTop="170dp"
         android:background="@color/colorPrimaryDark"
         android:text="@string/login"
-        android:textColor="#ffffffff" />
+        android:textColor="@color/colorWhite" />
 
     <ProgressBar
         android:id="@+id/progressBarLogin"
