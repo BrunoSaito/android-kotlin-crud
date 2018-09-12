@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import com.test.taqtile.takitiletest.DataModels.DeleteUserSuccess
 import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
 import com.test.taqtile.takitiletest.DataModels.User
@@ -56,7 +57,7 @@ class UserListActivity : AppCompatActivity() {
 
     listViewUsers.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
       val intent = Intent(this@UserListActivity, UserDetailsActivity::class.java)
-      intent.putExtra("userId", listUsers.get(position).id.toString())
+      intent.putExtra("userId", listUsers[position].id.toString())
 
       startActivity(intent)
       finish()
@@ -106,13 +107,13 @@ class UserListActivity : AppCompatActivity() {
 
         if (query.isNullOrEmpty()) {
           for (i in 0..9)
-            listUsers.add(listCompleteData.get(i))
+            listUsers.add(listCompleteData[i])
         }
         else {
           var i = 0
-          while (listUsers.size < 10 && i < listCompleteData.size - 1) {
-            if (listCompleteData.get(i).name?.contains(query.toString())!!)
-              listUsers.add(listCompleteData.get(i))
+          while (listUsers.size < 10 && i < listCompleteData.size) {
+            if (listCompleteData[i].name?.contains(query.toString())!!)
+              listUsers.add(listCompleteData[i])
             i++
           }
         }
@@ -181,7 +182,6 @@ class UserListActivity : AppCompatActivity() {
         view = layoutInflater.inflate(R.layout.list_row, parent, false)
         vh = ViewHolder(view)
         view!!.tag = vh
-        Log.i("JSA", "set Tag for ViewHolder, position: " + position)
       } else {
         view = convertView
         vh = view.tag as ViewHolder
@@ -199,10 +199,24 @@ class UserListActivity : AppCompatActivity() {
         intent.putExtra("userName", userName)
         intent.putExtra("userEmail", userEmail)
         intent.putExtra("userRole", userRole)
-        intent.putExtra("userId", listCompleteData.get(position).id.toString())
+        intent.putExtra("userId", listCompleteData[position].id.toString())
 
         startActivity(intent)
         finish()
+      }
+
+      vh.buttonDeleteUser.setOnClickListener {
+        val builder = AlertDialog.Builder(this@UserListActivity)
+        builder.setMessage("Deseja realmente deletar o usuário " + userName + "?")
+        builder.setPositiveButton("Sim") { _, _ ->
+          this@UserListActivity.deleteUser(listUsers[position].id.toString())
+        }
+        builder.setNegativeButton("Não") { dialog, _ ->
+          dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
       }
 
       vh.buttonDeleteUser.isFocusable = false
@@ -229,16 +243,34 @@ class UserListActivity : AppCompatActivity() {
   }
 
   private class ViewHolder(view: View?) {
-    val listViewUserName: TextView
-    val listViewUserRole: TextView
-    val buttonEditUser: ImageButton
-    val buttonDeleteUser: ImageButton
+    val listViewUserName: TextView = view?.listViewUserName!!
+    val listViewUserRole: TextView = view?.listViewUserRole!!
+    val buttonEditUser: ImageButton = view?.buttonEditUser!!
+    val buttonDeleteUser: ImageButton = view?.buttonDeleteUser!!
+  }
 
-    init {
-      this.listViewUserName = view!!.listViewUserName
-      this.listViewUserRole = view.listViewUserRole
-      this.buttonEditUser = view.buttonEditUser
-      this.buttonDeleteUser = view.buttonDeleteUser
-    }
+  private fun deleteUser(userId: String?) {
+    val userDelete = RetrofitInitializer(token).userServices().deleteUser(userId)
+
+    userDelete.enqueue(object: Callback<DeleteUserSuccess?> {
+      override fun onResponse(call: Call<DeleteUserSuccess?>?, response: Response<DeleteUserSuccess?>?) {
+        try {
+          if (response!!.body()!!.data!!.active == false) {
+            val intent = Intent(this@UserListActivity, UserListActivity::class.java)
+
+            intent.putExtra("message", "Usuário deletado com sucesso!")
+            startActivity(intent)
+            finish()
+          }
+        }
+        catch (e: Exception) {
+
+        }
+      }
+
+      override fun onFailure(call: Call<DeleteUserSuccess?>?, failureResponse: Throwable) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+      }
+    })
   }
 }

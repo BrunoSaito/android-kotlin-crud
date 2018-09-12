@@ -2,13 +2,11 @@ package com.test.taqtile.takitiletest.Activities
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.TextView
 import com.google.gson.Gson
 import com.test.taqtile.takitiletest.*
 import com.test.taqtile.takitiletest.DataModels.*
@@ -19,8 +17,6 @@ import retrofit2.Response
 
 
 class MainActivity : AppCompatActivity() {
-
-  private val minPasswordLength = 4
 
   private var name: String? = null
   private var token: String? = null
@@ -49,7 +45,9 @@ class MainActivity : AppCompatActivity() {
     email = textEmail?.text.toString()
     password = textPassword?.text.toString()
 
-    if (validate(email, password)) {
+    if (Validation().validateEmailAndPassword(textEmail, textPassword,
+                                              textErrorEmail, textErrorPassword,
+                                              email, password)) {
       lockLoginButton()
 
       loginRequest(email, password)
@@ -68,7 +66,9 @@ class MainActivity : AppCompatActivity() {
           Preferences(this@MainActivity).savePreferences(userName, token)
 
           val nextActivity = Intent(this@MainActivity, LoginSuccessActivity::class.java)
+
           startActivity(nextActivity)
+          finish()
         }
         catch (e: Exception) {
           val jsonError = response!!.errorBody()!!.string()
@@ -100,38 +100,6 @@ class MainActivity : AppCompatActivity() {
       }
     }
     )
-  }
-
-  private fun validate(email: String?, password: String?): Boolean {
-    return (validateEmail(email) && validatePassword(password))
-  }
-
-  private fun validateEmail(email: String?) : Boolean {
-    if (email?.isEmpty()!! || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-      textEmail?.background?.mutate()?.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
-      textErrorEmail?.text = getString(R.string.invalid_email)
-      textErrorEmail?.visibility = TextView.VISIBLE
-
-      return false
-    }
-    textEmail?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
-    textErrorEmail?.visibility = TextView.GONE
-
-    return true
-  }
-
-  private fun validatePassword(password: String?) : Boolean {
-    if (password?.length!! < minPasswordLength) {
-      textPassword?.background?.mutate()?.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
-      textErrorPassword?.text = getString(R.string.invalid_password)
-      textErrorPassword?.visibility = TextView.VISIBLE
-
-      return false
-    }
-    textPassword?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
-    textErrorPassword?.visibility = TextView.GONE
-
-    return true
   }
 
   private fun lockLoginButton() {

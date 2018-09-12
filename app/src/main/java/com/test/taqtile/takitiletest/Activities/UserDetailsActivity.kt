@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
+import com.test.taqtile.takitiletest.DataModels.DeleteUserSuccess
 import com.test.taqtile.takitiletest.DataModels.UserDetails
 import com.test.taqtile.takitiletest.Preferences
 import com.test.taqtile.takitiletest.R
@@ -47,6 +48,20 @@ class UserDetailsActivity : AppCompatActivity() {
       finish()
     }
 
+    buttonUserDetailsDelete.setOnClickListener {
+      val builder = AlertDialog.Builder(this@UserDetailsActivity)
+      builder.setMessage("Deseja realmente deletar o usuário " + userDetailName.text + "?")
+      builder.setPositiveButton("Sim") { _, _ ->
+        deleteUser(userId)
+      }
+      builder.setNegativeButton("Não") { dialog, _ ->
+        dialog.dismiss()
+      }
+
+      val dialog = builder.create()
+      dialog.show()
+    }
+
     if (!intent.getStringExtra("message").isNullOrEmpty()) {
       val builder = AlertDialog.Builder(this@UserDetailsActivity)
       builder.setTitle("Mensagem")
@@ -67,7 +82,7 @@ class UserDetailsActivity : AppCompatActivity() {
     finish()
   }
 
-  fun getDetailsRequest(token: String?, userId: String?) {
+  private fun getDetailsRequest(token: String?, userId: String?) {
     val userDetails = RetrofitInitializer(token).userServices().getUserDetails(userId)
 
     userDetails.enqueue(object : Callback<UserDetails?> {
@@ -81,6 +96,31 @@ class UserDetailsActivity : AppCompatActivity() {
 
       override fun onFailure(call: Call<UserDetails?>, failureResponse: Throwable) {
         progressBarDetailsUser.visibility = ProgressBar.GONE
+      }
+    })
+  }
+
+  private fun deleteUser(userId: String?) {
+    val userDelete = RetrofitInitializer(token).userServices().deleteUser(userId)
+
+    userDelete.enqueue(object: Callback<DeleteUserSuccess?> {
+      override fun onResponse(call: Call<DeleteUserSuccess?>?, response: Response<DeleteUserSuccess?>?) {
+        try {
+          if (response!!.body()!!.data!!.active == false) {
+            val intent = Intent(this@UserDetailsActivity, UserListActivity::class.java)
+
+            intent.putExtra("message", "Usuário deletado com sucesso!")
+            startActivity(intent)
+            finish()
+          }
+        }
+        catch (e: Exception) {
+
+        }
+      }
+
+      override fun onFailure(call: Call<DeleteUserSuccess?>?, failureResponse: Throwable) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
       }
     })
   }
