@@ -6,4 +6,8 @@
         <attr name="input_type" format="string" />
         <attr name="input_text" format="string" />
     </declare-styleable>
+    
+    <declare-styleable name="SubmitButton">
+        <attr name="button_text" format="string" />
+    </declare-styleable>
 </resources>

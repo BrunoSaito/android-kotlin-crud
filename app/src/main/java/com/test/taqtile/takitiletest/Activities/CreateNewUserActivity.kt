@@ -3,10 +3,10 @@ package com.test.taqtile.takitiletest.Activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
 import com.test.taqtile.takitiletest.*
@@ -54,7 +54,7 @@ class CreateNewUserActivity : AppCompatActivity() {
       }
     }
 
-    buttonNewUserSubmit.setOnClickListener {
+    buttonSubmitNewUser.setOnClickListener {
       name = editTextNewUserName.getInputText()
       email = editTextNewUserEmail.getInputText()
       password = editTextNewUserPassword.getInputText()
@@ -68,7 +68,7 @@ class CreateNewUserActivity : AppCompatActivity() {
         if (password.equals(passwordConfirm)) {
           editTextNewUserPasswordConfirm.hideErrorText()
 
-          lockSubmitButton()
+          buttonSubmitNewUser.lockButton()
 
           submitNewUserRequest(name, password, email, role)
         }
@@ -77,8 +77,6 @@ class CreateNewUserActivity : AppCompatActivity() {
         }
       }
     }
-
-    progressBarNewUser?.visibility = ProgressBar.GONE
   }
 
   override fun onBackPressed() {
@@ -93,7 +91,8 @@ class CreateNewUserActivity : AppCompatActivity() {
     newUserRequest.enqueue(object : Callback<CreateNewUserSuccess?> {
       override fun onResponse(call: Call<CreateNewUserSuccess?>?, response: Response<CreateNewUserSuccess?>?) {
         try {
-          response!!.body()!!.data!!.name!!
+//          response!!.body()!!.data!!.name!!
+          Log.d("D", "repsonse: " + response!!.body()!!.data!!.name!!)
 
           val intent = Intent(this@CreateNewUserActivity, UserListActivity::class.java)
           intent.putExtra("message", getString(R.string.new_user_success))
@@ -115,7 +114,7 @@ class CreateNewUserActivity : AppCompatActivity() {
           dialog.show()
         }
 
-        unlockSubmitButton()
+        buttonSubmitNewUser.unlockButton()
       }
       override fun onFailure(call: Call<CreateNewUserSuccess?>?, failureResponse: Throwable) {
         val builder = AlertDialog.Builder(this@CreateNewUserActivity)
@@ -127,20 +126,8 @@ class CreateNewUserActivity : AppCompatActivity() {
         val dialog = builder.create()
         dialog.show()
 
-        unlockSubmitButton()
+        buttonSubmitNewUser.unlockButton()
       }
     })
-  }
-
-  private fun lockSubmitButton() {
-    progressBarNewUser?.visibility = ProgressBar.VISIBLE
-    buttonNewUserSubmit?.text = ""
-    buttonNewUserSubmit.isEnabled = false
-  }
-
-  private fun unlockSubmitButton() {
-    progressBarNewUser?.visibility = ProgressBar.GONE
-    buttonNewUserSubmit?.text = getString(R.string.edit_user_submit)
-    buttonNewUserSubmit.isEnabled = true
   }
 }
