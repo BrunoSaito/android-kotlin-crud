@@ -11,18 +11,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name="com.test.taqtile.takitiletest.domain.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.LoginSuccessActivity" />
-        <activity android:name=".Activities.UserListActivity" />
-        <activity android:name=".Activities.UserDetailsActivity" />
-        <activity android:name=".Activities.CreateNewUserActivity" />
-        <activity android:name=".Activities.EditUserActivity"></activity>
+        <activity android:name="com.test.taqtile.takitiletest.domain.activities.LoginSuccessActivity" />
+        <activity android:name="com.test.taqtile.takitiletest.domain.activities.UserListActivity" />
+        <activity android:name="com.test.taqtile.takitiletest.domain.activities.UserDetailsActivity" />
+        <activity android:name="com.test.taqtile.takitiletest.domain.activities.CreateNewUserActivity" />
+        <activity android:name="com.test.taqtile.takitiletest.domain.activities.EditUserActivity"></activity>
     </application>
 
 </manifest>

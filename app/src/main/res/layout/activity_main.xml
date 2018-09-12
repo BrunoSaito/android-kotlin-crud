@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.MainActivity">
+    tools:context=".domain.activities.MainActivity">
 
-    <com.test.taqtile.takitiletest.InputWithValidation
+    <com.test.taqtile.takitiletest.presentation.InputWithValidation
         android:id="@+id/editTextLoginEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
         app:error_message="@string/invalid_email"
         app:input_type="@string/email_type" />
 
-    <com.test.taqtile.takitiletest.InputWithValidation
+    <com.test.taqtile.takitiletest.presentation.InputWithValidation
         android:id="@+id/editTextLoginPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,31 +24,11 @@
         app:error_message="@string/invalid_password"
         app:input_type="@string/password_type" />
 
-    <com.test.taqtile.takitiletest.SubmitButton
+    <com.test.taqtile.takitiletest.presentation.SubmitButton
         android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:button_text="@string/login"
         android:layout_marginTop="170dp" />
-
-    <!--<Button-->
-        <!--android:id="@+id/buttonLogin"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginStart="20dp"-->
-        <!--android:layout_marginTop="170dp"-->
-        <!--android:background="@color/colorPrimaryDark"-->
-        <!--android:text="@string/login"-->
-        <!--android:textColor="@color/colorWhite" />-->
-
-    <!--<ProgressBar-->
-        <!--android:id="@+id/progressBarLogin"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginStart="20dp"-->
-        <!--android:layout_marginTop="170dp"-->
-        <!--android:translationZ="100dp" />-->
 
 </RelativeLayout>

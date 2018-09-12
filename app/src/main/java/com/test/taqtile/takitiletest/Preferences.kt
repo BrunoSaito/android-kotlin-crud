@@ -20,8 +20,8 @@ class Preferences {
   }
 
   companion object Factory {
-    var token: String? = null
-    var name: String? = null
+    var token: String? = ""
+    var name: String? = ""
   }
 
   fun savePreferences(userName: String?, token: String?) {
