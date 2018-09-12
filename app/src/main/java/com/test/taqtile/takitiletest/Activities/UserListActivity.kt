@@ -15,6 +15,7 @@ import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
 import com.test.taqtile.takitiletest.DataModels.User
 import com.test.taqtile.takitiletest.Preferences
+import com.test.taqtile.takitiletest.Preferences.Factory.token
 import kotlinx.android.synthetic.main.activity_user_list.*
 import kotlinx.android.synthetic.main.list_row.view.*
 import org.json.JSONObject
@@ -25,10 +26,6 @@ import retrofit2.Response
 
 class UserListActivity : AppCompatActivity() {
 
-  private var name: String? = null
-  private var token: String? = null
-
-  private var preferences: HashMap<String?, String?>? = null
   private var listRequest =  ArrayList<User.Data>()
   private var listUsers = ArrayList<User.Data>()
   private var page = 0
@@ -47,10 +44,6 @@ class UserListActivity : AppCompatActivity() {
     setContentView(R.layout.activity_user_list)
 
     listViewUsers?.addFooterView(progressBarListView)
-
-    preferences = Preferences(this@UserListActivity).getPreferences()
-    name = preferences?.get("name")
-    token = preferences?.get("token")
 
     jsonParams?.put("page", page.toString())
     jsonParams?.put("window", window.toString())
@@ -108,7 +101,7 @@ class UserListActivity : AppCompatActivity() {
 
   private fun getUsersListRequest(jsonParams: JSONObject?, query: String?) {
     progressBarListView.visibility = ProgressBar.VISIBLE
-    val users = RetrofitInitializer(token).userServices().listUsers(jsonParams)
+    val users = RetrofitInitializer(Preferences.token).userServices().listUsers(jsonParams)
 
     users.enqueue(object : Callback<User?> {
       override fun onResponse(call: Call<User?>?, response: Response<User?>?) {
@@ -122,8 +115,7 @@ class UserListActivity : AppCompatActivity() {
           page = 0
 
           listUsers.clear()
-          listUsers = ArrayList(listRequest
-                                .filter { it.name?.contains(query.toString()) ?: false })
+          listUsers = ArrayList(listRequest.filter { it.name?.contains(query.toString()) ?: false })
         }
 
         val newToken = response.headers().get("Authorization")
@@ -247,7 +239,7 @@ class UserListActivity : AppCompatActivity() {
   }
 
   private fun deleteUserRequest(userId: String?) {
-    val userDelete = RetrofitInitializer(token).userServices().deleteUser(userId)
+    val userDelete = RetrofitInitializer(Preferences.token).userServices().deleteUser(userId)
 
     userDelete.enqueue(object: Callback<DeleteUserSuccess?> {
       override fun onResponse(call: Call<DeleteUserSuccess?>?, response: Response<DeleteUserSuccess?>?) {
