@@ -2,7 +2,6 @@ package com.test.taqtile.takitiletest.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.test.taqtile.takitiletest.DataModels.UserDetails
 import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
@@ -31,7 +30,7 @@ class UserDetailsActivity : AppCompatActivity() {
   }
 
   fun getDetailsRequest(token: String?, userId: String?) {
-    val userDetails = RetrofitInitializer(token).userDetailsService().getUserDetails(userId)
+    val userDetails = RetrofitInitializer(token).userServices().getUserDetails(userId)
 
     userDetails.enqueue(object : Callback<UserDetails?> {
       override fun onResponse(call: Call<UserDetails?>, response: Response<UserDetails?>) {
