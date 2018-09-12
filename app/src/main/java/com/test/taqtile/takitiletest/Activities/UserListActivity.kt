@@ -130,6 +130,19 @@ class UserListActivity : AppCompatActivity() {
         progressBarListUsers.visibility = ProgressBar.GONE
       }
       override fun onFailure(call: Call<User?>?, failureResponse: Throwable) {
+        val builder = AlertDialog.Builder(this@UserListActivity)
+
+        builder.setTitle("Erro ao receber lista de usuários.")
+        builder.setMessage(failureResponse.message.toString())
+        builder.setNeutralButton("Tentar novamente") { _, _ ->
+          val intent = Intent(this@UserListActivity, LoginSuccessActivity::class.java)
+
+          startActivity(intent)
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+
         progressBarListView.visibility = ProgressBar.GONE
         progressBarListUsers.visibility = ProgressBar.GONE
       }

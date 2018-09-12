@@ -4,8 +4,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.ProgressBar
 import com.google.gson.Gson
 import com.test.taqtile.takitiletest.*
 import com.test.taqtile.takitiletest.DataModels.*
@@ -24,9 +22,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    buttonLogin?.setOnClickListener { login() }
-
-    progressBarLogin?.visibility = View.GONE
+    buttonLogin.setOnClickListener { login() }
   }
 
   private fun login() {
@@ -37,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     val validPassword = editTextLoginPassword.validate()
 
     if (validEmail && validPassword) {
-      lockLoginButton()
+      buttonLogin.lockButton()
 
       makeLoginRequest(email, password)
     }
@@ -73,7 +69,7 @@ class MainActivity : AppCompatActivity() {
           dialog.show()
         }
 
-        unlockLoginButton()
+        buttonLogin.unlockButton()
       }
       override fun onFailure(call: Call<UserLoginSuccess?>?, failureResponse: Throwable) {
         val builder = AlertDialog.Builder(this@MainActivity)
@@ -85,20 +81,8 @@ class MainActivity : AppCompatActivity() {
         val dialog = builder.create()
         dialog.show()
 
-        unlockLoginButton()
+        buttonLogin.unlockButton()
       }
     })
-  }
-
-  private fun lockLoginButton() {
-    progressBarLogin?.visibility = ProgressBar.VISIBLE
-    buttonLogin?.text = ""
-    buttonLogin.isEnabled = false
-  }
-
-  private fun unlockLoginButton() {
-    progressBarLogin?.visibility = ProgressBar.GONE
-    buttonLogin?.text = getString(R.string.login)
-    buttonLogin.isEnabled = true
   }
 }

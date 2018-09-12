@@ -3,7 +3,6 @@ package com.test.taqtile.takitiletest.Activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -91,8 +90,7 @@ class CreateNewUserActivity : AppCompatActivity() {
     newUserRequest.enqueue(object : Callback<CreateNewUserSuccess?> {
       override fun onResponse(call: Call<CreateNewUserSuccess?>?, response: Response<CreateNewUserSuccess?>?) {
         try {
-//          response!!.body()!!.data!!.name!!
-          Log.d("D", "repsonse: " + response!!.body()!!.data!!.name!!)
+          response!!.body()!!.data!!.name!!
 
           val intent = Intent(this@CreateNewUserActivity, UserListActivity::class.java)
           intent.putExtra("message", getString(R.string.new_user_success))

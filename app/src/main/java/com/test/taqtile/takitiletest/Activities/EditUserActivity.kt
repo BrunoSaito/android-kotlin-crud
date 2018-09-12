@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
 import com.test.taqtile.takitiletest.DataModels.EditUserData
@@ -66,9 +65,7 @@ class EditUserActivity : AppCompatActivity() {
       }
     }
 
-    progressBarEditUser.visibility = ProgressBar.GONE
-
-    buttonEditUserSubmit.setOnClickListener {
+    buttonSubmitEditUser.setOnClickListener {
       userName = editTextEditUserName.getInputText()
       userEmail = editTextEditUserEmail.getInputText()
 
@@ -76,7 +73,7 @@ class EditUserActivity : AppCompatActivity() {
       val validEmail = editTextEditUserEmail.validate()
 
       if (validName && validEmail) {
-        lockSubmitButton()
+        buttonSubmitEditUser.lockButton()
 
         updateUserDataRequest(userId, userName, userEmail, userRole)
       }
@@ -118,33 +115,21 @@ class EditUserActivity : AppCompatActivity() {
           dialog.show()
         }
 
-        unlockSubmitButton()
+        buttonSubmitEditUser.unlockButton()
       }
 
       override fun onFailure(call: Call<EditUserSuccess?>?, failureResponse: Throwable) {
         val builder = AlertDialog.Builder(this@EditUserActivity)
 
-        builder.setTitle("Erro ao atualizar usuário")
+        builder.setTitle("Erro ao atualizar usuário.")
         builder.setMessage(failureResponse.message.toString())
         builder.setNeutralButton("OK") { _, _ -> }
 
         val dialog = builder.create()
         dialog.show()
 
-        unlockSubmitButton()
+        buttonSubmitEditUser.unlockButton()
       }
     })
-  }
-
-  private fun lockSubmitButton() {
-    progressBarEditUser?.visibility = ProgressBar.VISIBLE
-    buttonEditUserSubmit?.text = ""
-    buttonEditUserSubmit.isEnabled = false
-  }
-
-  private fun unlockSubmitButton() {
-    progressBarEditUser?.visibility = ProgressBar.GONE
-    buttonEditUserSubmit?.text = getString(R.string.edit_user_submit)
-    buttonEditUserSubmit.isEnabled = true
   }
 }
