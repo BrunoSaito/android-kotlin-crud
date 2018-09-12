@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -28,45 +27,45 @@ class MainActivity : AppCompatActivity() {
   private var email: String? = null
   private var password: String? = null
 
-  private var preferences: HashMap<String, String>? = null
+  private var preferences: HashMap<String?, String?>? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    buttonLogin!!.setOnClickListener { login() }
+    buttonLogin?.setOnClickListener { login() }
 
-    progressBarLogin!!.visibility = View.GONE
+    progressBarLogin?.visibility = View.GONE
 
-    preferences = Utils(this@MainActivity).getPreferences()
-    name = preferences!!.get("name")
-    token = preferences!!.get("token")
+    preferences = Preferences(this@MainActivity).getPreferences()
+    name = preferences?.get("name")
+    token = preferences?.get("token")
 
-    textPassword!!.background.mutate().setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
-    textEmail!!.background.mutate().setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
+    textPassword?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
+    textEmail?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
   }
 
   private fun login() {
-    email = textEmail!!.text.toString()
-    password = textPassword!!.text.toString()
+    email = textEmail?.text.toString()
+    password = textPassword?.text.toString()
 
-    if (validate(email!!, password!!)) {
+    if (validate(email, password)) {
       lockLoginButton()
 
-      makeRequest(email!!, password!!)
+      loginRequest(email, password)
     }
   }
 
-  private fun makeRequest(email: String, password: String) {
+  private fun loginRequest(email: String?, password: String?) {
     val userLoginRequest = RetrofitInitializer("").userServices().loginUser(UserLoginCredentials(email, password, false))
 
     userLoginRequest.enqueue(object: Callback<UserLoginSuccess?> {
       override fun onResponse(call: Call<UserLoginSuccess?>?, response: Response<UserLoginSuccess?>?) {
         try {
-          val userName = response!!.body()!!.data.user.name
-          val token = response.body()!!.data.token
+          val userName = response!!.body()!!.data!!.user!!.name
+          val token = response.body()!!.data!!.token
 
-          Utils(this@MainActivity).savePreferences(userName, token)
+          Preferences(this@MainActivity).savePreferences(userName, token)
 
           val nextActivity = Intent(this@MainActivity, LoginSuccessActivity::class.java)
           startActivity(nextActivity)
@@ -78,7 +77,7 @@ class MainActivity : AppCompatActivity() {
           val builder = AlertDialog.Builder(this@MainActivity)
 
           builder.setTitle(getString(R.string.login_failure))
-          builder.setMessage(userLoginError.errors.get(0).message)
+          builder.setMessage(userLoginError.errors!!.get(0).message)
           builder.setNeutralButton("OK") { _, _ -> }
 
           val dialog = builder.create()
@@ -87,72 +86,63 @@ class MainActivity : AppCompatActivity() {
 
         unlockLoginButton()
       }
-      override fun onFailure(call: Call<UserLoginSuccess?>?, t: Throwable?) {
+      override fun onFailure(call: Call<UserLoginSuccess?>?, failureResponse: Throwable) {
         val builder = AlertDialog.Builder(this@MainActivity)
 
         builder.setTitle(getString(R.string.login_failure))
-        builder.setMessage(t!!.message.toString())
+        builder.setMessage(failureResponse.message.toString())
         builder.setNeutralButton("OK") { _, _ -> }
 
         val dialog = builder.create()
         dialog.show()
 
         unlockLoginButton()
-        Log.d("D", "failure: " + t.toString())
       }
     }
     )
   }
 
-  private fun validate(email: String, password: String): Boolean {
-    var validEmail = false
-    var validPassword = false
-
-    if (validateEmail(email)) {
-      textErrorEmail!!.visibility = TextView.GONE
-      validEmail = true
-    }
-    if (validatePassword(password)) {
-      textErrorPassword!!.visibility = TextView.GONE
-      validPassword = true
-    }
-
-    return (validEmail && validPassword)
+  private fun validate(email: String?, password: String?): Boolean {
+    return (validateEmail(email) && validatePassword(password))
   }
 
-  private fun validateEmail(email: String) : Boolean {
-    if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-      textEmail!!.background.mutate().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
-      textErrorEmail!!.text = getString(R.string.invalid_email)
-      textErrorEmail!!.visibility = TextView.VISIBLE
+  private fun validateEmail(email: String?) : Boolean {
+    if (email?.isEmpty()!! || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+      textEmail?.background?.mutate()?.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
+      textErrorEmail?.text = getString(R.string.invalid_email)
+      textErrorEmail?.visibility = TextView.VISIBLE
 
       return false
     }
-    textEmail!!.background.mutate().setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
+    textEmail?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
+    textErrorEmail?.visibility = TextView.GONE
+
     return true
   }
 
-  private fun validatePassword(password: String) : Boolean {
-    if (password.length < minPasswordLength) {
-      textPassword!!.background.mutate().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
-      textErrorPassword!!.text = getString(R.string.invalid_password)
-      textErrorPassword!!.visibility = TextView.VISIBLE
+  private fun validatePassword(password: String?) : Boolean {
+    if (password?.length!! < minPasswordLength) {
+      textPassword?.background?.mutate()?.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
+      textErrorPassword?.text = getString(R.string.invalid_password)
+      textErrorPassword?.visibility = TextView.VISIBLE
 
       return false
     }
-    textPassword!!.background.mutate().setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
+    textPassword?.background?.mutate()?.setColorFilter(getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
+    textErrorPassword?.visibility = TextView.GONE
+
     return true
   }
 
   private fun lockLoginButton() {
-    progressBarLogin!!.visibility = ProgressBar.VISIBLE
-    buttonLogin!!.text = ""
+    progressBarLogin?.visibility = ProgressBar.VISIBLE
+    buttonLogin?.text = ""
     buttonLogin.isEnabled = false
   }
 
   private fun unlockLoginButton() {
-    progressBarLogin!!.visibility = ProgressBar.GONE
-    buttonLogin!!.text = getString(R.string.login)
+    progressBarLogin?.visibility = ProgressBar.GONE
+    buttonLogin?.text = getString(R.string.login)
     buttonLogin.isEnabled = true
   }
 }
