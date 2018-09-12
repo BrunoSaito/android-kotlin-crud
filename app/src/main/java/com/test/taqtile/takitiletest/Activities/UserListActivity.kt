@@ -1,8 +1,7 @@
 package com.test.taqtile.takitiletest.Activities
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.SharedPreferences
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,35 +9,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.android.volley.AuthFailureError
-import com.android.volley.NetworkResponse
-import com.android.volley.Response
-import com.android.volley.toolbox.HttpHeaderParser
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.test.taqtile.takitiletest.R
-import com.test.taqtile.takitiletest.User
+import com.test.taqtile.takitiletest.RetrofitInitializer
+import com.test.taqtile.takitiletest.DataModels.User
+import com.test.taqtile.takitiletest.Utils
 import kotlinx.android.synthetic.main.activity_user_list.*
 import kotlinx.android.synthetic.main.list_row.view.*
-import org.json.JSONArray
 import org.json.JSONObject
-import java.nio.charset.Charset
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class UserListActivity : AppCompatActivity() {
 
   private var name: String? = null
   private var token: String? = null
-  private var sharedPrefs: SharedPreferences? = null
 
+  private var preferences: HashMap<String, String>? = null
 
-  private val url = "https://tq-template-server-sample.herokuapp.com/users?pagination={\"page\": 0 , \"window\": 100}"
-  private val LOGIN_NAME = "LOGIN_NAME"
-  private val LOGIN_TOKEN = "LOGIN_TOKEN"
-  private val PREFS_FILENAME = "com.test.taqtile.takitiletest.prefs"
-
-  private val listCompleteData = ArrayList<User>()
-  private val listUsers = ArrayList<User>()
+  private var listCompleteData =  ArrayList<User.Data>()
+  private var listUsers = ArrayList<User.Data>()
   private val progressBarListView: ProgressBar by lazy {
     val progressBarView = LayoutInflater.from(this).inflate(R.layout.bottom_listview_progressbar, null)
     progressBarView.findViewById<ProgressBar>(R.id.progressBarListView)
@@ -48,73 +39,48 @@ class UserListActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_user_list)
 
-    getPreferences()
+    preferences = Utils(this@UserListActivity).getPreferences()
+    name = preferences!!.get("name")
+    token = preferences!!.get("token")
 
-    val queue = Volley.newRequestQueue(this)
+    val jsonParams = JSONObject()
+    jsonParams.put("page", "0")
+    jsonParams.put("window", "100")
 
-    val jsonObjectRequest = object : JsonObjectRequest(Method.GET, url, null,
-          Response.Listener { response ->
-            Log.d("D", "response: " + response.toString(1))
-            val responseArray: JSONArray = response.getJSONArray("data")
+    getUsersList(jsonParams)
 
-            for (i in 0..responseArray.length()-1) {
-              val json = JSONObject(responseArray[i].toString())
-              listCompleteData.add(User(json.getString("name"),
-                      json.getString("role")))
-            }
+    listViewUsers.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+      val intent = Intent(this@UserListActivity, UserDetailsActivity::class.java)
 
-            for (i in 0..9)
-              listUsers.add(listCompleteData[i])
-
-            listViewUsers!!.addFooterView(progressBarListView)
-
-            val adapter = UsersAdapter(this, listUsers)
-            listViewUsers!!.adapter = adapter
-            setListViewOnScrollListener()
-          },
-          Response.ErrorListener { error ->
-            val networkError: NetworkResponse? = error.networkResponse
-
-            val jsonErrorString = String(
-                    networkError!!.data ?: ByteArray(0),
-                    Charset.forName(HttpHeaderParser.parseCharset(networkError.headers)))
-
-            val jsonError = JSONObject(jsonErrorString)
-            val jsonErrorMessage = JSONObject(jsonError.getJSONArray("errors").getString(0))
-
-            val builder = AlertDialog.Builder(this@UserListActivity)
-
-            builder.setTitle("Erro no login.")
-            builder.setMessage(jsonErrorMessage.getString("message"))
-            builder.setNeutralButton("Ok") { _, _ -> }
-
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
-          })
-          {
-            override fun getParams(): Map<String, String> {
-              val params = HashMap<String, String>()
-              params.put("page", "0")
-              params.put("window", "100")
-
-              return params
-            }
-            @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String> {
-              val headers = HashMap<String, String>()
-              headers.put("Authorization", token.toString())
-
-              return headers
-            }
-          }
-
-    queue.add(jsonObjectRequest)
+      intent.putExtra("id", listCompleteData.get(position).id.toString())
+      startActivity(intent)
+    }
   }
 
-  private fun getPreferences() {
-    sharedPrefs = this.getSharedPreferences(PREFS_FILENAME, 0)
-    name = sharedPrefs!!.getString(LOGIN_NAME, "")
-    token = sharedPrefs!!.getString(LOGIN_TOKEN, "")
+  private fun getUsersList(jsonParams: JSONObject) {
+    val users = RetrofitInitializer(token).listUsersService().listUsers(jsonParams, token)
+
+    users.enqueue(object : Callback<User?> {
+      override fun onResponse(call: Call<User?>?, response: Response<User?>?) {
+        listCompleteData = response!!.body()!!.data
+
+        for (i in 0..9) {
+          listUsers.add(listCompleteData.get(i))
+        }
+
+        val newToken = response.headers().get("Authorization")
+        Utils(this@UserListActivity).saveNewToken(newToken)
+
+        listViewUsers!!.addFooterView(progressBarListView)
+
+        val adapter = UsersAdapter(this@UserListActivity, listUsers)
+        listViewUsers!!.adapter = adapter
+        setListViewOnScrollListener()
+      }
+      override fun onFailure(call: Call<User?>?, t: Throwable?) {
+
+      }
+    })
   }
 
   private fun setListViewOnScrollListener(){
@@ -148,10 +114,10 @@ class UserListActivity : AppCompatActivity() {
   }
 
   inner class UsersAdapter : BaseAdapter {
-    private var usersList = ArrayList<User>()
+    private var usersList = ArrayList<User.Data>()
     private var context: Context? = null
 
-    constructor(context: Context, usersList: ArrayList<User>) : super() {
+    constructor(context: Context, usersList: ArrayList<User.Data>) : super() {
       this.usersList = usersList
       this.context = context
     }
