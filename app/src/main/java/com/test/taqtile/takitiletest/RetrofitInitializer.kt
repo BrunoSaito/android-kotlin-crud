@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class RetrofitInitializer {
-  private val BASE_URL = "https://tq-template-server-sample.herokuapp.com/"
+  val BASE_URL = "https://tq-template-server-sample.herokuapp.com/"
 
   private val client: OkHttpClient
   private val retrofit: Retrofit
@@ -24,7 +24,7 @@ class RetrofitInitializer {
                             .build()
   }
 
-  fun accessTokenProvidingInterceptor(token: String?) = Interceptor { chain ->
+  private fun accessTokenProvidingInterceptor(token: String?) = Interceptor { chain ->
     chain.proceed(chain.request().newBuilder()
             .addHeader("Authorization", token!!)
             .build())

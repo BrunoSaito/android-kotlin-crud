@@ -50,11 +50,11 @@ class MainActivity : AppCompatActivity() {
                                               email, password)) {
       lockLoginButton()
 
-      loginRequest(email, password)
+      makeLoginRequest(email, password)
     }
   }
 
-  private fun loginRequest(email: String?, password: String?) {
+  private fun makeLoginRequest(email: String?, password: String?) {
     val userLoginRequest = RetrofitInitializer("").userServices().loginUser(UserLoginCredentials(email, password, false))
 
     userLoginRequest.enqueue(object: Callback<UserLoginSuccess?> {
