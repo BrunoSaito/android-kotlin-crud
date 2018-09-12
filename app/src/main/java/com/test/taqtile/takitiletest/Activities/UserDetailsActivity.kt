@@ -8,7 +8,6 @@ import androidx.appcompat.app.AlertDialog
 import com.test.taqtile.takitiletest.DataModels.DeleteUserSuccess
 import com.test.taqtile.takitiletest.DataModels.UserDetails
 import com.test.taqtile.takitiletest.Preferences
-import com.test.taqtile.takitiletest.Preferences.Factory.token
 import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
 import kotlinx.android.synthetic.main.activity_user_details.*

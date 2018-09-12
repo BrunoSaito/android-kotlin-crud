@@ -3,6 +3,7 @@
 
     <string name="email_type">email</string>
     <string name="password_type">password</string>
+    <string name="password_confirmation_type">password_confirmation</string>
     <string name="text_type">text</string>
 
     <string name="login">Entrar</string>

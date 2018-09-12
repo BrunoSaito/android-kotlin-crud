@@ -1,10 +1,8 @@
 package com.test.taqtile.takitiletest.Activities
 
 import android.content.Intent
-import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -30,7 +28,6 @@ class CreateNewUserActivity : AppCompatActivity() {
   private var password: String? = null
   private var passwordConfirm: String? = null
   private var role: String? = null
-  private var token: String? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -48,12 +45,8 @@ class CreateNewUserActivity : AppCompatActivity() {
 
     spinnerNewUserRole.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        var i = 0
-        for ((_, value) in spinnerItems) {
-          if (i == position)
-            role = value
-          i++
-        }
+        val keyArray = spinnerItems.keys.toTypedArray()
+        role = spinnerItems[keyArray[position]]
       }
 
       override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -65,16 +58,23 @@ class CreateNewUserActivity : AppCompatActivity() {
       name = editTextNewUserName.getInputText()
       email = editTextNewUserEmail.getInputText()
       password = editTextNewUserPassword.getInputText()
-//      passwordConfirm = textNewUserPasswordConfirm.text.toString()
+      passwordConfirm = editTextNewUserPasswordConfirm.getInputText()
 
       val validName = editTextNewUserName.validate()
       val validEmail = editTextNewUserEmail.validate()
       val validPassword = editTextNewUserPassword.validate()
 
       if (validName && validEmail && validPassword) {
-        lockSubmitButton()
+        if (password.equals(passwordConfirm)) {
+          editTextNewUserPasswordConfirm.hideErrorText()
 
-        submitNewUserRequest(name, password, email, role)
+          lockSubmitButton()
+
+          submitNewUserRequest(name, password, email, role)
+        }
+        else {
+          editTextNewUserPasswordConfirm.showErrorText()
+        }
       }
     }
 

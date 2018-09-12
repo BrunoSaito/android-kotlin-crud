@@ -64,7 +64,7 @@ class InputWithValidation (context: Context, attrs: AttributeSet) : LinearLayout
       editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
     if (value.equals("text"))
       editText.inputType = InputType.TYPE_CLASS_TEXT
-    if (value.equals("password"))
+    if (value.equals("password") or value.equals("password_confirmation"))
       editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
   }
 
@@ -76,13 +76,21 @@ class InputWithValidation (context: Context, attrs: AttributeSet) : LinearLayout
     textError.text = value
   }
 
+  fun showErrorText() {
+    textError.visibility = TextView.VISIBLE
+  }
+
+  fun hideErrorText() {
+    textError.visibility = TextView.GONE
+  }
+
   fun validate() : Boolean {
     val type = getInputType()
     val text = getInputText()
     var valid = true
 
     if (type.equals("text"))
-      if (text.isEmpty() || !text.matches("\\D+".toRegex())) {
+      if (text.isEmpty() || !text.matches("[a-zA-Z ]+".toRegex())) {
         editText?.background?.mutate()?.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
         textError?.visibility = TextView.VISIBLE
 

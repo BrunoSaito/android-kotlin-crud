@@ -15,7 +15,6 @@ import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
 import com.test.taqtile.takitiletest.DataModels.User
 import com.test.taqtile.takitiletest.Preferences
-import com.test.taqtile.takitiletest.Preferences.Factory.token
 import kotlinx.android.synthetic.main.activity_user_list.*
 import kotlinx.android.synthetic.main.list_row.view.*
 import org.json.JSONObject

@@ -35,12 +35,13 @@
             app:error_message="@string/invalid_password"
             app:input_type="@string/password_type" />
 
-        <!--<com.test.taqtile.takitiletest.InputWithValidation-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:hint="@string/new_user_password_confirm"-->
-            <!--app:error_message="@string/invalid_password_confirm"-->
-            <!--app:input_type="@string/password_type" />-->
+        <com.test.taqtile.takitiletest.InputWithValidation
+            android:id="@+id/editTextNewUserPasswordConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="@string/new_user_password_confirm"
+            app:error_message="@string/invalid_password_confirm"
+            app:input_type="@string/password_confirmation_type" />
 
         <Spinner
             android:layout_width="match_parent"
