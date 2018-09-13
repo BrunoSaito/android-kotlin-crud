@@ -17,8 +17,8 @@ class LoginSuccessActivity : AppCompatActivity() {
     textLoginToken?.text = Preferences.token
 
     buttonListUsers.setOnClickListener {
-      val nextActivity = Intent(this, UserListActivity::class.java)
-      startActivity(nextActivity)
+//      val nextActivity = Intent(this, UserListActivity::class.java)
+//      startActivity(nextActivity)
     }
   }
 }

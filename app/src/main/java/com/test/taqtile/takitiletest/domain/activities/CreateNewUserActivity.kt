@@ -12,7 +12,7 @@ import com.test.taqtile.takitiletest.*
 import com.test.taqtile.takitiletest.models.CreateNewUserData
 import com.test.taqtile.takitiletest.models.CreateNewUserError
 import com.test.taqtile.takitiletest.models.CreateNewUserSuccess
-import com.test.taqtile.takitiletest.data.Services.RetrofitInitializer
+import com.test.taqtile.takitiletest.data.services.RetrofitInitializer
 import kotlinx.android.synthetic.main.activity_new_user_form.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -70,7 +70,7 @@ class CreateNewUserActivity : AppCompatActivity() {
 
           buttonSubmitNewUser.lockButton()
 
-          submitNewUserRequest(name, password, email, role)
+//          submitNewUserRequest(name, password, email, role)
         }
         else {
           editTextNewUserPasswordConfirm.showErrorText()
@@ -80,53 +80,53 @@ class CreateNewUserActivity : AppCompatActivity() {
   }
 
   override fun onBackPressed() {
-    val intent = Intent(this@CreateNewUserActivity, UserListActivity::class.java)
-
-    startActivity(intent)
+//    val intent = Intent(this@CreateNewUserActivity, UserListActivity::class.java)
+//
+//    startActivity(intent)
   }
 
-  private fun submitNewUserRequest(name: String?, password: String?, email: String?, role: String?) {
-    val newUserRequest = RetrofitInitializer(Preferences.token).userServices().createNewUser(CreateNewUserData(name, password, email, role))
-
-    newUserRequest.enqueue(object : Callback<CreateNewUserSuccess?> {
-      override fun onResponse(call: Call<CreateNewUserSuccess?>?, response: Response<CreateNewUserSuccess?>?) {
-        try {
-          response!!.body()!!.data!!.name!!
-
-          val intent = Intent(this@CreateNewUserActivity, UserListActivity::class.java)
-          intent.putExtra("message", getString(R.string.new_user_success))
-
-          startActivity(intent)
-          finish()
-        }
-        catch (e: Exception) {
-          val jsonError = response?.errorBody()?.string()
-          val createNewUserError = Gson().fromJson(jsonError, CreateNewUserError::class.java)
-
-          val builder = AlertDialog.Builder(this@CreateNewUserActivity)
-
-          builder.setTitle(getString(R.string.new_user_failure))
-          builder.setMessage(createNewUserError.errors?.get(0)?.original)
-          builder.setNeutralButton("OK") { _, _ -> }
-
-          val dialog = builder.create()
-          dialog.show()
-        }
-
-        buttonSubmitNewUser.unlockButton()
-      }
-      override fun onFailure(call: Call<CreateNewUserSuccess?>?, failureResponse: Throwable) {
-        val builder = AlertDialog.Builder(this@CreateNewUserActivity)
-
-        builder.setTitle(getString(R.string.new_user_failure))
-        builder.setMessage(failureResponse.message.toString())
-        builder.setNeutralButton("OK") { _, _ -> }
-
-        val dialog = builder.create()
-        dialog.show()
-
-        buttonSubmitNewUser.unlockButton()
-      }
-    })
-  }
+//  private fun submitNewUserRequest(name: String?, password: String?, email: String?, role: String?) {
+//    val newUserRequest = RetrofitInitializer(Preferences.token).userServices().createNewUser(CreateNewUserData(name, password, email, role))
+//
+//    newUserRequest.enqueue(object : Callback<CreateNewUserSuccess?> {
+//      override fun onResponse(call: Call<CreateNewUserSuccess?>?, response: Response<CreateNewUserSuccess?>?) {
+//        try {
+//          response!!.body()!!.data!!.name!!
+//
+//          val intent = Intent(this@CreateNewUserActivity, UserListActivity::class.java)
+//          intent.putExtra("message", getString(R.string.new_user_success))
+//
+//          startActivity(intent)
+//          finish()
+//        }
+//        catch (e: Exception) {
+//          val jsonError = response?.errorBody()?.string()
+//          val createNewUserError = Gson().fromJson(jsonError, CreateNewUserError::class.java)
+//
+//          val builder = AlertDialog.Builder(this@CreateNewUserActivity)
+//
+//          builder.setTitle(getString(R.string.new_user_failure))
+//          builder.setMessage(createNewUserError.errors?.get(0)?.original)
+//          builder.setNeutralButton("OK") { _, _ -> }
+//
+//          val dialog = builder.create()
+//          dialog.show()
+//        }
+//
+//        buttonSubmitNewUser.unlockButton()
+//      }
+//      override fun onFailure(call: Call<CreateNewUserSuccess?>?, failureResponse: Throwable) {
+//        val builder = AlertDialog.Builder(this@CreateNewUserActivity)
+//
+//        builder.setTitle(getString(R.string.new_user_failure))
+//        builder.setMessage(failureResponse.message.toString())
+//        builder.setNeutralButton("OK") { _, _ -> }
+//
+//        val dialog = builder.create()
+//        dialog.show()
+//
+//        buttonSubmitNewUser.unlockButton()
+//      }
+//    })
+//  }
 }

@@ -1,13 +1,12 @@
 package com.test.taqtile.takitiletest.domain
 
+import com.test.taqtile.takitiletest.domain.entities.UserDetailsEntity
 import com.test.taqtile.takitiletest.domain.entities.UserEntity
 import io.reactivex.Observable
-import java.util.*
+import org.json.JSONObject
 
 interface UsersRepository {
-  fun getUsers(): Observable<List<UserEntity>>
+  fun getUsers(pagination: JSONObject): Observable<List<UserEntity>>
 
-  fun search(query: String): Observable<List<UserEntity>>
-
-  fun getMovie(movieId: Int): Observable<Optional<UserEntity>>
+  fun getUserDetails(userId: Int): Observable<UserDetailsEntity>
 }

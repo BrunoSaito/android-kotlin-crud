@@ -2,24 +2,24 @@ package com.test.taqtile.takitiletest.domain.entities
 
 
 data class UserEntity (
-  val data: ArrayList<Data>?,
-  val pagination: Pagination?
+  var data: List<Data>? = null,
+  var pagination: Pagination? = null
 ) {
 
   data class Pagination(
-    val page: Int?,
-    val window: Int?,
-    val total: Int?,
-    val totalPages: Int?
+    var page: Int?,
+    var window: Int?,
+    var total: Int?,
+    var totalPages: Int?
   )
 
   data class Data(
-    val id: Int?,
-    val active: Boolean?,
-    val email: String?,
-    val createdAt: String?,
-    val updatedAt: String?,
-    val name: String?,
-    val role: String?
+    var id: Int?,
+    var active: Boolean?,
+    var email: String?,
+    var createdAt: String?,
+    var updatedAt: String?,
+    var name: String?,
+    var role: String?
   )
 }
