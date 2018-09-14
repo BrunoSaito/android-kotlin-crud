@@ -7,16 +7,16 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "UserDetails")
 data class UserDetailsData (
-  @SerializedName("data") val data: Data? = null
+  @SerializedName("data") var data: Data? = null
 ){
   data class Data (
           @PrimaryKey
-          @SerializedName("id") val id: Int?,
-          @SerializedName("active") val active: Boolean?,
-          @SerializedName("email") val email: String?,
-          @SerializedName("createdAt") val createdAt: String?,
-          @SerializedName("updatedAt") val updatedAt: String?,
-          @SerializedName("name") val name: String?,
-          @SerializedName("role") val role: String?
+          @SerializedName("id") var id: Int?,
+          @SerializedName("active") var active: Boolean?,
+          @SerializedName("email") var email: String?,
+          @SerializedName("createdAt") var createdAt: String?,
+          @SerializedName("updatedAt") var updatedAt: String?,
+          @SerializedName("name") var name: String?,
+          @SerializedName("role") var role: String?
   )
 }

@@ -12,6 +12,7 @@ class UserDetailsDataEntityMapper @Inject constructor() : Mapper<UserDetailsData
 
   override fun mapFrom(from: UserDetailsData): UserDetailsEntity {
     val details = UserDetailsEntity()
+
     from.data?.let {
       val dataEntity = UserDetailsEntity.Data(
               it.id,

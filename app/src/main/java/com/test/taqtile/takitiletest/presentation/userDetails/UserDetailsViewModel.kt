@@ -5,7 +5,7 @@ import com.test.taqtile.takitiletest.domain.common.Mapper
 import com.test.taqtile.takitiletest.domain.entities.UserDetailsEntity
 import com.test.taqtile.takitiletest.domain.usecases.GetUserDetails
 import com.test.taqtile.takitiletest.presentation.common.BaseViewModel
-import com.test.taqtile.takitiletest.presentation.entities.UserDetails
+import com.test.taqtile.takitiletest.presentation.model.UserDetails
 
 
 class UserDetailsViewModel(private val getUserDetails: GetUserDetails,

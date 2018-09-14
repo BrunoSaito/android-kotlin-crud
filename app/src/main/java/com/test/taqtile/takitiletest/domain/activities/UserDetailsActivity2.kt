@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import com.test.taqtile.takitiletest.R
-import kotlinx.android.synthetic.main.activity_user_details2.*
+import kotlinx.android.synthetic.main.activity_user_details.*
 
 
 class UserDetailsActivity2 : AppCompatActivity() {
@@ -15,7 +15,7 @@ class UserDetailsActivity2 : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_user_details2)
+    setContentView(R.layout.activity_user_details)
 
     val actionBar = supportActionBar
     actionBar?.title = getString(R.string.user_details_title)
@@ -70,7 +70,7 @@ class UserDetailsActivity2 : AppCompatActivity() {
   }
 //
 //  private fun getDetailsRequest(token: String?, userId: String?) {
-//    val userDetails = RetrofitInitializer(Preferences.token).userServices().getUserDetails(userId)
+//    val userDetails = RetrofitInitializer(Preferences.token).userServices().getDetails(userId)
 //
 //    userDetails.enqueue(object : Callback<UserDetails?> {
 //      override fun onResponse(call: Call<UserDetails?>, response: Response<UserDetails?>) {

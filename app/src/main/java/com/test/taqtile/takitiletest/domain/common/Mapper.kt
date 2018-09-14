@@ -1,6 +1,6 @@
 package com.test.taqtile.takitiletest.domain.common
 
-import io.reactivex.Observable
+import io.reactivex.Single
 
 
 abstract class Mapper<in E, T> {
@@ -12,11 +12,11 @@ abstract class Mapper<in E, T> {
 //    } ?: return Optional.empty()
 //  }
 
-  fun observable(from: E): Observable<T> {
-    return Observable.fromCallable { mapFrom(from) }
+  fun observable(from: E): Single<T> {
+    return Single.fromCallable { mapFrom(from) }
   }
 
-  fun observable(from: List<E>): Observable<List<T>> {
-    return Observable.fromCallable { from.map { mapFrom(it) } }
+  fun observable(from: List<E>): Single<List<T>> {
+    return Single.fromCallable { from.map { mapFrom(it) } }
   }
 }

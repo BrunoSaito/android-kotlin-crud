@@ -21,7 +21,7 @@ class RemoteUserDataStore(private val userServices: UserServices) : UsersDataSto
   }
 
   override fun getDetails(userId: Int): Observable<UserDetailsEntity> {
-    return userServices.getUserDetails(userId.toString()).flatMap { result ->
+    return userServices.getDetails(userId.toString()).flatMap { result ->
       Observable.just(detailsDataMapper.mapFrom(result))
     }
   }

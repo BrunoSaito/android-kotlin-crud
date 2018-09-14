@@ -21,7 +21,7 @@ class GetUserList (transformer: Transformer<List<UserEntity>>,
     val pagination = data?.get("param")
 
     pagination?.let {
-      return usersRepository.getUsers(it as JSONObject)
+      return usersRepository.getList(it as JSONObject)
     } ?: return Observable.just(emptyList())
   }
 }
