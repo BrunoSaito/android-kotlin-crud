@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.test.taqtile.takitiletest.*
-import com.test.taqtile.takitiletest.presentation.userDetails.UserDetailsActivity
+import com.test.taqtile.takitiletest.mobileUI.userDetails.UserDetailsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 

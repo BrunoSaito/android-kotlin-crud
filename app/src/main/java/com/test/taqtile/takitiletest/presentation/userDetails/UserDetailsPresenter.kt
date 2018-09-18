@@ -4,12 +4,13 @@ import com.test.taqtile.takitiletest.domain.entities.UserDetailsEntity
 import com.test.taqtile.takitiletest.domain.usecases.SingleUseCase
 import com.test.taqtile.takitiletest.presentation.mapper.UserDetailsEntityViewMapper
 import io.reactivex.observers.DisposableSingleObserver
+import javax.inject.Inject
 
 
-class UserDetailsPresenter(val userDetailsView: UserDetailsContract.View,
-                           val getUserDetailsUseCase: SingleUseCase<UserDetailsEntity, Void>,
-                           val mapper: UserDetailsEntityViewMapper,
-                           val userId: String) : UserDetailsContract.Presenter {
+class UserDetailsPresenter @Inject constructor(val userDetailsView: UserDetailsContract.View,
+                                               val getUserDetailsUseCase: SingleUseCase<UserDetailsEntity, Void>,
+                                               val mapper: UserDetailsEntityViewMapper) :
+        UserDetailsContract.Presenter {
 
   init {
     userDetailsView.setPresenter(this)
@@ -17,7 +18,7 @@ class UserDetailsPresenter(val userDetailsView: UserDetailsContract.View,
 
   override fun start() {
     userDetailsView.showProgressBar()
-    getDetails(userId)
+//    getDetails(userId)
   }
 
   override fun stop() {
@@ -33,9 +34,7 @@ class UserDetailsPresenter(val userDetailsView: UserDetailsContract.View,
 
     userDetails?.data?.let {
       userDetailsView.hideProgressBar()
-      userDetailsView.setUserName(it.name)
-      userDetailsView.setUserEmail(it.email)
-      userDetailsView.setUserRole(it.role)
+      userDetailsView.showDetails(it.name, it.email, it.role)
     } ?: userDetailsView.showError("Algo deu errado :(")
   }
 

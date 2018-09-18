@@ -11,5 +11,7 @@ class Constants {
     const val USER_SHARED_PREFERENCES = "com.test.taqtile.takitiletest.prefs"
 
     const val AUTHORIZATION_HEADER = "Authorization"
+
+    const val USER_ID = "user_id"
   }
 }

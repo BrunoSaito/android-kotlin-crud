@@ -6,8 +6,8 @@ import com.test.taqtile.takitiletest.data.services.ServiceGenerator
 import io.reactivex.Observable
 
 
-class UserCloudDataStore: UserDataStore {
-  override fun getDetails(userId: String): Observable<UserDetailsData> {
-    return ServiceGenerator().getUserServices().getDetails(userId).doOnNext {  }
-  }
-}
+//class UserCloudDataStore: UserDataStore {
+//  override fun getDetails(userId: String): Observable<UserDetailsData> {
+//    return ServiceGenerator().getUserServices().getDetails(userId).doOnNext {  }
+//  }
+//}

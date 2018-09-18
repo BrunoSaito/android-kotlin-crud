@@ -15,11 +15,14 @@ interface UserDetailsContract {
 
     fun hideError()
 
-    fun setUserName(userName: String?)
+//    fun setUserName(userName: String?)
+//
+//    fun setUserEmail(userEmail: String?)
+//
+//    fun setUserRole(userRole: String?)
 
-    fun setUserEmail(userEmail: String?)
+    fun showDetails(userName: String?, userEmail: String?, userRole: String?)
 
-    fun setUserRole(userRole: String?)
   }
 
   interface Presenter: BasePresenter {
