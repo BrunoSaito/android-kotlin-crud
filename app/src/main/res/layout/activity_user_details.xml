@@ -6,52 +6,94 @@
     android:layout_height="match_parent"
     tools:context=".Activities.UserDetailsActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/user_details_name"
-        android:textSize="20sp"
-        android:layout_marginTop="20dp"
-        android:textStyle="bold"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="70dp"
-        android:id="@+id/userDetailName"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/user_details_name"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/user_datails_email"
-        android:textSize="20sp"
-        android:layout_marginTop="50dp"
-        android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/userDetailName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_marginTop="50dp"
-        android:layout_marginStart="70dp"
-        android:id="@+id/userDetailEmail"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="@string/user_datails_email"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/user_details_role"
-        android:textSize="20sp"
-        android:layout_marginTop="80dp"
-        android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/userDetailEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="50dp"
+            android:textSize="20sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_marginTop="80dp"
-        android:layout_marginStart="70dp"
-        android:id="@+id/userDetailRole"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:text="@string/user_details_role"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/userDetailRole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="80dp"
+            android:textSize="20sp" />
+
+        <ProgressBar
+            android:layout_width="145dp"
+            android:layout_height="173dp"
+            android:layout_centerInParent="true"
+            android:id="@+id/progressBarDetailsUser" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonUserDetailsEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="@color/colorPrimaryDark"
+                android:text="@string/user_details_edit"
+                android:textColor="#ffffffff" />
+
+            <Button
+                android:id="@+id/buttonUserDetailsDelete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:layout_marginStart="20dp"
+                android:background="@color/colorPrimaryDark"
+                android:text="@string/user_details_delete"
+                android:textColor="#ffffffff" />
+
+        </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

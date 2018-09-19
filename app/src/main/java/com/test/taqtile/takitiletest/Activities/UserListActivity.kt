@@ -10,10 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SearchView
 import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.RetrofitInitializer
 import com.test.taqtile.takitiletest.DataModels.User
-import com.test.taqtile.takitiletest.Utils
+import com.test.taqtile.takitiletest.Preferences
 import kotlinx.android.synthetic.main.activity_user_list.*
 import kotlinx.android.synthetic.main.list_row.view.*
 import org.json.JSONObject
@@ -27,10 +28,11 @@ class UserListActivity : AppCompatActivity() {
   private var name: String? = null
   private var token: String? = null
 
-  private var preferences: HashMap<String, String>? = null
-
+  private var preferences: HashMap<String?, String?>? = null
   private var listCompleteData =  ArrayList<User.Data>()
   private var listUsers = ArrayList<User.Data>()
+
+  private val jsonParams: JSONObject? = JSONObject()
   private val progressBarListView: ProgressBar by lazy {
     val progressBarView = LayoutInflater.from(this).inflate(R.layout.bottom_listview_progressbar, null)
     progressBarView.findViewById<ProgressBar>(R.id.progressBarListView)
@@ -40,21 +42,24 @@ class UserListActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_user_list)
 
-    preferences = Utils(this@UserListActivity).getPreferences()
-    name = preferences!!.get("name")
-    token = preferences!!.get("token")
+    preferences = Preferences(this@UserListActivity).getPreferences()
+    name = preferences?.get("name")
+    token = preferences?.get("token")
 
-    val jsonParams = JSONObject()
-    jsonParams.put("page", "0")
-    jsonParams.put("window", "100")
+    jsonParams?.put("page", "0")
+    jsonParams?.put("window", "100")
 
-    getUsersList(jsonParams)
+    getUsersList(jsonParams, "")
+
+    val actionBar = supportActionBar
+    actionBar?.title = getString(R.string.user_list_title)
 
     listViewUsers.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
       val intent = Intent(this@UserListActivity, UserDetailsActivity::class.java)
+      intent.putExtra("userId", listUsers.get(position).id.toString())
 
-      intent.putExtra("id", listCompleteData.get(position).id.toString())
       startActivity(intent)
+      finish()
     }
 
     if (!intent.getStringExtra("message").isNullOrEmpty()) {
@@ -69,32 +74,62 @@ class UserListActivity : AppCompatActivity() {
 
     fabCreateNewUser.setOnClickListener {
       val intent = Intent(this@UserListActivity, CreateNewUserActivity::class.java)
+
       startActivity(intent)
+      finish()
     }
+
+    searchListView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+      override fun onQueryTextSubmit(query: String?): Boolean {
+        getUsersList(jsonParams, query)
+
+        return true
+      }
+
+      override fun onQueryTextChange(newText: String?): Boolean {
+        getUsersList(jsonParams, newText)
+
+        return true
+      }
+    })
+
+    progressBarListUsers.visibility = ProgressBar.VISIBLE
   }
 
-  private fun getUsersList(jsonParams: JSONObject) {
+  private fun getUsersList(jsonParams: JSONObject?, query: String?) {
     val users = RetrofitInitializer(token).userServices().listUsers(jsonParams)
 
     users.enqueue(object : Callback<User?> {
       override fun onResponse(call: Call<User?>?, response: Response<User?>?) {
-        listCompleteData = response!!.body()!!.data
+        listCompleteData = response!!.body()!!.data!!
+        listUsers.clear()
 
-        for (i in 0..9) {
-          listUsers.add(listCompleteData.get(i))
+        if (query.isNullOrEmpty()) {
+          for (i in 0..9)
+            listUsers.add(listCompleteData.get(i))
+        }
+        else {
+          var i = 0
+          while (listUsers.size < 10 && i < listCompleteData.size - 1) {
+            if (listCompleteData.get(i).name?.contains(query.toString())!!)
+              listUsers.add(listCompleteData.get(i))
+            i++
+          }
         }
 
         val newToken = response.headers().get("Authorization")
-        Utils(this@UserListActivity).saveNewToken(newToken)
+        Preferences(this@UserListActivity).saveNewToken(newToken)
 
-        listViewUsers!!.addFooterView(progressBarListView)
+        listViewUsers?.addFooterView(progressBarListView)
 
         val adapter = UsersAdapter(this@UserListActivity, listUsers)
-        listViewUsers!!.adapter = adapter
+        listViewUsers?.adapter = adapter
         setListViewOnScrollListener()
-      }
-      override fun onFailure(call: Call<User?>?, t: Throwable?) {
 
+        progressBarListUsers.visibility = ProgressBar.GONE
+      }
+      override fun onFailure(call: Call<User?>?, failureResponse: Throwable) {
+        progressBarListUsers.visibility = ProgressBar.GONE
       }
     })
   }
@@ -104,9 +139,9 @@ class UserListActivity : AppCompatActivity() {
         override fun onScroll(view: AbsListView?, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {}
 
         override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
-          if(scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE &&
-                            listViewUsers!!.lastVisiblePosition == listUsers.size &&
-                            listViewUsers!!.lastVisiblePosition < listCompleteData.size) {
+          if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE &&
+                            listViewUsers?.lastVisiblePosition!! == listUsers.size &&
+                            listViewUsers?.lastVisiblePosition!! < listCompleteData.size) {
             progressBarListView.visibility = ProgressBar.VISIBLE
             addMoreItems()
           }
@@ -114,11 +149,11 @@ class UserListActivity : AppCompatActivity() {
       })
   }
 
-  private fun addMoreItems(){
-      val size = listUsers.size
+  private fun addMoreItems() {
+    val size = listUsers.size
 
-      (0..10).filter { (size + it) < listCompleteData.size }
-              .mapTo(listUsers) { listCompleteData[it + size] }
+    (0..10).filter { (size + it) < listCompleteData.size }
+            .mapTo(listUsers) { listCompleteData[it + size] }
 
 //        for (i in 0..10) {
 //            if (size + i < listCompleteData.size) {
@@ -126,7 +161,7 @@ class UserListActivity : AppCompatActivity() {
 //            }
 //        }
 
-      progressBarListView.visibility = ProgressBar.GONE
+    progressBarListView.visibility = ProgressBar.GONE
   }
 
   inner class UsersAdapter : BaseAdapter {
@@ -152,8 +187,30 @@ class UserListActivity : AppCompatActivity() {
         vh = view.tag as ViewHolder
       }
 
-      vh.listViewUserName.text = usersList[position].name
-      vh.listViewUserRole.text = usersList[position].role
+      val userName = usersList[position].name
+      val userEmail = usersList[position].email
+      val userRole = usersList[position].role
+
+      vh.listViewUserName.text = userName
+      vh.listViewUserRole.text = userRole
+
+      vh.buttonEditUser.setOnClickListener {
+        val intent = Intent(this@UserListActivity, EditUserActivity::class.java)
+        intent.putExtra("userName", userName)
+        intent.putExtra("userEmail", userEmail)
+        intent.putExtra("userRole", userRole)
+        intent.putExtra("userId", listCompleteData.get(position).id.toString())
+
+        startActivity(intent)
+        finish()
+      }
+
+      vh.buttonDeleteUser.isFocusable = false
+      vh.buttonDeleteUser.isFocusableInTouchMode = false
+      vh.buttonDeleteUser.isClickable = true
+      vh.buttonEditUser.isFocusable = false
+      vh.buttonEditUser.isFocusableInTouchMode = false
+      vh.buttonEditUser.isClickable = true
 
       return view
     }
@@ -174,10 +231,14 @@ class UserListActivity : AppCompatActivity() {
   private class ViewHolder(view: View?) {
     val listViewUserName: TextView
     val listViewUserRole: TextView
+    val buttonEditUser: ImageButton
+    val buttonDeleteUser: ImageButton
 
     init {
       this.listViewUserName = view!!.listViewUserName
       this.listViewUserRole = view.listViewUserRole
+      this.buttonEditUser = view.buttonEditUser
+      this.buttonDeleteUser = view.buttonDeleteUser
     }
   }
 }
