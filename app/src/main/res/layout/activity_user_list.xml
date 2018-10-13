@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".domain.activities.UserListActivity">
+    tools:context=".presentation.account.UserListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,8 +17,8 @@
         android:id="@+id/searchListView" >
     </androidx.appcompat.widget.SearchView>
 
-    <ListView
-        android:id="@+id/listViewUsers"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/user_list_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:weightSum="10"
+    android:clickable="true"
+    android:id="@+id/list_row" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="9"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/user_row_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Title"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/user_row_user_role"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Text for Content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <ImageButton
+            android:id="@+id/user_row_button_delete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:backgroundTint="#ffffffff"
+            android:tint="@color/colorPrimaryLight"
+            android:hapticFeedbackEnabled="true"
+            app:srcCompat="@android:drawable/ic_menu_delete" />
+
+        <ImageButton
+            android:id="@+id/user_row_button_edit"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:backgroundTint="#ffffffff"
+            android:hapticFeedbackEnabled="false"
+            android:tint="@color/colorPrimaryLight"
+            app:srcCompat="@android:drawable/ic_menu_edit" />
+    </LinearLayout>
+
+</LinearLayout>

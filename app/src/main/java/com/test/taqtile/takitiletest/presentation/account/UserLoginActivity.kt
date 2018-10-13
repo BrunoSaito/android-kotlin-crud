@@ -29,7 +29,10 @@ class UserLoginActivity : AppCompatActivity() {
     AndroidInjection.inject(this)
     setContentView(R.layout.activity_user_login)
 
-    buttonLogin.setOnClickListener { login() }
+    buttonLogin.setOnClickListener {
+      buttonLogin.lockButton()
+      login()
+    }
   }
 
 //  private fun login() {
@@ -62,6 +65,7 @@ class UserLoginActivity : AppCompatActivity() {
   private fun onLoginSuccess(loginResponse: LoginResponse) {
     Log.d("D", "success : ${loginResponse}")
     Log.d("D", "access token : ${Toolbox.userSharedPreferences.getAccessToken()}")
+    buttonLogin.unlockButton()
     val nextActivity = Intent(this@UserLoginActivity, UserListActivity::class.java)
 
     startActivity(nextActivity)
@@ -70,6 +74,7 @@ class UserLoginActivity : AppCompatActivity() {
 
   private fun onLoginFailed(message: String?) {
     Log.d("D", "failed : $message")
+    buttonLogin.unlockButton()
   }
 
 //  private fun makeLoginRequest(email: String?, password: String?) {

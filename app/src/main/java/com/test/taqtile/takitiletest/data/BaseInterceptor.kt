@@ -17,7 +17,7 @@ abstract class BaseInterceptor: Interceptor {
     // Content type
     builder.set(JSON_HEADER_KEY, JSON_HEADER_VALUE)
     // App authorization for API V1 requests
-    builder.set(Constants.AUTHORIZATION_HEADER, "Bearer $accessToken")
+    builder.set(Constants.AUTHORIZATION_HEADER, "$accessToken")
 
     return builder.build()
   }
