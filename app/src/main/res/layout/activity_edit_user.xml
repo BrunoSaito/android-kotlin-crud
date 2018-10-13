@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.test.taqtile.takitiletest.presentation.InputWithValidation
+        <widgets.InputWithValidation
             android:id="@+id/editTextEditUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
             app:error_message="@string/invalid_name"
             app:input_type="@string/text_type" />
 
-        <com.test.taqtile.takitiletest.presentation.InputWithValidation
+        <widgets.InputWithValidation
             android:id="@+id/editTextEditUserEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:gravity="center"
             android:id="@+id/spinnerEditUserRole" />
 
-        <com.test.taqtile.takitiletest.presentation.SubmitButton
+        <widgets.SubmitButton
             android:id="@+id/buttonSubmitEditUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

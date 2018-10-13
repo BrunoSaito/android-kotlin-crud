@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <widgets.InputWithValidation
+        android:id="@+id/component_login_form_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hint="@string/email_input_field"
+        app:error_message="@string/invalid_email"
+        app:input_type="@string/email_type" />
+
+    <widgets.InputWithValidation
+        android:id="@+id/component_login_form_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hint="@string/password_input_field"
+        app:error_message="@string/invalid_password"
+        app:input_type="@string/password_type" />
+
+</LinearLayout>

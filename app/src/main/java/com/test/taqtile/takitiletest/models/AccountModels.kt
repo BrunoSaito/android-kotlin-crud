@@ -3,14 +3,14 @@ package com.test.taqtile.takitiletest.models
 import com.google.gson.annotations.SerializedName
 
 
-data class UserLoginCredentials (
+data class LoginCredentials (
   val email: String?,
   val password: String?,
   val rememberMe: Boolean?
 )
 
-data class UserLoginSuccess(
-  @SerializedName("data") val data: Data?
+data class LoginResponse(
+  @SerializedName("data") val data: Data
 ) {
 
   data class Data(

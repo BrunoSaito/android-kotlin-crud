@@ -3,7 +3,7 @@ package com.test.taqtile.takitiletest.models
 import com.google.gson.annotations.SerializedName
 
 
-//data class UserDetails(
+//data class UserDetailsActivity(
 //  @SerializedName("data") val data: Data?
 //) {
 //
