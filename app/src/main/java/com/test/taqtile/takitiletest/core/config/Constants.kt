@@ -6,7 +6,6 @@ object Constants {
   const val USER_DETAILS  = "users/{id}"
 
   const val API_ROOT_HTTP_URL = "https://tq-template-server-sample.herokuapp.com/"
-//  const val API_ROOT_HTTP_URL = "https://tq-template-server-sample.herokuapp.com/authenticate/"
 
   const val LOGIN_NAME = "LOGIN_NAME"
   const val LOGIN_TOKEN = "LOGIN_TOKEN"

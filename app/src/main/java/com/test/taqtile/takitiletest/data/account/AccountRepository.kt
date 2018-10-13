@@ -4,7 +4,9 @@ import android.util.Log
 import com.test.taqtile.takitiletest.core.Toolbox
 import com.test.taqtile.takitiletest.models.LoginCredentials
 import com.test.taqtile.takitiletest.models.LoginResponse
+import com.test.taqtile.takitiletest.models.ListUserResponse
 import io.reactivex.Observable
+import org.json.JSONObject
 import javax.inject.Inject
 
 class AccountRepository @Inject constructor(private val accountRemoteDataSource: AccountRemoteDataSource) {
@@ -13,9 +15,9 @@ class AccountRepository @Inject constructor(private val accountRemoteDataSource:
 //    return accountRemoteDataSource.create(request)
 //  }
 //
-//  fun list(request: ): Observable<> {
-//    return accountRemoteDataSource.list(request)
-//  }
+  fun list(pagination: JSONObject): Observable<ListUserResponse> {
+    return accountRemoteDataSource.list(pagination)
+  }
 //
 //  fun getUserDetails(): Observable<> {
 //    return accountRemoteDataSource.getUserDetails()

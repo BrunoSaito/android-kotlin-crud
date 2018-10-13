@@ -8,11 +8,11 @@ import com.google.gson.annotations.SerializedName
 //) {
 //
 //  data class Data(
-//          @SerializedName("user") val user: User?,
+//          @SerializedName("user") val user: ListUserResponse?,
 //          @SerializedName("token") val token: String?
 //  ) {
 //
-//    data class User(
+//    data class ListUserResponse(
 //        @SerializedName("id") val id: Int?,
 //        @SerializedName("active") val active: Boolean?,
 //        @SerializedName("email") val email: String?,

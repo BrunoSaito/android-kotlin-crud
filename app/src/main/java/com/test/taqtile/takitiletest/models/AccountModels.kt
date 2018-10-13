@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 
 data class LoginCredentials (
-  val email: String?,
-  val password: String?,
-  val rememberMe: Boolean?
+  val email: String,
+  val password: String,
+  val rememberMe: Boolean
 )
 
 data class LoginResponse(
@@ -14,20 +14,42 @@ data class LoginResponse(
 ) {
 
   data class Data(
-    @SerializedName("user") val user: User?,
-    @SerializedName("token") val token: String?
-  ) {
+    @SerializedName("user") val user: User,
+    @SerializedName("token") val token: String
+  )
 
   data class User(
-    @SerializedName("id") val id: Int?,
-    @SerializedName("active") val active: Boolean?,
-    @SerializedName("email") val email: String?,
-    @SerializedName("activationToken") val activationToken: Any?,
-    @SerializedName("createdAt") val createdAt: String?,
-    @SerializedName("updatedAt") val updatedAt: String?,
-    @SerializedName("salt") val salt: String?,
-    @SerializedName("name") val name: String?,
-    @SerializedName("role") val role: String?
+    @SerializedName("id") val id: Int,
+    @SerializedName("active") val active: Boolean,
+    @SerializedName("email") val email: String,
+    @SerializedName("activationToken") val activationToken: Any,
+    @SerializedName("createdAt") val createdAt: String,
+    @SerializedName("updatedAt") val updatedAt: String,
+    @SerializedName("salt") val salt: String,
+    @SerializedName("name") val name: String,
+    @SerializedName("role") val role: String
   )
 }
+
+data class ListUserResponse(
+  @SerializedName("data") val data: ArrayList<User>,
+  @SerializedName("pagination") val pagination: Pagination
+) {
+
+  data class Pagination(
+    @SerializedName("page") val page: Int,
+    @SerializedName("window") val window: Int,
+    @SerializedName("total") val total: Int,
+    @SerializedName("totalPages") val totalPages: Int
+  )
 }
+
+data class User(
+  @SerializedName("id") val id: Int,
+  @SerializedName("active") val active: Boolean,
+  @SerializedName("email") val email: String,
+  @SerializedName("createdAt") val createdAt: String,
+  @SerializedName("updatedAt") val updatedAt: String,
+  @SerializedName("name") val name: String,
+  @SerializedName("role") val role: String
+)
