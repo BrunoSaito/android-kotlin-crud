@@ -175,10 +175,10 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
   // end region
 
 //  inner class UsersAdapter : BaseAdapter {
-//    private var usersList = ArrayList<User>()
+//    private var usersList = ArrayList<LoginUser>()
 //    private var context: Context? = null
 //
-//    constructor(context: Context, usersList: ArrayList<User>) : super() {
+//    constructor(context: Context, usersList: ArrayList<LoginUser>) : super() {
 //      this.usersList = usersList
 //      this.context = context
 //    }

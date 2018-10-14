@@ -14,11 +14,11 @@ data class LoginResponse(
 ) {
 
   data class Data(
-    @SerializedName("user") val user: User,
+    @SerializedName("user") val user: LoginUser,
     @SerializedName("token") val token: String
   )
 
-  data class User(
+  data class LoginUser(
     @SerializedName("id") val id: Int,
     @SerializedName("active") val active: Boolean,
     @SerializedName("email") val email: String,
@@ -43,6 +43,10 @@ data class ListUserResponse(
     @SerializedName("totalPages") val totalPages: Int
   )
 }
+
+data class DetailsResponse(
+    @SerializedName("data") val data: User
+)
 
 data class User(
   @SerializedName("id") val id: Int,

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mobileUI.userDetails.UserDetailsActivity">
+    tools:context=".presentation.account.UserDetailsActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,17 +13,63 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerUserDetails"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/user_details_name"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/user_details_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="@string/user_datails_email"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/user_details_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="50dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:text="@string/user_details_role"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/user_details_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="80dp"
+            android:textSize="20sp" />
+
 
         <ProgressBar
             android:layout_width="145dp"
             android:layout_height="173dp"
             android:layout_centerInParent="true"
             android:id="@+id/progressBarDetailsUser" />
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,25 +78,21 @@
             android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/buttonUserDetailsEdit"
-                android:layout_width="0dp"
+            <widgets.SubmitButton
+                android:id="@+id/user_details_button_edit"
                 android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:layout_weight="0.5"
-                android:background="@color/colorPrimaryDark"
-                android:text="@string/user_details_edit"
-                android:textColor="@color/colorWhite" />
+                app:button_text="@string/user_details_edit" />
 
-            <Button
-                android:id="@+id/buttonUserDetailsDelete"
-                android:layout_width="0dp"
+            <widgets.SubmitButton
+                android:id="@+id/user_details_button_delete"
                 android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:layout_weight="0.5"
-                android:layout_marginStart="20dp"
-                android:background="@color/colorPrimaryDark"
-                android:text="@string/user_details_delete"
-                android:textColor="@color/colorWhite" />
-
+                app:button_text="@string/user_details_delete" />
         </LinearLayout>
+
     </RelativeLayout>
+
 </RelativeLayout>

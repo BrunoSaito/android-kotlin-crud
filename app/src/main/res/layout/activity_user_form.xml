@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.account.UserFormActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <widgets.InputWithValidation
+            android:id="@+id/user_form_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="@string/username_input_field"
+            app:error_message="@string/invalid_name"
+            app:input_type="@string/text_type" />
+
+        <widgets.InputWithValidation
+            android:id="@+id/user_form_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="@string/email_input_field"
+            app:error_message="@string/invalid_email"
+            app:input_type="@string/email_type" />
+
+        <widgets.InputWithValidation
+            android:id="@+id/user_form_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="@string/password_input_field"
+            app:error_message="@string/invalid_password"
+            app:input_type="@string/password_type" />
+
+        <widgets.InputWithValidation
+            android:id="@+id/user_form_password_confirmation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="@string/new_user_password_confirm"
+            app:error_message="@string/invalid_password_confirm"
+            app:input_type="@string/password_confirmation_type" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/user_form_spinner_role" />
+
+        <widgets.SubmitButton
+            android:id="@+id/user_form_button_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:button_text="@string/new_user_submit" />
+
+    </LinearLayout>
+
+</RelativeLayout>

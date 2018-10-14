@@ -16,7 +16,7 @@ interface AccountServices {
   fun list(@Query("pagination") pagination: JSONObject?) : Observable<Result<ListUserResponse>>
 
   @GET(Constants.USER_DETAILS)
-  fun getDetails(@Path("id") id: String?) : Observable<UserDetailsActivity>
+  fun getDetails(@Path("id") id: String?) : Observable<Result<DetailsResponse>>
 
   @POST(Constants.USER_LOGIN)
   fun login(@Body loginCredentials: LoginCredentials?) : Observable<Result<LoginResponse>>
