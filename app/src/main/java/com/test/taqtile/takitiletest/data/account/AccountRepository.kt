@@ -17,7 +17,7 @@ class AccountRepository @Inject constructor(private val accountRemoteDataSource:
     return accountRemoteDataSource.list(pagination)
   }
 
-  fun getUserDetails(id: String): Observable<DetailsResponse> {
+  fun getUserDetails(id: String): Observable<UserResponse> {
     return accountRemoteDataSource.getDetails(id)
   }
 
@@ -33,7 +33,7 @@ class AccountRepository @Inject constructor(private val accountRemoteDataSource:
 //    return accountRemoteDataSource.update(request)
 //  }
 //
-//  fun delete(request: ): Observable<> {
-//    return accountRemoteDataSource.delete(request)
-//  }
+  fun delete(id: String): Observable<UserResponse> {
+    return accountRemoteDataSource.delete(id)
+  }
 }

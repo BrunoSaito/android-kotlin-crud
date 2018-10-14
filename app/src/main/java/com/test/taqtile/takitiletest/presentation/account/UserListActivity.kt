@@ -20,11 +20,15 @@ import widgets.lists.user.UsersAdapter
 import javax.inject.Inject
 import androidx.recyclerview.widget.RecyclerView
 import com.test.taqtile.takitiletest.core.config.Constants
+import com.test.taqtile.takitiletest.domain.DeleteUserUseCase
 
 class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
 
   @Inject
   lateinit var listUsersUseCase: ListUsersUseCase
+
+  @Inject
+  lateinit var deleteUserUseCase: DeleteUserUseCase
 
   private var disposables: MutableList<Disposable> = mutableListOf()
   private var adapter: UsersAdapter? = null
@@ -37,20 +41,36 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
   private val jsonParams: JSONObject = JSONObject()
 
   // region listeners
-  override fun onUserSelected(user: User?) {
+  override fun onUserSelected(id: String?) {
     val intent = Intent(this@UserListActivity, UserDetailsActivity::class.java)
-    intent.putExtra(Constants.USER_ID, user?.id.toString())
+    intent.putExtra(Constants.USER_ID, id)
 
     startActivity(intent)
     finish()
   }
 
-  override fun onEditUserClicked(user: User?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun onEditUserClicked(id: String?) {
+    val intent = Intent(this@UserListActivity, UserFormActivity::class.java)
+    intent.putExtra(Constants.USER_ID, id)
+
+    startActivity(intent)
+    finish()
   }
 
-  override fun onDeleteUserClicked(user: User?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun onDeleteUserClicked(id: String?, name: String?) {
+    val builder = AlertDialog.Builder(this@UserListActivity)
+        builder.setMessage("Deseja realmente deletar o usuário $name ?")
+        builder.setPositiveButton("Sim") { _, _ ->
+//          this@UserListActivity.deleteUserRequest(users[position].id.toString())
+          val localId = id
+          if (localId != null) delete(id)
+        }
+        builder.setNegativeButton("Não") { dialog, _ ->
+          dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
   }
   // end region
 
@@ -63,7 +83,7 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
     jsonParams.put("page", page.toString())
     jsonParams.put("window", window.toString())
 
-    list(jsonParams)
+    list()
 
     setupActionBar()
     setupRecycler()
@@ -135,7 +155,7 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
           page = page.plus(1)
           jsonParams.put("page", page.toString())
 
-          list(jsonParams)
+          list()
         }
       }
     })
@@ -143,12 +163,26 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
   // end region
 
   // region services
-  private fun list(pagination: JSONObject, query: String? = null) {
+  private fun list(reset: Boolean? = false, query: String? = null) {
+    progressBarListUsers.visibility = ProgressBar.VISIBLE
     disposables.add(
-            listUsersUseCase.execute(pagination)
+            listUsersUseCase.execute(jsonParams)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
-                      onSuccess(it)
+                      onListSuccess(it, reset)
+                    }, {
+                      onFailure(it.message)
+                    })
+    )
+  }
+
+  private fun delete(id: String) {
+    progressBarListUsers.visibility = ProgressBar.VISIBLE
+    disposables.add(
+            deleteUserUseCase.execute(id)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                      onDeleteSuccess(it.data)
                     }, {
                       onFailure(it.message)
                     })
@@ -157,8 +191,10 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
   // end region
 
   // region private
-  private fun onSuccess(listUserResponse: ListUserResponse) {
+  private fun onListSuccess(listUserResponse: ListUserResponse, reset: Boolean?) {
+    if (reset == true) users.clear()
     listUserResponse.data.map { users.add(it) }
+
     totalPages = listUserResponse.pagination.totalPages
 
     runOnUiThread {
@@ -169,117 +205,18 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
     progressBarListUsers.visibility = ProgressBar.GONE
   }
 
+  private fun onDeleteSuccess(user: User) {
+    if (!user.active) {
+      //TODO snack bar with success message
+      list(true)
+    }
+
+    progressBarListUsers.visibility = ProgressBar.GONE
+  }
+
   private fun onFailure(message: String?) {
+    //TODO add snack bar with error message
     progressBarListUsers.visibility = ProgressBar.GONE
   }
   // end region
-
-//  inner class UsersAdapter : BaseAdapter {
-//    private var usersList = ArrayList<LoginUser>()
-//    private var context: Context? = null
-//
-//    constructor(context: Context, usersList: ArrayList<LoginUser>) : super() {
-//      this.usersList = usersList
-//      this.context = context
-//    }
-//
-//    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-//      val view: View?
-//      val vh: ViewHolder
-//
-//      if (convertView == null) {
-//        view = layoutInflater.inflate(R.layout.user_list_row, parent, false)
-//        vh = ViewHolder(view)
-//        view!!.tag = vh
-//      } else {
-//        view = convertView
-//        vh = view.tag as ViewHolder
-//      }
-//
-//      val userName = usersList[position].name
-//      val userEmail = usersList[position].email
-//      val userRole = usersList[position].role
-//
-//      vh.listViewUserName.text = userName
-//      vh.listViewUserRole.text = userRole
-//
-//      vh.buttonEditUser.setOnClickListener {
-//        val intent = Intent(this@UserListActivity, UserEditActivity::class.java)
-//        intent.putExtra("userName", userName)
-//        intent.putExtra("userEmail", userEmail)
-//        intent.putExtra("userRole", userRole)
-//        intent.putExtra("userId", listRequest[position].id.toString())
-//
-//        startActivity(intent)
-//        finish()
-//      }
-//
-//      vh.buttonDeleteUser.setOnClickListener {
-//        val builder = AlertDialog.Builder(this@UserListActivity)
-//        builder.setMessage("Deseja realmente deletar o usuário " + userName + "?")
-//        builder.setPositiveButton("Sim") { _, _ ->
-////          this@UserListActivity.deleteUserRequest(users[position].id.toString())
-//        }
-//        builder.setNegativeButton("Não") { dialog, _ ->
-//          dialog.dismiss()
-//        }
-//
-//        val dialog = builder.create()
-//        dialog.show()
-//      }
-//
-//      vh.buttonDeleteUser.isFocusable = false
-//      vh.buttonDeleteUser.isFocusableInTouchMode = false
-//      vh.buttonDeleteUser.isClickable = true
-//      vh.buttonEditUser.isFocusable = false
-//      vh.buttonEditUser.isFocusableInTouchMode = false
-//      vh.buttonEditUser.isClickable = true
-//
-//      return view
-//    }
-//
-//    override fun getItem(position: Int): Any {
-//      return usersList[position]
-//    }
-//
-//    override fun getItemId(position: Int): Long {
-//      return position.toLong()
-//    }
-//
-//    override fun getCount(): Int {
-//      return usersList.size
-//    }
-//  }
-//
-//  private class ViewHolder(view: View?) {
-//    val listViewUserName: TextView = view?.user_row_user_name!!
-//    val listViewUserRole: TextView = view?.user_row_user_role!!
-//    val buttonEditUser: ImageButton = view?.`@+id/user_row+button_edit`!!
-//    val buttonDeleteUser: ImageButton = view?.user_row_button_delete!!
-//  }
-
-//  private fun deleteUserRequest(userId: String?) {
-//    val userDelete = RetrofitInitializer(Preferences.token).userServices().deleteUser(userId)
-//
-//    userDelete.enqueue(object: Callback<DeleteUserSuccess?> {
-//      override fun onResponse(call: Call<DeleteUserSuccess?>?, response: Response<DeleteUserSuccess?>?) {
-//        try {
-//          if (response!!.body()!!.data!!.active == false) {
-//            val intent = Intent(this@UserListActivity, UserListActivity::class.java)
-//
-//            intent.putExtra("message", "Usuário deletado com sucesso!")
-//            startActivity(intent)
-//            finish()
-//          }
-//        }
-//        catch (e: Exception) {
-//
-//        }
-//      }
-//
-//      override fun onFailure(call: Call<DeleteUserSuccess?>?, failureResponse: Throwable) {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//      }
-//    })
-//  }
 }

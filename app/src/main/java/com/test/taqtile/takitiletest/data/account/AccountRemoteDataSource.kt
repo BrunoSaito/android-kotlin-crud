@@ -29,9 +29,15 @@ class AccountRemoteDataSource @Inject constructor(interceptor: CredentialsInterc
             .validateAndConvertToObservable()
   }
 
-  fun getDetails(id: String): Observable<DetailsResponse> {
+  fun getDetails(id: String): Observable<UserResponse> {
     return services
             .flatMap { it.getDetails(id) }
+            .validateAndConvertToObservable()
+  }
+
+  fun delete(id: String): Observable<UserResponse> {
+    return services
+            .flatMap { it.delete(id) }
             .validateAndConvertToObservable()
   }
 }

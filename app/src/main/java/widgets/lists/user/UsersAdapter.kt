@@ -12,9 +12,9 @@ import kotlinx.android.synthetic.main.user_list_row.view.*
 class UsersAdapter(private val listener: Listener?): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   interface Listener {
-    fun onUserSelected(user: User?)
-    fun onEditUserClicked(user: User?)
-    fun onDeleteUserClicked(user: User?)
+    fun onUserSelected(id: String?)
+    fun onEditUserClicked(id: String?)
+    fun onDeleteUserClicked(id: String?, name: String?)
   }
 
   // region View types
@@ -69,9 +69,9 @@ class UsersAdapter(private val listener: Listener?): RecyclerView.Adapter<Recycl
 
   // region setup
   private fun setupUser(holder: UserViewHolder, user: User?, listener: Listener?) {
-    holder.clickableView.setOnClickListener { listener?.onUserSelected(user) }
-    holder.buttonEdit.setOnClickListener { listener?.onEditUserClicked(user) }
-    holder.buttonDelete.setOnClickListener { listener?.onDeleteUserClicked(user) }
+    holder.clickableView.setOnClickListener { listener?.onUserSelected(user?.id.toString()) }
+    holder.buttonEdit.setOnClickListener { listener?.onEditUserClicked(user?.id.toString()) }
+    holder.buttonDelete.setOnClickListener { listener?.onDeleteUserClicked(user?.id.toString(), user?.name) }
     holder.name.text = user?.name
     holder.role.text = user?.role
   }

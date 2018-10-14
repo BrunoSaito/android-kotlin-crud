@@ -2,7 +2,6 @@ package com.test.taqtile.takitiletest.data.account
 
 import com.test.taqtile.takitiletest.core.config.Constants
 import com.test.taqtile.takitiletest.models.*
-import com.test.taqtile.takitiletest.presentation.account.UserDetailsActivity
 import io.reactivex.Observable
 import org.json.JSONObject
 import retrofit2.adapter.rxjava2.Result
@@ -16,7 +15,7 @@ interface AccountServices {
   fun list(@Query("pagination") pagination: JSONObject?) : Observable<Result<ListUserResponse>>
 
   @GET(Constants.USER_DETAILS)
-  fun getDetails(@Path("id") id: String?) : Observable<Result<DetailsResponse>>
+  fun getDetails(@Path("id") id: String?) : Observable<Result<UserResponse>>
 
   @POST(Constants.USER_LOGIN)
   fun login(@Body loginCredentials: LoginCredentials?) : Observable<Result<LoginResponse>>
@@ -25,5 +24,5 @@ interface AccountServices {
   fun update(@Path("id") id: String?, @Body editUserData: EditUserData?) : Observable<EditUserSuccess>
 
   @DELETE(Constants.USER_DETAILS)
-  fun delete(@Path("id") id: String?) : Observable<DeleteUserSuccess>
+  fun delete(@Path("id") id: String?) : Observable<Result<UserResponse>>
 }

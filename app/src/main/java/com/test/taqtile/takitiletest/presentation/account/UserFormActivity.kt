@@ -3,7 +3,6 @@ package com.test.taqtile.takitiletest.presentation.account
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -113,7 +112,6 @@ class UserFormActivity : AppCompatActivity() {
     id = intent.getStringExtra(Constants.USER_ID)
 
     val localId = id
-    Log.d("D", "local id : $localId")
     if (localId != null) {
       user_form_password.visibility = View.GONE
       user_form_password_confirmation.visibility = View.GONE
@@ -145,12 +143,11 @@ class UserFormActivity : AppCompatActivity() {
   }
 
   private fun onFailure(message: String?) {
-    Log.d("D", "failed : ${message}")
+    //TODO add snack bar with error message
     progress_bar_user_form.visibility = ProgressBar.GONE
   }
 
   private fun setUserInfo(user: User) {
-    Log.d("D", "user : $user")
     //TODO make a component of fields of the form and then create a method setUserInfo on the created component
     user_form_name.setInputText(user.name)
     user_form_email.setInputText(user.email)

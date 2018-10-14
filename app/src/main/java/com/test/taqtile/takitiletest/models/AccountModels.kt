@@ -44,7 +44,7 @@ data class ListUserResponse(
   )
 }
 
-data class DetailsResponse(
+data class UserResponse(
     @SerializedName("data") val data: User
 )
 
