@@ -162,12 +162,12 @@ class UserFormActivity : AppCompatActivity() {
     if (user.active) {
       setResult(Activity.RESULT_OK, intent)
       finish()
+    } else {
+      CustomSnackBarBuilder(this@UserFormActivity)
+              .withText(R.string.create_user_failure)
+              .show()
+      component_user_form_button_submit.unlockButton()
     }
-
-    CustomSnackBarBuilder(this@UserFormActivity)
-            .withText(R.string.create_user_failure)
-            .show()
-    component_user_form_button_submit.unlockButton()
   }
 
   private fun onFailure(message: String?) {

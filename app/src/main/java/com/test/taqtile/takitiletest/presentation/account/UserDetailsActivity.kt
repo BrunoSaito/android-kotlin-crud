@@ -1,26 +1,31 @@
 package com.test.taqtile.takitiletest.presentation.account
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import com.test.taqtile.takitiletest.R
 import com.test.taqtile.takitiletest.core.config.Constants
+import com.test.taqtile.takitiletest.domain.DeleteUserUseCase
 import com.test.taqtile.takitiletest.domain.DetailsUserUseCase
 import com.test.taqtile.takitiletest.models.User
 import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_user_details.*
+import widgets.components.CustomSnackBarBuilder
 import javax.inject.Inject
 
 class UserDetailsActivity : AppCompatActivity() {
 
   @Inject
   lateinit var getUserDetailsUserUseCase: DetailsUserUseCase
+
+  @Inject
+  lateinit var deleteUserUseCase: DeleteUserUseCase
 
   private var disposables: MutableList<Disposable> = mutableListOf()
   private var userId: String? = null
@@ -79,11 +84,12 @@ class UserDetailsActivity : AppCompatActivity() {
   private fun setupDeleteButton() {
     user_details_button_delete.setOnClickListener {
       val builder = AlertDialog.Builder(this@UserDetailsActivity)
-      builder.setMessage("Deseja realmente deletar o usuário " + user_details_name.text + "?")
-      builder.setPositiveButton("Sim") { _, _ ->
-        //        deleteUser(userId)
+      builder.setMessage(getString(R.string.delete_user_alert_message, user_details_name.text))
+      builder.setPositiveButton(R.string.delete_user_alert_positive_button) { _, _ ->
+        val localId = userId
+        if (localId != null) delete(localId)
       }
-      builder.setNegativeButton("Não") { dialog, _ ->
+      builder.setNegativeButton(R.string.delete_user_alert_negative_button) { dialog, _ ->
         dialog.dismiss()
       }
 
@@ -99,7 +105,20 @@ class UserDetailsActivity : AppCompatActivity() {
             getUserDetailsUserUseCase.execute(id)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
-                      onSuccess(it.data)
+                      onGetDetailsSuccess(it.data)
+                    }, {
+                      onFailure(it.message)
+                    })
+    )
+  }
+
+  private fun delete(id: String) {
+    progressBarDetailsUser.visibility = ProgressBar.VISIBLE
+    disposables.add(
+            deleteUserUseCase.execute(id)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                      onDeleteSuccess(it.data)
                     }, {
                       onFailure(it.message)
                     })
@@ -108,7 +127,7 @@ class UserDetailsActivity : AppCompatActivity() {
   // end region
 
   // region private
-  private fun onSuccess(user: User) {
+  private fun onGetDetailsSuccess(user: User) {
     user_details_name.text = user.name
     user_details_email.text = user.email
     user_details_role.text = user.role
@@ -116,33 +135,23 @@ class UserDetailsActivity : AppCompatActivity() {
     progressBarDetailsUser.visibility = View.GONE
   }
 
+  private fun onDeleteSuccess(user: User) {
+    if (!user.active) {
+      setResult(Activity.RESULT_OK, intent)
+      finish()
+    } else {
+      CustomSnackBarBuilder(this@UserDetailsActivity)
+              .withText(R.string.create_user_failure)
+              .show()
+      progressBarDetailsUser.visibility = View.GONE
+    }
+  }
+
   private fun onFailure(message: String?) {
-    //TODO add snack bar with error message
+    CustomSnackBarBuilder(this@UserDetailsActivity)
+            .withText(message)
+            .show()
+    progressBarDetailsUser.visibility = View.GONE
   }
   // end region
-
-//  private fun deleteUser(userId: String?) {
-//    val userDelete = RetrofitInitializer(Preferences.token).userServices().deleteUser(userId)
-//
-//    userDelete.enqueue(object: Callback<DeleteUserSuccess?> {
-//      override fun onResponse(call: Call<DeleteUserSuccess?>?, response: Response<DeleteUserSuccess?>?) {
-//        try {
-//          if (response!!.body()!!.data!!.active == false) {
-//            val intent = Intent(this@UserDetailsActivity, UserListActivity::class.java)
-//
-//            intent.putExtra("message", "Usuário deletado com sucesso!")
-//            startActivity(intent)
-//            finish()
-//          }
-//        }
-//        catch (e: Exception) {
-//
-//        }
-//      }
-//
-//      override fun onFailure(call: Call<DeleteUserSuccess?>?, failureResponse: Throwable) {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//      }
-//    })
-//  }
 }

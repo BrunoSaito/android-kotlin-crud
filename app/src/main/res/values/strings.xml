@@ -45,8 +45,11 @@
     <string name="edit_user_submit">Finalizar</string>
 
     <!--User Delete-->
-    <string name="user_delete_success">Usuário deletado com sucesso.</string>
-    <string name="user_delete_failure">Erro ao deletar usuário.</string>
+    <string name="delete_user_success">Usuário deletado com sucesso.</string>
+    <string name="delete_user_failure">Erro ao deletar usuário.</string>
+    <string name="delete_user_alert_message">Deseja realmente deletar o usuário %1$s?</string>
+    <string name="delete_user_alert_positive_button">Sim</string>
+    <string name="delete_user_alert_negative_button">Não</string>
 
     <string name="default_empty"></string>
     <string name="default_invalid_field">Campo inválido.</string>

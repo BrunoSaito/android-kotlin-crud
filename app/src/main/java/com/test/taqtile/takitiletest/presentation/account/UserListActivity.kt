@@ -38,18 +38,25 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
   private var users = ArrayList<User>()
   private var page = 0
   private var window = 10
-  private var totalPages: Int? = null
+  private var totalPages = 0
+  private var total = 0
 
   private val CALLBACK_FROM_USER_FORM = 0
+  private val CALLBACK_FROM_USER_DETAILS = 1
   private val jsonParams: JSONObject = JSONObject()
 
   // region listeners
   override fun onUserSelected(id: String?) {
+//    val intent = Intent(this@UserListActivity, UserDetailsActivity::class.java)
+//    intent.putExtra(Constants.USER_ID, id)
+//
+//    startActivity(intent)
+//    finish()
+
     val intent = Intent(this@UserListActivity, UserDetailsActivity::class.java)
     intent.putExtra(Constants.USER_ID, id)
 
-    startActivity(intent)
-    finish()
+    startActivityForResult(intent, CALLBACK_FROM_USER_DETAILS)
   }
 
   override fun onEditUserClicked(id: String?) {
@@ -62,12 +69,12 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
 
   override fun onDeleteUserClicked(id: String?, name: String?) {
     val builder = AlertDialog.Builder(this@UserListActivity)
-        builder.setMessage("Deseja realmente deletar o usuário $name ?")
-        builder.setPositiveButton("Sim") { _, _ ->
+    builder.setMessage(getString(R.string.delete_user_alert_message, name))
+        builder.setPositiveButton(R.string.delete_user_alert_positive_button) { _, _ ->
           val localId = id
           if (localId != null) delete(id)
         }
-        builder.setNegativeButton("Não") { dialog, _ ->
+        builder.setNegativeButton(R.string.delete_user_alert_negative_button) { dialog, _ ->
           dialog.dismiss()
         }
 
@@ -89,7 +96,6 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
     list()
 
     setupActionBar()
-    setupRecycler()
     setupFabCreateButton()
 
     searchListView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
@@ -119,6 +125,16 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
       CustomSnackBarBuilder(this@UserListActivity)
               .withText(R.string.create_user_success)
               .show()
+      page = 0
+      jsonParams.put("page", page.toString())
+      list(reset = true)
+    }
+    if (requestCode == CALLBACK_FROM_USER_DETAILS && resultCode == Activity.RESULT_OK) {
+      CustomSnackBarBuilder(this@UserListActivity)
+              .withText(R.string.delete_user_success)
+              .show()
+      page = 0
+      jsonParams.put("page", page.toString())
       list(reset = true)
     }
   }
@@ -134,8 +150,10 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
     val manager = LinearLayoutManager(this@UserListActivity)
     user_list_recycler.setHasFixedSize(true)
     user_list_recycler.layoutManager = manager
-    adapter = UsersAdapter(this)
+    adapter = UsersAdapter(this, total)
     user_list_recycler.adapter = adapter
+    adapter?.users = users
+    adapter?.notifyDataSetChanged()
 
     setupRecyclerOnScrollListener()
   }
@@ -145,11 +163,6 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
       val intent = Intent(this@UserListActivity, UserFormActivity::class.java)
 
       startActivityForResult(intent, CALLBACK_FROM_USER_FORM)
-
-//      val intent = Intent(this@UserListActivity, UserFormActivity::class.java)
-//
-//      startActivity(intent)
-//      finish()
     }
   }
 
@@ -198,14 +211,22 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
 
   // region private
   private fun onListSuccess(listUserResponse: ListUserResponse, reset: Boolean?) {
-    if (reset == true) users.clear()
+    if (reset == true) {
+      users.clear()
+    }
     listUserResponse.data.map { users.add(it) }
 
     totalPages = listUserResponse.pagination.totalPages
+    total = listUserResponse.pagination.total
 
-    runOnUiThread {
-      adapter?.users = users
-      adapter?.notifyDataSetChanged()
+    if (user_list_recycler.adapter == null) {
+      setupRecycler()
+    }
+    else {
+      runOnUiThread {
+        adapter?.users = users
+        adapter?.notifyDataSetChanged()
+      }
     }
 
     progressBarListUsers.visibility = ProgressBar.GONE
@@ -214,7 +235,7 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
   private fun onDeleteSuccess(user: User) {
     if (!user.active) {
       CustomSnackBarBuilder(this@UserListActivity)
-              .withText(R.string.user_delete_success)
+              .withText(R.string.delete_user_success)
               .show()
       list(true)
     }

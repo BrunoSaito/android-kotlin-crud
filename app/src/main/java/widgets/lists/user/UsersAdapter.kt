@@ -9,7 +9,7 @@ import com.test.taqtile.takitiletest.models.User
 import kotlinx.android.synthetic.main.user_list_loader.view.*
 import kotlinx.android.synthetic.main.user_list_row.view.*
 
-class UsersAdapter(private val listener: Listener?): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class UsersAdapter(private val listener: Listener?, private val total: Int): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   interface Listener {
     fun onUserSelected(id: String?)
@@ -77,7 +77,12 @@ class UsersAdapter(private val listener: Listener?): RecyclerView.Adapter<Recycl
   }
 
   private fun setupLoader(holder: LoaderViewHolder, listener: Listener?) {
-    holder.loader.visibility = View.VISIBLE
+    if (itemCount < total) {
+      holder.loader.visibility = View.VISIBLE
+    }
+    else {
+      holder.loader.visibility = View.GONE
+    }
   }
   // end region
 }
