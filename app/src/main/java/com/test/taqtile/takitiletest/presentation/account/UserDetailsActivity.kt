@@ -67,7 +67,7 @@ class UserDetailsActivity : AppCompatActivity() {
 
   private fun setupEditButton() {
     user_details_button_edit.setOnClickListener {
-      val intent = Intent(this@UserDetailsActivity, UserEditActivity::class.java)
+      val intent = Intent(this@UserDetailsActivity, UserFormActivity::class.java)
 
       intent.putExtra(Constants.USER_ID, userId)
 

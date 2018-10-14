@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ProgressBar
 import com.test.taqtile.takitiletest.*
 import com.test.taqtile.takitiletest.core.config.Constants
 import com.test.taqtile.takitiletest.domain.DetailsUserUseCase
@@ -47,6 +48,7 @@ class UserFormActivity : AppCompatActivity() {
     val intent = Intent(this@UserFormActivity, UserListActivity::class.java)
 
     startActivity(intent)
+    finish()
   }
   // end region
 
@@ -111,6 +113,7 @@ class UserFormActivity : AppCompatActivity() {
     id = intent.getStringExtra(Constants.USER_ID)
 
     val localId = id
+    Log.d("D", "local id : $localId")
     if (localId != null) {
       user_form_password.visibility = View.GONE
       user_form_password_confirmation.visibility = View.GONE
@@ -122,6 +125,7 @@ class UserFormActivity : AppCompatActivity() {
 
   // region services
   private fun getDetails(id: String) {
+    progress_bar_user_form.visibility = ProgressBar.VISIBLE
     disposables.add(
             getUserDetails.execute(id)
                     .observeOn(AndroidSchedulers.mainThread())
@@ -137,13 +141,16 @@ class UserFormActivity : AppCompatActivity() {
   // region private
   private fun onSuccess(user: User) {
     setUserInfo(user)
+    progress_bar_user_form.visibility = ProgressBar.GONE
   }
 
   private fun onFailure(message: String?) {
-    Log.d("D", "failued : ${message}")
+    Log.d("D", "failed : ${message}")
+    progress_bar_user_form.visibility = ProgressBar.GONE
   }
 
   private fun setUserInfo(user: User) {
+    Log.d("D", "user : $user")
     //TODO make a component of fields of the form and then create a method setUserInfo on the created component
     user_form_name.setInputText(user.name)
     user_form_email.setInputText(user.email)

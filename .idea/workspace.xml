@@ -17,7 +17,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ed9f7b5e-612b-43c4-9c8e-878dc5123ce3" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/domain/DetailsUserUseCase.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/resourceHashesCache.bin" afterDir="false" />
@@ -28,16 +27,9 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/data/account/AccountRemoteDataSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/data/account/AccountRemoteDataSource.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/data/account/AccountRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/data/account/AccountRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/data/account/AccountServices.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/data/account/AccountServices.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/models/AccountModels.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/models/AccountModels.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserDetailsActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserDetailsActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserFormActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserFormActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserListActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserListActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_new_user_form.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_user_form.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_user_details.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_user_details.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/submit_button.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/submit_button.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_user_form.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_user_form.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -73,30 +65,39 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="UserFormActivity.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UserFormActivity.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserFormActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="137" column="37" selection-start-line="137" selection-start-column="37" selection-end-line="137" selection-end-column="37" />
+            <state relative-caret-position="402">
+              <caret line="148" column="56" selection-start-line="148" selection-start-column="56" selection-end-line="148" selection-end-column="56" />
               <folding>
                 <element signature="e#60#424#0" expanded="true" />
                 <element signature="e#2793#2803#0" />
+                <element signature="e#1717#1751#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserDetailsActivity.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="UserDetailsActivity.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserDetailsActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="100" column="32" lean-forward="true" selection-start-line="100" selection-start-column="32" selection-end-line="100" selection-end-column="32" />
+            <state relative-caret-position="260">
+              <caret line="108" selection-start-line="108" selection-end-line="108" />
               <folding>
                 <element signature="e#60#405#0" expanded="true" />
                 <element signature="e#1672#1945#1" />
-                <element signature="e#2043#2168#0" />
                 <element signature="e#2026#2064#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserListActivity.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserListActivity.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="77" column="16" lean-forward="true" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -116,8 +117,8 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
+            <state relative-caret-position="406">
+              <caret line="64" column="47" selection-start-line="64" selection-start-column="25" selection-end-line="64" selection-end-column="47" />
               <folding>
                 <element signature="e#1047#1074#0" expanded="true" />
               </folding>
@@ -125,21 +126,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="activity_user_details.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_user_details.xml">
+      <file leaf-file-name="activity_user_list.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_user_list.xml">
           <provider editor-type-id="android-designer2">
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="426">
-              <caret line="58" column="38" selection-start-line="58" selection-start-column="29" selection-end-line="58" selection-end-column="46" />
-              <folding>
-                <element signature="e#788#815#0" expanded="true" />
-                <element signature="e#1404#1432#0" expanded="true" />
-                <element signature="e#2022#2049#0" expanded="true" />
-                <element signature="e#1547#1574#0" expanded="true" />
-                <element signature="e#1852#1881#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="350">
+              <caret line="43" column="4" selection-start-line="43" selection-start-column="4" selection-end-line="47" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -176,15 +170,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="224">
               <caret line="22" selection-start-line="22" selection-end-line="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Constants.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/core/config/Constants.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="16" column="1" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -2695,15 +2680,15 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/core/config/Constants.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/submit_button.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserListActivity.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_user_form.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_user_details.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/models/AccountModels.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/data/account/AccountRepository.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/data/account/AccountRemoteDataSource.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/data/account/AccountServices.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/domain/DetailsUserUseCase.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserFormActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserDetailsActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_user_form.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserFormActivity.kt" />
       </list>
     </option>
   </component>
@@ -2799,7 +2784,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="accountmo&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/models/AccountModels.kt&#10;userAdap&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/widgets/lists/user/UsersAdapter.kt&#10;list&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserListActivity.kt&#10;constan&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/core/config/Constants.kt&#10;adapter&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/widgets/lists/user/UsersAdapter.kt&#10;login&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserLoginActivity.kt&#10;userA&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/widgets/lists/user/UsersAdapter.kt&#10;retro&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/core/datasource/http/RetrofitBuilder.kt&#10;accountser&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/data/account/AccountServices.kt&#10;onbo&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/OnboardApplication.kt&#10;toolb&#9;null&#9;null&#10;userS&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/core/sharedPreferences/UserSharedPreferences.kt&#10;Onboar&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/OnboardApplication.kt&#10;interceptor&#9;PSI&#9;JAVA://okhttp3.Interceptor&#10;mainActi&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/build/intermediates/incremental-verifier/debug/com/test/taqtile/takitiletest/Activities/MainActivity.class" />
+    <property name="SearchEverywhereHistoryKey" value="list&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/res/layout/activity_user_list.xml&#10;useredit&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserEditActivity.kt&#10;userform&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserFormActivity.kt&#10;accountmo&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/models/AccountModels.kt&#10;userAdap&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/widgets/lists/user/UsersAdapter.kt&#10;constan&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/core/config/Constants.kt&#10;adapter&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/widgets/lists/user/UsersAdapter.kt&#10;login&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserLoginActivity.kt&#10;userA&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/widgets/lists/user/UsersAdapter.kt&#10;retro&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/core/datasource/http/RetrofitBuilder.kt&#10;accountser&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/data/account/AccountServices.kt&#10;onbo&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/OnboardApplication.kt&#10;toolb&#9;null&#9;null&#10;userS&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/core/sharedPreferences/UserSharedPreferences.kt&#10;Onboar&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/src/main/java/com/test/taqtile/takitiletest/OnboardApplication.kt&#10;interceptor&#9;PSI&#9;JAVA://okhttp3.Interceptor&#10;mainActi&#9;FILE&#9;file:///Users/taqtile/Documents/Git/taki-tile-test/app/build/intermediates/incremental-verifier/debug/com/test/taqtile/takitiletest/Activities/MainActivity.class" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JSON" />
     <property name="device.picker.selection" value="Nexus_5X_API_28_x86" />
@@ -2979,8 +2964,8 @@
       <window_info anchor="right" id="Preview" order="4" weight="0.3297568" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32969698" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32969698" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.27030304" />
-      <window_info anchor="bottom" id="Logcat" order="10" weight="0.28" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.27030304" />
+      <window_info active="true" anchor="bottom" id="Logcat" order="10" visible="true" weight="0.28" />
       <window_info id="Captures" order="4" weight="0.25" />
       <window_info id="Capture Tool" order="6" />
       <window_info id="Designer" order="2" />
@@ -3266,16 +3251,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_user_list.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="43" column="4" selection-start-line="43" selection-start-column="4" selection-end-line="47" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/user_list_loader.xml">
       <provider editor-type-id="android-designer2">
         <state />
@@ -3355,23 +3330,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserEditActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="41" column="18" lean-forward="true" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="18" />
-          <folding>
-            <element signature="e#60#324#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserListActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="40" column="55" selection-start-line="40" selection-start-column="55" selection-end-line="40" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/widgets/lists/user/UsersAdapter.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="606">
@@ -3400,19 +3358,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="224">
           <caret line="16" column="1" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_user_form.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-          <folding>
-            <element signature="e#1047#1074#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3451,26 +3396,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserFormActivity.kt">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserListActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="137" column="37" selection-start-line="137" selection-start-column="37" selection-end-line="137" selection-end-column="37" />
+        <state relative-caret-position="272">
+          <caret line="77" column="16" lean-forward="true" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserEditActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="65" column="45" selection-start-line="65" selection-start-column="45" selection-end-line="65" selection-end-column="45" />
           <folding>
-            <element signature="e#60#424#0" expanded="true" />
-            <element signature="e#2793#2803#0" />
+            <element signature="e#60#324#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserDetailsActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="100" column="32" lean-forward="true" selection-start-line="100" selection-start-column="32" selection-end-line="100" selection-end-column="32" />
+        <state relative-caret-position="260">
+          <caret line="108" selection-start-line="108" selection-end-line="108" />
           <folding>
             <element signature="e#60#405#0" expanded="true" />
             <element signature="e#1672#1945#1" />
-            <element signature="e#2043#2168#0" />
             <element signature="e#2026#2064#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_user_list.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="43" column="4" selection-start-line="43" selection-start-column="4" selection-end-line="47" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_user_form.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="64" column="47" selection-start-line="64" selection-start-column="25" selection-end-line="64" selection-end-column="47" />
+          <folding>
+            <element signature="e#1047#1074#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/test/taqtile/takitiletest/presentation/account/UserFormActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="148" column="56" selection-start-line="148" selection-start-column="56" selection-end-line="148" selection-end-column="56" />
+          <folding>
+            <element signature="e#60#424#0" expanded="true" />
+            <element signature="e#2793#2803#0" />
+            <element signature="e#1717#1751#0" expanded="true" />
           </folding>
         </state>
       </provider>
