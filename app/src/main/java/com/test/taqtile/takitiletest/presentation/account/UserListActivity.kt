@@ -1,5 +1,6 @@
 package com.test.taqtile.takitiletest.presentation.account
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -39,6 +40,7 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
   private var window = 10
   private var totalPages: Int? = null
 
+  private val CALLBACK_FROM_USER_FORM = 0
   private val jsonParams: JSONObject = JSONObject()
 
   // region listeners
@@ -83,21 +85,12 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
     jsonParams.put("page", page.toString())
     jsonParams.put("window", window.toString())
 
+    progressBarListUsers.visibility = ProgressBar.VISIBLE
     list()
 
     setupActionBar()
     setupRecycler()
     setupFabCreateButton()
-
-    if (!intent.getStringExtra("message").isNullOrEmpty()) {
-      val builder = AlertDialog.Builder(this@UserListActivity)
-      builder.setTitle("Mensagem")
-      builder.setMessage(intent.getStringExtra("message"))
-      builder.setNeutralButton("OK") { _, _ -> }
-
-      val dialog = builder.create()
-      dialog.show()
-    }
 
     searchListView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
       override fun onQueryTextSubmit(query: String?): Boolean {
@@ -118,6 +111,16 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
         return true
       }
     })
+  }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if (requestCode == CALLBACK_FROM_USER_FORM && resultCode == Activity.RESULT_OK) {
+      CustomSnackBarBuilder(this@UserListActivity)
+              .withText(R.string.create_user_success)
+              .show()
+      list(reset = true)
+    }
   }
   // end region
 
@@ -141,8 +144,12 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
     fabCreateNewUser.setOnClickListener {
       val intent = Intent(this@UserListActivity, UserFormActivity::class.java)
 
-      startActivity(intent)
-      finish()
+      startActivityForResult(intent, CALLBACK_FROM_USER_FORM)
+
+//      val intent = Intent(this@UserListActivity, UserFormActivity::class.java)
+//
+//      startActivity(intent)
+//      finish()
     }
   }
 
@@ -164,7 +171,6 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
 
   // region services
   private fun list(reset: Boolean? = false, query: String? = null) {
-    progressBarListUsers.visibility = ProgressBar.VISIBLE
     disposables.add(
             listUsersUseCase.execute(jsonParams)
                     .observeOn(AndroidSchedulers.mainThread())
@@ -218,7 +224,7 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
 
   private fun onFailure(message: String?) {
     CustomSnackBarBuilder(this@UserListActivity)
-            .withText(R.string.user_delete_failure)
+            .withText(message)
             .show()
     progressBarListUsers.visibility = ProgressBar.GONE
   }

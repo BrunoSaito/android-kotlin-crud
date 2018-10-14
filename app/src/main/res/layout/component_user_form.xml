@@ -33,7 +33,7 @@
             android:id="@+id/component_user_form_password_confirmation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hint="@string/new_user_password_confirm"
+            app:hint="@string/create_user_password_confirm"
             app:error_message="@string/invalid_password_confirm"
             app:input_type="@string/password_confirmation_type" />
 
@@ -48,6 +48,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            app:button_text="@string/new_user_submit" />
+            app:button_text="@string/create_user_submit" />
 
 </LinearLayout>

@@ -33,11 +33,12 @@
     <string name="email_input_field">E-mail</string>
     <string name="password_input_field">Senha</string>
 
-    <string name="new_user_title">Criar novo usuário</string>
-    <string name="new_user_submit">Cadastrar</string>
-    <string name="new_user_failure">Erro ao criar usuário.</string>
-    <string name="new_user_success">Usuário cadastrado com sucesso!</string>
-    <string name="new_user_password_confirm">Confirmação da senha</string>
+    <!--User Create-->
+    <string name="create_user_title">Criar novo usuário</string>
+    <string name="create_user_submit">Cadastrar</string>
+    <string name="create_user_failure">Erro ao criar usuário.</string>
+    <string name="create_user_success">Usuário cadastrado com sucesso!</string>
+    <string name="create_user_password_confirm">Confirmação da senha</string>
     <string name="invalid_password_confirm">Senhas não conferem.</string>
 
     <string name="edit_user_title">Editar usuário</string>

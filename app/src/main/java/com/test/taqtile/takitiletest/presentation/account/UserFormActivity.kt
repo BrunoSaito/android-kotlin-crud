@@ -1,9 +1,11 @@
 package com.test.taqtile.takitiletest.presentation.account
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ProgressBar
@@ -18,6 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_user_form.*
 import kotlinx.android.synthetic.main.component_user_form.*
+import widgets.components.CustomSnackBarBuilder
 import javax.inject.Inject
 
 class UserFormActivity : AppCompatActivity() {
@@ -31,8 +34,6 @@ class UserFormActivity : AppCompatActivity() {
   private var disposables: MutableList<Disposable> = mutableListOf()
   private val spinnerItems = HashMap<String, String>()
 
-  private var name: String? = null
-  private var email: String? = null
   private var password: String? = null
   private var passwordConfirm: String? = null
   private var role: String? = null
@@ -60,11 +61,11 @@ class UserFormActivity : AppCompatActivity() {
   // region setup
   private fun setupActionBar() {
     val actionBar = supportActionBar
-    actionBar?.title = getString(R.string.new_user_title)
+    actionBar?.title = getString(R.string.create_user_title)
   }
 
   private fun setupForm() {
-    setupSpinner()
+//    setupSpinner()
     setupFields()
   }
 
@@ -99,8 +100,8 @@ class UserFormActivity : AppCompatActivity() {
           component_user_form_password_confirmation.hideErrorText()
 
           component_user_form_button_submit.lockButton()
-          //TODO create form component to retrieve UserCreate model
-          create(user_form.getUser())
+          this.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+          create(user_form.getUserInfo())
         }
         else {
           component_user_form_password_confirmation.showErrorText()
@@ -153,72 +154,28 @@ class UserFormActivity : AppCompatActivity() {
 
   // region private
   private fun onDetailsSuccess(user: User) {
-    setUserInfo(user)
+    user_form.setUserInfo(user)
     progress_bar_user_form.visibility = ProgressBar.GONE
   }
 
   private fun onCreateSuccess(user: User) {
     if (user.active) {
-      //TODO return to list and show snack bar with success message
+      setResult(Activity.RESULT_OK, intent)
+      finish()
     }
-    progress_bar_user_form.visibility = ProgressBar.GONE
+
+    CustomSnackBarBuilder(this@UserFormActivity)
+            .withText(R.string.create_user_failure)
+            .show()
+    component_user_form_button_submit.unlockButton()
   }
 
   private fun onFailure(message: String?) {
-    //TODO add snack bar with error message
+    CustomSnackBarBuilder(this@UserFormActivity)
+            .withText(message)
+            .show()
     progress_bar_user_form.visibility = ProgressBar.GONE
-  }
-
-  private fun setUserInfo(user: User) {
-    //TODO make a component of fields of the form and then create a method setUserInfo on the created component
-    component_user_form_name.setInputText(user.name)
-    component_user_form_email.setInputText(user.email)
-    component_user_form_spinner_role.setSelection(spinnerItems.values.indexOf(user.role))
+    component_user_form_button_submit.unlockButton()
   }
   // end region
-
-//  private fun submitNewUserRequest(name: String?, password: String?, email: String?, role: String?) {
-//    val newUserRequest = RetrofitInitializer(Preferences.token).userServices().createNewUser(CreateNewUserData(name, password, email, role))
-//
-//    newUserRequest.enqueue(object : Callback<CreateNewUserSuccess?> {
-//      override fun onResponse(call: Call<CreateNewUserSuccess?>?, response: Response<CreateNewUserSuccess?>?) {
-//        try {
-//          response!!.body()!!.data!!.name!!
-//
-//          val intent = Intent(this@CreateNewUserActivity, UserListActivity::class.java)
-//          intent.putExtra("message", getString(R.string.new_user_success))
-//
-//          startActivity(intent)
-//          finish()
-//        }
-//        catch (e: Exception) {
-//          val jsonError = response?.errorBody()?.string()
-//          val createNewUserError = Gson().fromJson(jsonError, CreateNewUserError::class.java)
-//
-//          val builder = AlertDialog.Builder(this@CreateNewUserActivity)
-//
-//          builder.setTitle(getString(R.string.new_user_failure))
-//          builder.setMessage(createNewUserError.errors?.get(0)?.original)
-//          builder.setNeutralButton("OK") { _, _ -> }
-//
-//          val dialog = builder.create()
-//          dialog.show()
-//        }
-//
-//        buttonSubmitNewUser.unlockButton()
-//      }
-//      override fun onFailure(call: Call<CreateNewUserSuccess?>?, failureResponse: Throwable) {
-//        val builder = AlertDialog.Builder(this@CreateNewUserActivity)
-//
-//        builder.setTitle(getString(R.string.new_user_failure))
-//        builder.setMessage(failureResponse.message.toString())
-//        builder.setNeutralButton("OK") { _, _ -> }
-//
-//        val dialog = builder.create()
-//        dialog.show()
-//
-//        buttonSubmitNewUser.unlockButton()
-//      }
-//    })
-//  }
 }
