@@ -9,7 +9,7 @@ import retrofit2.http.*
 
 interface AccountServices {
   @POST(Constants.USER_LIST)
-  fun create(@Body createNewUserData: CreateNewUserData?) : Observable<CreateNewUserSuccess>
+  fun create(@Body user: UserCreate?) : Observable<Result<UserResponse>>
 
   @GET(Constants.USER_LIST)
   fun list(@Query("pagination") pagination: JSONObject?) : Observable<Result<ListUserResponse>>
@@ -21,7 +21,7 @@ interface AccountServices {
   fun login(@Body loginCredentials: LoginCredentials?) : Observable<Result<LoginResponse>>
 
   @PUT(Constants.USER_DETAILS)
-  fun update(@Path("id") id: String?, @Body editUserData: EditUserData?) : Observable<EditUserSuccess>
+  fun update(@Path("id") id: String?, @Body editUserData: EditUserData?) : Observable<Result<UserResponse>>
 
   @DELETE(Constants.USER_DETAILS)
   fun delete(@Path("id") id: String?) : Observable<Result<UserResponse>>

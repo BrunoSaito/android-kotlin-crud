@@ -9,8 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@color/colorWhite" />
+        android:background="@color/color_primary_dark"
+        android:textColor="@color/color_white" />
 
     <ProgressBar
         android:id="@+id/progressBar"

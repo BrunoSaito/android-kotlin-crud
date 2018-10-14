@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Title"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/color_primary"
             android:textSize="18sp" />
 
         <TextView
@@ -44,7 +44,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:backgroundTint="#ffffffff"
-            android:tint="@color/colorPrimaryLight"
+            android:tint="@color/color_primary_light"
             android:hapticFeedbackEnabled="true"
             app:srcCompat="@android:drawable/ic_menu_delete" />
 
@@ -54,7 +54,7 @@
             android:layout_height="30dp"
             android:backgroundTint="#ffffffff"
             android:hapticFeedbackEnabled="false"
-            android:tint="@color/colorPrimaryLight"
+            android:tint="@color/color_primary_light"
             app:srcCompat="@android:drawable/ic_menu_edit" />
     </LinearLayout>
 

@@ -48,6 +48,13 @@ data class UserResponse(
     @SerializedName("data") val data: User
 )
 
+data class UserCreate(
+    @SerializedName("name") val name: String?,
+    @SerializedName("password") val password: String?,
+    @SerializedName("email") val email: String?,
+    @SerializedName("role") val role: String?
+)
+
 data class User(
   @SerializedName("id") val id: Int,
   @SerializedName("active") val active: Boolean,

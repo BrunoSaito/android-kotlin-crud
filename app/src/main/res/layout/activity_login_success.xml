@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/color_primary"
             android:textSize="25sp"
             android:text="@string/login_success"
             android:textAlignment="center" />
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="220dp"
             android:text="@string/button_list_users"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/color_primary_dark"
             android:textColor="#ffffffff"
             android:id="@+id/buttonListUsers" />
     </RelativeLayout>

@@ -21,6 +21,7 @@ import javax.inject.Inject
 import androidx.recyclerview.widget.RecyclerView
 import com.test.taqtile.takitiletest.core.config.Constants
 import com.test.taqtile.takitiletest.domain.DeleteUserUseCase
+import widgets.components.CustomSnackBarBuilder
 
 class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
 
@@ -61,7 +62,6 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
     val builder = AlertDialog.Builder(this@UserListActivity)
         builder.setMessage("Deseja realmente deletar o usuário $name ?")
         builder.setPositiveButton("Sim") { _, _ ->
-//          this@UserListActivity.deleteUserRequest(users[position].id.toString())
           val localId = id
           if (localId != null) delete(id)
         }
@@ -207,7 +207,9 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
 
   private fun onDeleteSuccess(user: User) {
     if (!user.active) {
-      //TODO snack bar with success message
+      CustomSnackBarBuilder(this@UserListActivity)
+              .withText(R.string.user_delete_success)
+              .show()
       list(true)
     }
 
@@ -215,7 +217,9 @@ class UserListActivity : AppCompatActivity(), UsersAdapter.Listener {
   }
 
   private fun onFailure(message: String?) {
-    //TODO add snack bar with error message
+    CustomSnackBarBuilder(this@UserListActivity)
+            .withText(R.string.user_delete_failure)
+            .show()
     progressBarListUsers.visibility = ProgressBar.GONE
   }
   // end region

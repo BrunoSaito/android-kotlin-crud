@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574b</color>
-    <color name="colorPrimaryLight">#00b3a3</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="colorWhite">#ffffffff</color>
+    <color name="color_primary">#008577</color>
+    <color name="color_primary_dark">#00574b</color>
+    <color name="color_primary_light">#00b3a3</color>
+    <color name="color_accent">#D81B60</color>
+    <color name="color_white">#ffffffff</color>
+
+    <!--Gray Scale-->
+    <color name="color_gray_darkest">#3B393B</color>
+    <color name="color_gray_dark">#626162</color>
+    <color name="color_gray">#BDBDBD</color>
+    <color name="color_gray_light">#E8E8E8</color>
+
+    <!--Snack Bar-->
+    <color name="color_snack_bar_background">@color/color_gray_darkest</color>
+    <color name="color_snack_bar_text">@color/color_white</color>
 </resources>

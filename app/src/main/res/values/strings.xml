@@ -43,7 +43,15 @@
     <string name="edit_user_title">Editar usuário</string>
     <string name="edit_user_submit">Finalizar</string>
 
+    <!--User Delete-->
+    <string name="user_delete_success">Usuário deletado com sucesso.</string>
+    <string name="user_delete_failure">Erro ao deletar usuário.</string>
+
     <string name="default_empty"></string>
     <string name="default_invalid_field">Campo inválido.</string>
     <string name="default_submit">Submeter</string>
+
+    <!--Snack bar-->
+    <string name="error_default_message">Ocorreu um erro.</string>
+    <string name="error_connection_message">Ocorreu um erro de comunicação.</string>
 </resources>

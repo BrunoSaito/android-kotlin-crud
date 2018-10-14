@@ -1,6 +1,5 @@
 package com.test.taqtile.takitiletest.data.account
 
-import android.util.Log
 import com.test.taqtile.takitiletest.core.Toolbox
 import com.test.taqtile.takitiletest.models.*
 import io.reactivex.Observable
@@ -9,10 +8,10 @@ import javax.inject.Inject
 
 class AccountRepository @Inject constructor(private val accountRemoteDataSource: AccountRemoteDataSource) {
 
-//  fun create(request: ): Observable<> {
-//    return accountRemoteDataSource.create(request)
-//  }
-//
+  fun create(user: UserCreate): Observable<UserResponse> {
+    return accountRemoteDataSource.create(user)
+  }
+
   fun list(pagination: JSONObject): Observable<ListUserResponse> {
     return accountRemoteDataSource.list(pagination)
   }
@@ -24,7 +23,6 @@ class AccountRepository @Inject constructor(private val accountRemoteDataSource:
   fun login(loginCredentials: LoginCredentials): Observable<LoginResponse> {
     return accountRemoteDataSource.login(loginCredentials)
             .doOnNext {
-              Log.d("D", "repository")
               Toolbox.userSharedPreferences.saveAccessToken(it.data.token)
             }
   }

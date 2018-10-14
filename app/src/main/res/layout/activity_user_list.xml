@@ -36,7 +36,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/colorPrimaryDark"
+        android:backgroundTint="@color/color_primary_dark"
         android:tint="#ffffffff"
         android:src="@android:drawable/ic_input_add"
         android:translationZ="1dp" />

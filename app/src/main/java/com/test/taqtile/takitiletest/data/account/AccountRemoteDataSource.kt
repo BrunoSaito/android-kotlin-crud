@@ -12,10 +12,11 @@ import javax.inject.Inject
 class AccountRemoteDataSource @Inject constructor(interceptor: CredentialsInterceptor) {
   private var services: Observable<AccountServices> = ServiceFactory.getObservable(AccountServices::class.java, Constants.API_ROOT_HTTP_URL, interceptor)
 
-//  fun create(request: ): Observable<> {
-//    return services
-//            .flatMap { it.create() }
-//  }
+  fun create(user: UserCreate): Observable<UserResponse> {
+    return services
+            .flatMap { it.create(user) }
+            .validateAndConvertToObservable()
+  }
 
   fun login(loginCredentials: LoginCredentials): Observable<LoginResponse> {
     return services

@@ -9,18 +9,24 @@ import android.widget.ArrayAdapter
 import android.widget.ProgressBar
 import com.test.taqtile.takitiletest.*
 import com.test.taqtile.takitiletest.core.config.Constants
+import com.test.taqtile.takitiletest.domain.CreateUserUseCase
 import com.test.taqtile.takitiletest.domain.DetailsUserUseCase
 import com.test.taqtile.takitiletest.models.User
+import com.test.taqtile.takitiletest.models.UserCreate
 import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_user_form.*
+import kotlinx.android.synthetic.main.component_user_form.*
 import javax.inject.Inject
 
 class UserFormActivity : AppCompatActivity() {
 
   @Inject
   lateinit var getUserDetails: DetailsUserUseCase
+
+  @Inject
+  lateinit var createUserUseCase: CreateUserUseCase
 
   private var disposables: MutableList<Disposable> = mutableListOf()
   private val spinnerItems = HashMap<String, String>()
@@ -68,9 +74,9 @@ class UserFormActivity : AppCompatActivity() {
 
     val spinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerItems.keys.toTypedArray())
     spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-    user_form_spinner_role.adapter = spinnerAdapter
+    component_user_form_spinner_role.adapter = spinnerAdapter
 
-    user_form_spinner_role.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+    component_user_form_spinner_role.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val keyArray = spinnerItems.keys.toTypedArray()
         role = spinnerItems[keyArray[position]]
@@ -83,26 +89,21 @@ class UserFormActivity : AppCompatActivity() {
   }
 
   private fun setupButton() {
-    user_form_button_submit.setOnClickListener {
-      name = user_form_name.getInputText()
-      email = user_form_email.getInputText()
-      password = user_form_password.getInputText()
-      passwordConfirm = user_form_password_confirmation.getInputText()
-
-      val validName = user_form_name.validate()
-      val validEmail = user_form_email.validate()
-      val validPassword = user_form_password.validate()
+    component_user_form_button_submit.setOnClickListener {
+      val validName = component_user_form_name.validate()
+      val validEmail = component_user_form_email.validate()
+      val validPassword = component_user_form_password.validate()
 
       if (validName && validEmail && validPassword) {
         if (password.equals(passwordConfirm)) {
-          user_form_password_confirmation.hideErrorText()
+          component_user_form_password_confirmation.hideErrorText()
 
-          user_form_button_submit.lockButton()
-
-//          submitNewUserRequest(name, password, email, role)
+          component_user_form_button_submit.lockButton()
+          //TODO create form component to retrieve UserCreate model
+          create(user_form.getUser())
         }
         else {
-          user_form_password_confirmation.showErrorText()
+          component_user_form_password_confirmation.showErrorText()
         }
       }
     }
@@ -113,11 +114,13 @@ class UserFormActivity : AppCompatActivity() {
 
     val localId = id
     if (localId != null) {
-      user_form_password.visibility = View.GONE
-      user_form_password_confirmation.visibility = View.GONE
+      component_user_form_password.visibility = View.GONE
+      component_user_form_password_confirmation.visibility = View.GONE
 
       getDetails(localId)
     }
+
+    progress_bar_user_form.visibility = ProgressBar.GONE
   }
   // end region
 
@@ -128,7 +131,19 @@ class UserFormActivity : AppCompatActivity() {
             getUserDetails.execute(id)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
-                      onSuccess(it.data)
+                      onDetailsSuccess(it.data)
+                    }, {
+                      onFailure(it.message)
+                    })
+    )
+  }
+
+  private fun create(user: UserCreate) {
+    disposables.add(
+            createUserUseCase.execute(user)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                      onCreateSuccess(it.data)
                     }, {
                       onFailure(it.message)
                     })
@@ -137,8 +152,15 @@ class UserFormActivity : AppCompatActivity() {
   // end region
 
   // region private
-  private fun onSuccess(user: User) {
+  private fun onDetailsSuccess(user: User) {
     setUserInfo(user)
+    progress_bar_user_form.visibility = ProgressBar.GONE
+  }
+
+  private fun onCreateSuccess(user: User) {
+    if (user.active) {
+      //TODO return to list and show snack bar with success message
+    }
     progress_bar_user_form.visibility = ProgressBar.GONE
   }
 
@@ -149,9 +171,9 @@ class UserFormActivity : AppCompatActivity() {
 
   private fun setUserInfo(user: User) {
     //TODO make a component of fields of the form and then create a method setUserInfo on the created component
-    user_form_name.setInputText(user.name)
-    user_form_email.setInputText(user.email)
-    user_form_spinner_role.setSelection(spinnerItems.values.indexOf(user.role))
+    component_user_form_name.setInputText(user.name)
+    component_user_form_email.setInputText(user.email)
+    component_user_form_spinner_role.setSelection(spinnerItems.values.indexOf(user.role))
   }
   // end region
 

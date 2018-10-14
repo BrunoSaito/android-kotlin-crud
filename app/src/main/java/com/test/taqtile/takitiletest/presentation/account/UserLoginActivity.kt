@@ -50,7 +50,6 @@ class UserLoginActivity : AppCompatActivity() {
 //  }
 
   private fun login() {
-    Log.d("D", "login credentials : ${activity_main_login_form.getLoginCredentials()}")
     disposables.add(
       loginUseCase.execute(activity_main_login_form.getLoginCredentials())
               .observeOn(AndroidSchedulers.mainThread())

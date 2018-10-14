@@ -2,6 +2,7 @@ package com.test.taqtile.takitiletest
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import com.test.taqtile.takitiletest.core.Toolbox
 import com.test.taqtile.takitiletest.core.di.DaggerApplicationComponent
 import com.test.taqtile.takitiletest.core.sharedPreferences.UserSharedPreferences
@@ -33,6 +34,10 @@ class OnboardApplication: DaggerApplication() {
   private fun setupToolbox() {
     Toolbox.userSharedPreferences = UserSharedPreferences(this)
     Toolbox.responseValidator = ResponseValidator(this)
+  }
+
+  fun getContext(): Context {
+    return this
   }
 
 //  @Inject

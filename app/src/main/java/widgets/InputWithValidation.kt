@@ -26,7 +26,7 @@ class InputWithValidation (context: Context, attrs: AttributeSet) : LinearLayout
   init {
     LayoutInflater.from(context).inflate(R.layout.input_with_validation, this, true)
     orientation = VERTICAL
-    colorPrimaryDark = getContext().getColor(R.color.colorPrimaryDark)
+    colorPrimaryDark = getContext().getColor(R.color.color_primary_dark)
 
     attrs.let {
       val typedArray = context.obtainStyledAttributes(it, R.styleable.InputWithValidation, 0, 0)
